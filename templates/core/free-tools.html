@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 py-12">
+    <!-- Page Header -->
+    <div class="text-center mb-12">
+        <h1 class="text-5xl font-bold text-gray-800 mb-4">Free Financial Tools</h1>
+        <p class="text-xl text-gray-600">Powerful calculators and tools to help you plan your financial future</p>
+    </div>
+
+    <!-- Tools Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        
+        <!-- Investment Calculator Card -->
+        <a href="{% url 'investment_calculator' %}" class="group">
+            <div class="bg-white rounded-xl border border-gray-200 hover:border-blue-400 hover:shadow-lg transition-all duration-300 h-full">
+                <div class="p-8">
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-blue-500 transition-colors duration-300">
+                        <svg class="w-6 h-6 text-blue-600 group-hover:text-white transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                        </svg>
+                    </div>
+                    
+                    <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors duration-300">Investment Calculator</h3>
+                    <p class="text-gray-600 text-sm mb-4">Calculate compound interest and visualize your portfolio growth over time</p>
+                    
+                    <div class="flex items-center text-blue-600 text-sm font-medium group-hover:translate-x-1 transition-transform duration-300">
+                        <span>Try it now</span>
+                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </a>
+
+        <!-- Retirement Planner Card - Coming Soon -->
+        <div class="group">
+            <div class="bg-white rounded-xl border border-gray-200 opacity-60 h-full">
+                <div class="p-8">
+                    <div class="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Retirement Planner</h3>
+                    <p class="text-gray-600 text-sm mb-4">Plan your retirement savings and calculate your target nest egg</p>
+                    
+                    <span class="inline-block px-3 py-1 bg-gray-100 text-gray-600 text-xs font-medium rounded-full">Coming Soon</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mortgage Calculator Card - Coming Soon -->
+        <div class="group">
+            <div class="bg-white rounded-xl border border-gray-200 opacity-60 h-full">
+                <div class="p-8">
+                    <div class="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                        </svg>
+                    </div>
+                    
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Mortgage Calculator</h3>
+                    <p class="text-gray-600 text-sm mb-4">Calculate monthly payments and view amortization schedules</p>
+                    
+                    <span class="inline-block px-3 py-1 bg-gray-100 text-gray-600 text-xs font-medium rounded-full">Coming Soon</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loan Payoff Calculator Card - Coming Soon -->
+        <div class="group">
+            <div class="bg-white rounded-xl border border-gray-200 opacity-60 h-full">
+                <div class="p-8">
+                    <div class="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Loan Payoff Calculator</h3>
+                    <p class="text-gray-600 text-sm mb-4">Find out how extra payments can help you pay off debt faster</p>
+                    
+                    <span class="inline-block px-3 py-1 bg-gray-100 text-gray-600 text-xs font-medium rounded-full">Coming Soon</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Budget Planner Card - Coming Soon -->
+        <div class="group">
+            <div class="bg-white rounded-xl border border-gray-200 opacity-60 h-full">
+                <div class="p-8">
+                    <div class="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                    </div>
+                    
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Budget Planner</h3>
+                    <p class="text-gray-600 text-sm mb-4">Create and track your monthly budget with spending insights</p>
+                    
+                    <span class="inline-block px-3 py-1 bg-gray-100 text-gray-600 text-xs font-medium rounded-full">Coming Soon</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Savings Goal Tracker Card - Coming Soon -->
+        <div class="group">
+            <div class="bg-white rounded-xl border border-gray-200 opacity-60 h-full">
+                <div class="p-8">
+                    <div class="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
+                        </svg>
+                    </div>
+                    
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Savings Goal Tracker</h3>
+                    <p class="text-gray-600 text-sm mb-4">Set financial goals and track progress towards your savings targets</p>
+                    
+                    <span class="inline-block px-3 py-1 bg-gray-100 text-gray-600 text-xs font-medium rounded-full">Coming Soon</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Call to Action -->
+    <div class="mt-16 bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg shadow-xl p-8 text-center">
+        <h2 class="text-3xl font-bold text-white mb-4">Want More Advanced Tools?</h2>
+        <p class="text-blue-100 text-lg mb-6">
+            Upgrade to Stingrays Pro for advanced financial planning tools, 
+            personalized insights, and comprehensive portfolio analysis.
+        </p>
+        <a href="#" class="inline-block bg-white text-blue-600 font-semibold py-3 px-8 rounded-lg hover:bg-blue-50 transition duration-200">
+            Explore Pro Features
+        </a>
+    </div>
+</div>
+{% endblock %}

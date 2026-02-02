@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto mt-10">
+    <!-- Welcome Card -->
+    <div class="bg-white p-8 rounded-lg shadow-md mb-6">
+        <h1 class="text-3xl font-bold mb-4 text-gray-800">Welcome, {{ user.username }}! 🎉</h1>
+        <p class="text-lg text-gray-600 mb-6">
+            Thanks for signing up for Stingrays Finance. Your account has been successfully created!
+        </p>
+        
+        <!-- Subscription Status -->
+        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6">
+            <div class="flex">
+                <div class="flex-shrink-0">
+                    <svg class="h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                    </svg>
+                </div>
+                <div class="ml-3">
+                    <p class="text-sm text-yellow-700">
+                        <strong>No Active Subscription</strong>
+                    </p>
+                    <p class="text-sm text-yellow-700 mt-1">
+                        You currently don't have an active subscription. Subscribe to unlock premium features and tools!
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Call to Action -->
+        <div class="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-6 rounded-lg shadow-md">
+            <h2 class="text-2xl font-bold mb-3">Ready to unlock premium features?</h2>
+            <p class="mb-4 text-blue-50">
+                Get access to advanced financial tools, portfolio tracking, and personalized investment insights.
+            </p>
+            <a href="{% url 'pricing' %}" 
+               class="inline-block bg-white text-blue-600 font-semibold py-3 px-6 rounded-lg hover:bg-blue-50 transition duration-200 shadow-md">
+                View Subscription Plans
+            </a>
+        </div>
+    </div>
+
+    <!-- Quick Links -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <a href="{% url 'free_tools' %}" class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition duration-200">
+            <h3 class="font-semibold text-lg mb-2 text-gray-800">Free Tools</h3>
+            <p class="text-gray-600 text-sm">Try our free financial calculators</p>
+        </a>
+        <a href="{% url 'about' %}" class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition duration-200">
+            <h3 class="font-semibold text-lg mb-2 text-gray-800">About Us</h3>
+            <p class="text-gray-600 text-sm">Learn more about Stingrays Finance</p>
+        </a>
+        <a href="{% url 'home' %}" class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition duration-200">
+            <h3 class="font-semibold text-lg mb-2 text-gray-800">Dashboard</h3>
+            <p class="text-gray-600 text-sm">Go to your home dashboard</p>
+        </a>
+    </div>
+
+    <!-- Note for Developers -->
+    <div class="mt-6 bg-blue-50 border border-blue-200 p-4 rounded-lg">
+        <p class="text-sm text-blue-800">
+            <strong>Note for FDEs:</strong> The subscription management system needs to be implemented. 
+            This should include subscription plans and user subscription status tracking.
+        </p>
+    </div>
+</div>
+{% endblock %}

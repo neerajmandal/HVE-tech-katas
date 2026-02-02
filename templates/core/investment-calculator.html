@@ -1,0 +1,241 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto px-4 py-8">
+    <div class="text-center mb-8">
+        <h1 class="text-4xl font-bold text-gray-800 mb-2">Investment Growth Calculator</h1>
+        <p class="text-gray-600">Plan your financial future with compound interest</p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Input Section -->
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-6">Investment Details</h2>
+            
+            <form method="GET" action="{% url 'investment_calculator' %}" id="calculatorForm">
+                <!-- Initial Investment -->
+                <div class="mb-6">
+                    <label for="initialInvestment" class="block text-sm font-medium text-gray-700 mb-2">
+                        Initial Investment
+                    </label>
+                    <div class="relative">
+                        <span class="absolute left-3 top-3 text-gray-500 text-lg">$</span>
+                        <input type="number" id="initialInvestment" name="initial"
+                               class="w-full pl-8 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg"
+                               value="{{ initial_investment }}" min="0" step="100">
+                    </div>
+                </div>
+
+                <!-- Monthly Contribution -->
+                <div class="mb-6">
+                    <label for="monthlyContribution" class="block text-sm font-medium text-gray-700 mb-2">
+                        Monthly Contribution
+                    </label>
+                    <div class="relative">
+                        <span class="absolute left-3 top-3 text-gray-500 text-lg">$</span>
+                        <input type="number" id="monthlyContribution" name="monthly"
+                               class="w-full pl-8 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg"
+                               value="{{ monthly_contribution }}" min="0" step="50">
+                    </div>
+                </div>
+
+                <!-- Expected Annual Return -->
+                <div class="mb-6">
+                    <label for="annualReturn" class="block text-sm font-medium text-gray-700 mb-2">
+                        Expected Annual Return
+                    </label>
+                    <div class="relative">
+                        <input type="number" id="annualReturn" name="return"
+                               class="w-full pr-12 pl-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg"
+                               value="{{ annual_return }}" min="0" max="100" step="0.5">
+                        <span class="absolute right-3 top-3 text-gray-500 text-lg">%</span>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-1">Historical S&P 500 average: ~10%</p>
+                </div>
+
+                <!-- Investment Period -->
+                <div class="mb-6">
+                    <label for="years" class="block text-sm font-medium text-gray-700 mb-2">
+                        Investment Period
+                    </label>
+                    <div class="relative">
+                        <input type="number" id="years" name="years"
+                               class="w-full pr-20 pl-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg"
+                               value="{{ years }}" min="1" max="100" step="1">
+                        <span class="absolute right-3 top-3 text-gray-500 text-lg">years</span>
+                    </div>
+                </div>
+
+                <button type="submit"
+                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-200">
+                    Calculate Growth
+                </button>
+            </form>
+        </div>
+
+        <!-- Results Section -->
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-6">Growth Projection</h2>
+            
+            <!-- Final Portfolio Value -->
+            <div class="bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg p-6 mb-6 text-white">
+                <p class="text-sm opacity-90 mb-2">Final Portfolio Value</p>
+                <p class="text-4xl font-bold">${{ final_value|floatformat:0|intcomma }}</p>
+            </div>
+
+            <!-- Breakdown Cards -->
+            <div class="grid grid-cols-1 gap-4 mb-6">
+                <!-- Total Contributions -->
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <p class="text-sm text-gray-600 mb-1">Total Contributions</p>
+                    <p class="text-2xl font-bold text-gray-800">${{ total_contributions|floatformat:0|intcomma }}</p>
+                </div>
+
+                <!-- Interest Earned -->
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <p class="text-sm text-gray-600 mb-1">Interest Earned</p>
+                    <p class="text-2xl font-bold text-green-600">${{ interest_earned|floatformat:0|intcomma }}</p>
+                </div>
+
+                <!-- Growth Multiple -->
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <p class="text-sm text-gray-600 mb-1">Growth Multiple</p>
+                    <p class="text-2xl font-bold text-purple-600">{{ growth_multiple }}x</p>
+                </div>
+            </div>
+
+            <!-- Year by Year Breakdown -->
+            <div class="mt-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">Year-by-Year Breakdown</h3>
+                <div class="max-h-96 overflow-y-auto border border-gray-200 rounded-lg">
+                    <table class="w-full text-sm">
+                        <thead class="bg-gray-50 sticky top-0">
+                            <tr>
+                                <th class="px-4 py-2 text-left text-gray-700">Year</th>
+                                <th class="px-4 py-2 text-right text-gray-700">Balance</th>
+                                <th class="px-4 py-2 text-right text-gray-700">Interest</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for data in yearly_data %}
+                                {% if data.year <= 10 or data.year|divisibleby:5 or data.year == years %}
+                                <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                    <td class="px-4 py-2 text-gray-700">{{ data.year }}</td>
+                                    <td class="px-4 py-2 text-right text-gray-800 font-semibold">${{ data.balance|floatformat:0|intcomma }}</td>
+                                    <td class="px-4 py-2 text-right text-green-600">${{ data.interest|floatformat:0|intcomma }}</td>
+                                </tr>
+                                {% endif %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chart Section -->
+    <div class="mt-8 bg-white rounded-lg shadow-lg p-6">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-6">Growth Visualization</h2>
+        <canvas id="growthChart" class="w-full" style="max-height: 400px;"></canvas>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+let growthChart = null;
+
+function formatCurrency(value) {
+    return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+    }).format(value);
+}
+
+function updateChart(yearlyData) {
+    const ctx = document.getElementById('growthChart');
+    
+    // Prepare data for chart - show every 5 years for better readability
+    const labels = [];
+    const balanceData = [];
+    const contributionsData = [];
+    
+    yearlyData.forEach((data) => {
+        if (data.year === 1 || data.year % 5 === 0 || data.year === yearlyData[yearlyData.length - 1].year) {
+            labels.push(`Year ${data.year}`);
+            balanceData.push(data.balance);
+            contributionsData.push(data.contributions);
+        }
+    });
+
+    if (growthChart) {
+        growthChart.destroy();
+    }
+
+    growthChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Portfolio Value',
+                    data: balanceData,
+                    borderColor: 'rgb(59, 130, 246)',
+                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4
+                },
+                {
+                    label: 'Total Contributions',
+                    data: contributionsData,
+                    borderColor: 'rgb(156, 163, 175)',
+                    backgroundColor: 'rgba(156, 163, 175, 0.1)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4,
+                    borderDash: [5, 5]
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top',
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return context.dataset.label + ': ' + formatCurrency(context.parsed.y);
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return '$' + (value / 1000).toFixed(0) + 'k';
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
+
+// Initialize chart on page load with server-calculated data
+document.addEventListener('DOMContentLoaded', function() {
+    const yearlyData = {{ yearly_data_json|safe }};
+    if (yearlyData && yearlyData.length > 0) {
+        updateChart(yearlyData);
+    }
+});
+</script>
+{% endblock %}

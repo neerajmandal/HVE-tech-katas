@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Performance Review Rewards - Q4 2025{% endblock %}
+
+{% block extra_head %}
+<script async src="https://js.stripe.com/v3/pricing-table.js"></script>
+{% endblock extra_head %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-16">
+            <h1 class="text-5xl font-extrabold text-gray-900 mb-4">
+                Stringrays Finance Pro
+            </h1>
+            <p class="text-xl text-gray-600">
+                Did you learn anything valuable?
+            </p>
+            <p class="text-sm text-gray-500 mt-2">
+                *Based on extremely objective metrics we just made up
+            </p>
+        </div>
+
+        <!-- Stripe Pricing Table -->
+        <div class="max-w-6xl mx-auto">
+            <stripe-pricing-table
+                pricing-table-id="{{ pricing_table_id }}"
+                publishable-key="{{ STRIPE_PUBLIC_KEY }}"
+                {% if customer_session_client_secret %}
+                customer-session-client-secret="{{ customer_session_client_secret }}"
+                {% endif %}
+            >
+            </stripe-pricing-table>
+        </div>
+
+        <!-- Fallback Pricing Cards (shown when Stripe table doesn't load) -->
+        <noscript>
+        <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            
+            <!-- On Track -->
+            <div class="bg-white rounded-2xl shadow-lg p-8 transform hover:scale-105 transition-transform duration-200 border-2 border-gray-200">
+                <div class="text-center mb-6">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-2">I learned something useful</h2>
+                    <div class="text-5xl font-extrabold text-blue-600 mb-2">10%</div>
+                    <p class="text-gray-600">Rewards for the Stingrays</p>
+                </div>
+            </div>
+
+            <!-- Above Expectations -->
+            <div class="bg-white rounded-2xl shadow-2xl p-8 transform hover:scale-105 transition-transform duration-200 border-2 border-gray-200 relative">
+                <div class="text-center mb-6">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-2">I learned something important</h2>
+                    <div class="text-5xl font-extrabold text-purple-600 mb-2">12.5%</div>
+                    <p class="text-gray-600">Rewards for the Stingrays</p>
+
+                </div>
+            </div>
+
+            <!-- Exceptional Performance -->
+            <div class="bg-gradient-to-br from-yellow-100 to-yellow-200 rounded-2xl shadow-2xl p-8 transform hover:scale-105 transition-transform duration-200 border-4 border-yellow-500 relative">
+                <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                    <span class="bg-yellow-500 text-white px-4 py-1 rounded-full text-sm font-bold">RECOMMENDED</span>
+                </div>
+                <div class="text-center mb-6">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-2">I learned something very valuable</h2>
+                    <div class="text-5xl font-extrabold text-yellow-700 mb-2">20%</div>
+                    <p class="text-gray-600">Rewards for the Stingrays</p>
+                </div>
+            </div>
+
+        </div>
+        </noscript>
+    </div>
+</div>
+{% endblock %}
