@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import PatientProfile, Invoice, InvoiceLineItem
+from .models import PatientProfile, Invoice, InvoiceLineItem, LabTest, DoctorVisit
 
 
 class InvoiceLineItemInline(admin.TabularInline):
@@ -14,6 +14,20 @@ class PatientProfileAdmin(admin.ModelAdmin):
     search_fields = ['user__username', 'user__email', 'user__first_name', 'user__last_name', 'phone_number']
     list_filter = ['insurance_provider', 'created_at']
     readonly_fields = ['created_at', 'updated_at']
+
+
+@admin.register(LabTest)
+class LabTestAdmin(admin.ModelAdmin):
+    list_display = ['test_name', 'patient', 'test_category', 'status', 'order_date', 'is_abnormal']
+    list_filter = ['status', 'test_category', 'is_abnormal', 'order_date']
+    search_fields = ['test_name', 'patient__username', 'patient__first_name', 'patient__last_name', 'ordered_by']
+
+
+@admin.register(DoctorVisit)
+class DoctorVisitAdmin(admin.ModelAdmin):
+    list_display = ['doctor_name', 'patient', 'specialty', 'visit_type', 'visit_date']
+    list_filter = ['visit_type', 'specialty', 'visit_date']
+    search_fields = ['doctor_name', 'patient__username', 'patient__first_name', 'patient__last_name', 'reason']
 
 
 @admin.register(Invoice)
