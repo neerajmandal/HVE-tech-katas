@@ -25,12 +25,8 @@
     <nav class="bg-white border-b border-gray-200 px-2 sm:px-4 py-2.5">
         <div class="container flex flex-wrap items-center justify-between mx-auto">
           <a href="{% url 'home' %}" class="flex items-center">
-              <div class="w-10 h-10 bg-teal-600 rounded-lg flex items-center justify-center mr-3">
-                  <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-                  </svg>
-              </div>
-              <span class="self-center text-2xl font-bold whitespace-nowrap text-gray-800">Stingray <span class="text-teal-600">Health</span></span>
+              <img src="{% static 'images/stingrays-logo.png' %}" class="h-10 w-auto mr-3" style="max-height:40px;" alt="Stingray Health Portal Logo" />
+              <span class="self-center text-2xl font-bold whitespace-nowrap text-gray-800">Stingray <span class="text-teal-600">Health Portal</span></span>
           </a>
           <button data-collapse-toggle="mobile-menu" type="button" class="inline-flex items-center p-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200" aria-controls="mobile-menu" aria-expanded="false">
             <span class="sr-only">Open main menu</span>

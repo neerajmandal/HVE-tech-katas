@@ -23,18 +23,14 @@
         <!-- Left Sidebar -->
         <aside class="flex flex-col w-64 bg-gradient-to-b from-slate-800 via-slate-800 to-slate-900 text-white flex-shrink-0">
             <!-- Logo / Brand -->
-            <div class="flex items-center px-5 py-5 border-b border-slate-700">
-                <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 bg-teal-500 rounded-lg flex items-center justify-center">
-                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-                        </svg>
-                    </div>
+            <div class="flex items-center px-4 py-4 border-b border-slate-700">
+                <a href="{% url 'home' %}" class="flex items-center space-x-3">
+                    <img src="{% static 'images/stingrays-logo.png' %}" class="h-10 w-auto" style="max-height:40px;" alt="Stingray Health Portal Logo" />
                     <div>
                         <h1 class="text-lg font-bold text-white leading-tight">Stingray</h1>
                         <p class="text-xs text-teal-400 font-medium">Health Portal</p>
                     </div>
-                </div>
+                </a>
             </div>
 
             <!-- Patient Info -->
