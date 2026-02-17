@@ -6,14 +6,20 @@
 echo "Starting Broader web app for local development..."
 echo "Setting DEBUG=TRUE for local development"
 
+echo "Syncing UV dependencies..."
+uv sync
+
+echo "Installing npm dependencies..."
+npm install
+
 echo "Compiling Tailwind CSS..."
 npx @tailwindcss/cli -i static/input.css -o static/output.css --config tailwind.config.js
 
 echo "Collecting static files..."
-python manage.py collectstatic --noinput
+uv run python manage.py collectstatic --noinput
 
 echo "Waiting for CSS compilation to finish..."
 sleep 2
 
 export DEBUG=true
-python manage.py runserver
+uv run python manage.py runserver

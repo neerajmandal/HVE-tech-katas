@@ -1,10 +1,7 @@
 import os
 
-import stripe
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from djstripe import models as djstripe_models
-from djstripe.settings import djstripe_settings
 import json
 
 
@@ -15,25 +12,8 @@ def about(request):
     return render(request, 'core/about.html')
 
 def pricing(request):
-    """Display pricing page with Stripe Pricing Table."""
-    context = {
-        "STRIPE_PUBLIC_KEY": djstripe_settings.STRIPE_PUBLIC_KEY,
-        "pricing_table_id": os.environ.get("STRIPE_PRICING_TABLE_ID", "prctbl_1Sn3haBjJ6zCPbztehr74kjO"),
-    }
-
-    if request.user.is_authenticated:
-        try:
-            customer = djstripe_models.Customer.objects.get(subscriber=request.user)
-            stripe.api_key = djstripe_settings.STRIPE_SECRET_KEY
-
-            customer_session = stripe.CustomerSession.create(
-                customer=customer.id,
-                components={"pricing_table": {"enabled": True}},
-            )
-            context["customer_session_client_secret"] = customer_session.client_secret
-        except djstripe_models.Customer.DoesNotExist:
-            pass
-
+    """Display pricing page."""
+    context = {}
     return render(request, "core/pricing.html", context)
 
 def free_tools(request):

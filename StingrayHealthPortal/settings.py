@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     "django.contrib.humanize",
     "allauth",
     "allauth.account",
-    "djstripe",
     "compressor",
     "tailwind",
     "apps.core",
@@ -182,8 +181,3 @@ STRIPE_TEST_PUBLIC_KEY = os.environ.get("STRIPE_TEST_PUBLIC_KEY", "pk_test_51Sn3
 
 # Set to True in production
 STRIPE_LIVE_MODE = os.environ.get("STRIPE_LIVE_MODE", "False").lower() == "true"
-
-# Required dj-stripe settings
-DJSTRIPE_FOREIGN_KEY_TO_FIELD = "id"
-DJSTRIPE_WEBHOOK_VALIDATION = "verify_signature"
-DJSTRIPE_SUBSCRIBER_CUSTOMER_KEY = "djstripe_subscriber"
