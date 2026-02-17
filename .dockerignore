@@ -1,0 +1,13 @@
+**/.DS_Store
+**/.git/
+
+# python
+**/.venv/
+
+# nodejs
+**/node_modules/
+**/dist/
+
+# dotnet
+**/bin/
+**/obj/
