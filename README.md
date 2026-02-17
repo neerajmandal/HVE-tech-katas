@@ -17,17 +17,16 @@ Currently, patients at our clinic have no direct way to communicate with their a
 
 ```bash
 # 1. Install Python dependencies
-pip install -r requirements.txt
+uv sync
 
 # 2. Install Node dependencies for Tailwind CSS
 npm install
 
 # 3. Create database tables
-python manage.py migrate
+uv run python manage.py migrate
 
 # 4. Start the development server
-chmod +x ./start.sh
-./start.sh
+uv run ./scripts/start.sh
 ```
 
 ## Access the Application
@@ -85,7 +84,7 @@ This repository is set up for an HVE coding kata (2.5 hours). See [tech-kata/HVE
 ├── StingrayHealthPortal/  # Django settings
 ├── tech-kata/            # Kata challenge documentation
 │   └── HVE-secure-messaging-kata.md  # Full challenge description
-└── start.sh              # Development server startup script
+└── scripts/              # Development scripts
 ```
 
 ## Need Help?
