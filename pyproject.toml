@@ -17,15 +17,8 @@ dependencies = [
     "django-allauth[socialaccount]>=65.12.1",
 ]
 
-[project.optional-dependencies]
+[dependency-groups]
 dev = [
-    "pytest>=8.0.0",
-    "pytest-django>=4.8.0",
-    "ruff>=0.4.0",
-]
-
-[tool.uv]
-dev-dependencies = [
     "pytest>=8.0.0",
     "pytest-django>=4.8.0",
     "ruff>=0.4.0",
@@ -33,7 +26,6 @@ dev-dependencies = [
 
 [tool.ruff]
 line-length = 88
-target-version = "py311"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP"]

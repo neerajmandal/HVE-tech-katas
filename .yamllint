@@ -1,0 +1,10 @@
+extends: default
+
+rules:
+  line-length: disable
+  document-start: disable
+  comments:
+    # Changed this to stop a mess between linters from Prettier (vscode) to yamllint
+    # https://github.com/prettier/prettier/pull/10926
+    # https://github.com/redhat-developer/vscode-yaml/issues/433
+    min-spaces-from-content: 1

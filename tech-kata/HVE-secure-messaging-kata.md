@@ -1,7 +1,7 @@
 # Tech Kata: Stingray Health Portal - Secure Patient Messaging
 
-**Duration:** 2.5 hours (11:30 AM - 2:00 PM)  
-**Difficulty:** Intermediate to Advanced  
+**Duration:** 2.5 hours (11:30 AM - 2:00 PM)
+**Difficulty:** Intermediate to Advanced
 **Technologies:** Django, Python, FHIR, GitHub Copilot
 
 ---
@@ -75,10 +75,9 @@ Provide a baseline of HVE readiness to the studio by capturing key techniques an
 
 ```bash
 npm install
-pip install -r requirements.txt
-python manage.py migrate
-chmod +x ./start.sh
-./start.sh
+uv sync
+uv run python manage.py migrate
+uv run ./scripts/start.sh
 ```
 
 ---
