@@ -1,0 +1,33 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Django: Run Server",
+      "type": "shell",
+      "command": "uv",
+      "args": ["run", "python", "manage.py", "runserver"],
+      "isBackground": true,
+      "problemMatcher": {
+        "pattern": {
+          "regexp": "^(.*?):(\\d+):(\\d+): (\\w+): (.*)$",
+          "file": 1,
+          "location": 2,
+          "severity": 4,
+          "message": 5
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "^Starting development server at",
+          "endsPattern": "^Quit the server with CONTROL-C\\."
+        }
+      }
+    },
+    {
+      "label": "Django: Run Migrations",
+      "type": "shell",
+      "command": "uv",
+      "args": ["run", "python", "manage.py", "migrate"],
+      "problemMatcher": "$python"
+    }
+  ]
+}

@@ -63,7 +63,12 @@ staticfiles/
 collected-static/
 
 # IDE
-.vscode/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
 .idea/
 *.swp
 *.swo
