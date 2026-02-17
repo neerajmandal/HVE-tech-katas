@@ -58,6 +58,7 @@ yarn.lock
 
 # Static files (generated)
 static/CACHE/
+static/output.css
 staticfiles/
 collected-static/
 
