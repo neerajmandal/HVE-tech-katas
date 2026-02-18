@@ -1,6 +1,9 @@
 # Data
 data/
 
+# HVE
+.copilot-tracking/
+
 # Claude
 .claude/
 
