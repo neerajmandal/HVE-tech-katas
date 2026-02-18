@@ -27,6 +27,6 @@
       "env": {},
       "django": true,
       "justMyCode": true
-    },
+    }
   ]
 }

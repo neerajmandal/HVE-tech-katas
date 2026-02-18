@@ -1,0 +1,45 @@
+{
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "files": {
+    "includes": ["**", "!templates/**"]
+  },
+  // Organize imports during format
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": "on"
+      }
+    }
+  },
+  // Add support for tailwindcss directives in CSS files
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
+    }
+  },
+  // Enable code formatting
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space"
+  },
+  "html": {
+    "parser": {
+      "interpolation": true
+    }
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "double"
+    }
+  },
+  // Enable lints
+  "linter": {
+    "enabled": false
+  },
+  // Honor .gitignore
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true
+  }
+}

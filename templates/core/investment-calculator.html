@@ -210,9 +210,7 @@ function updateChart(yearlyData) {
                 },
                 tooltip: {
                     callbacks: {
-                        label: function(context) {
-                            return context.dataset.label + ': ' + formatCurrency(context.parsed.y);
-                        }
+                        label: (context) => `${context.dataset.label}: ${formatCurrency(context.parsed.y)}`
                     }
                 }
             },
@@ -220,9 +218,7 @@ function updateChart(yearlyData) {
                 y: {
                     beginAtZero: true,
                     ticks: {
-                        callback: function(value) {
-                            return '$' + (value / 1000).toFixed(0) + 'k';
-                        }
+                        callback: (value) => `$${(value / 1000).toFixed(0)}k`
                     }
                 }
             }
@@ -231,7 +227,7 @@ function updateChart(yearlyData) {
 }
 
 // Initialize chart on page load with server-calculated data
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', () => {
     const yearlyData = {{ yearly_data_json|safe }};
     if (yearlyData && yearlyData.length > 0) {
         updateChart(yearlyData);
