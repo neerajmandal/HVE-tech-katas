@@ -6,7 +6,7 @@ Hi team! We have a 2.5-hour tech kata coming up where we'll build a secure messa
 
 - **Python 3.11+** — [python.org](https://www.python.org/downloads/)
 - **uv** (Python package manager) — [install guide](https://docs.astral.sh/uv/getting-started/installation/)
-- **Node.js** — [nodejs.org](https://nodejs.org)
+- **Node.js** — [download](https://nodejs.org/en/download)
 - **WSL** (Windows only) — `wsl --install`
 
 Quick install (Windows):
