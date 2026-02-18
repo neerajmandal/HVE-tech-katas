@@ -11,7 +11,8 @@ source "${SCRIPT_PATH}/common.sh"
 print_stage "Extracting sample data archive..."
 mkdir -p "${WORKSPACE_ROOT}/data"
 if [ ! -f "${WORKSPACE_ROOT}/data/10-patients.zip" ]; then
-  curl -L -O --output-dir "${WORKSPACE_ROOT}/data" https://github.com/smart-on-fhir/sample-bulk-fhir-datasets/archive/refs/heads/10-patients.zip
+	curl -L -O --output-dir "${WORKSPACE_ROOT}/data" https://github.com/smart-on-fhir/sample-bulk-fhir-datasets/archive/refs/heads/10-patients.zip
+	unzip -d "${WORKSPACE_ROOT}/data" -o "${WORKSPACE_ROOT}/data/10-patients.zip"
 fi
 
 print_stage "Setting up Python environment..."
