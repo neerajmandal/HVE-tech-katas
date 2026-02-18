@@ -1,9 +1,9 @@
 {
   "scripts": {
     "autofix:py": "uv run python",
-    "autofix:ts": "npx @biomejs/biome check --unsafe --write webui/ && npm run typecheck",
+    "autofix:ts": "npx @biomejs/biome check --unsafe --write ./ && npm run typecheck",
     "autofix": "npm run autofix:ts && npm run autofix:py",
-    "lint": "npx @biomejs/biome check webui/ --formatter-enabled=false",
+    "lint": "npx @biomejs/biome check ./ --formatter-enabled=false",
     "typecheck": "tsc -b --noEmit"
   },
   "devDependencies": {

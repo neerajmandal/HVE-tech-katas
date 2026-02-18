@@ -1,90 +1,90 @@
 {
-    "name": "Stingrays Health",
-    "image": "mcr.microsoft.com/devcontainers/python:3.12",
+  "name": "Stingrays Health",
+  "image": "mcr.microsoft.com/devcontainers/python:3.12",
 
-    "workspaceFolder": "/workspace",
-    "workspaceMount": "\"source=${localWorkspaceFolder}\",target=/workspace,type=bind",
+  "workspaceFolder": "/workspace",
+  "workspaceMount": "\"source=${localWorkspaceFolder}\",target=/workspace,type=bind",
 
-    "mounts": [
-        // Put Azure CLI configuration in a volume so we only have to login once
-        {
-        "type": "volume",
-        "source": "${devcontainerId}-azclidata",
-        "target": "/home/vscode/.azure"
-        },
-        // Required for keyring.alt, which Azure CLI uses to store credentials
-        {
-        "type": "volume",
-        "source": "${devcontainerId}-userlocal",
-        "target": "/home/vscode/.local"
-        },
-        // Put GitHub local user data in a volume
-        {
-        "type": "volume",
-        "source": "${devcontainerId}-userconfig",
-        "target": "/home/vscode/.config"
-        },
-        // Put Python environment into volume for better performance
-        {
-        "type": "volume",
-        "source": "${devcontainerId}-pyenv",
-        "target": "/workspace/.venv"
-        },
-        // Put node modules into volume for better performance
-        {
-        "type": "volume",
-        "source": "${devcontainerId}-nodemodules",
-        "target": "/workspace/src/web/node_modules"
-        }
-    ],
-
-    "features": {
-        "ghcr.io/devcontainers/features/azure-cli:1": {},
-        "ghcr.io/devcontainers/features/node:1": {
-            "version": "22.19.0"
-        },
-        "ghcr.io/jsburckhardt/devcontainer-features/uv:1": {}
+  "mounts": [
+    // Put Azure CLI configuration in a volume so we only have to login once
+    {
+      "type": "volume",
+      "source": "${devcontainerId}-azclidata",
+      "target": "/home/vscode/.azure"
     },
-
-    "customizations": {
-        "vscode": {
-            "settings": {
-                "terminal.integrated.defaultProfile.linux": "bash",
-                "python.pythonPath": "/workspace/.venv/bin/python",
-                "python.venvPath": "/workspace/.venv"
-            }
-        },
-        "extensions": [
-            // General editing
-            "ms-vsliveshare.vsliveshare",
-            "GitHub.copilot",
-            "EditorConfig.EditorConfig",
-            "streetsidesoftware.code-spell-checker",
-            // HVE
-            "ise-hve-essentials.hve-core",
-            // Markdown
-            "yzhang.markdown-all-in-one",
-            "DavidAnson.vscode-markdownlint",
-            "bierner.markdown-preview-github-styles",
-            "shd101wyy.markdown-preview-enhanced",
-            // Architecture diagrams
-            "hediet.vscode-drawio",
-            "tomoyukim.vscode-mermaid-editor",
-            "bierner.markdown-mermaid",
-            "bpruitt-goddard.mermaid-markdown-syntax-highlighting",
-            // Python tooling
-            "ms-python.python",
-            "charliermarsh.ruff",
-            "ms-toolsai.jupyter",
-            // Other serialization languages
-            "redhat.vscode-yaml",
-            "mkhl.shfmt",
-            "IronGeek.vscode-env"
-        ]
+    // Required for keyring.alt, which Azure CLI uses to store credentials
+    {
+      "type": "volume",
+      "source": "${devcontainerId}-userlocal",
+      "target": "/home/vscode/.local"
     },
+    // Put GitHub local user data in a volume
+    {
+      "type": "volume",
+      "source": "${devcontainerId}-userconfig",
+      "target": "/home/vscode/.config"
+    },
+    // Put Python environment into volume for better performance
+    {
+      "type": "volume",
+      "source": "${devcontainerId}-pyenv",
+      "target": "/workspace/.venv"
+    },
+    // Put node modules into volume for better performance
+    {
+      "type": "volume",
+      "source": "${devcontainerId}-nodemodules",
+      "target": "/workspace/src/web/node_modules"
+    }
+  ],
 
-    "forwardPorts": [8000, 5000],
+  "features": {
+    "ghcr.io/devcontainers/features/azure-cli:1": {},
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "22.19.0"
+    },
+    "ghcr.io/jsburckhardt/devcontainer-features/uv:1": {}
+  },
 
-    "postCreateCommand": "/bin/bash .devcontainer/post-create.sh",
-    "postStartCommand": "/bin/bash .devcontainer/post-start.sh"
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "python.pythonPath": "/workspace/.venv/bin/python",
+        "python.venvPath": "/workspace/.venv"
+      }
+    },
+    "extensions": [
+      // General editing
+      "ms-vsliveshare.vsliveshare",
+      "GitHub.copilot",
+      "EditorConfig.EditorConfig",
+      "streetsidesoftware.code-spell-checker",
+      // HVE
+      "ise-hve-essentials.hve-core",
+      // Markdown
+      "yzhang.markdown-all-in-one",
+      "DavidAnson.vscode-markdownlint",
+      "bierner.markdown-preview-github-styles",
+      "shd101wyy.markdown-preview-enhanced",
+      // Architecture diagrams
+      "hediet.vscode-drawio",
+      "tomoyukim.vscode-mermaid-editor",
+      "bierner.markdown-mermaid",
+      "bpruitt-goddard.mermaid-markdown-syntax-highlighting",
+      // Python tooling
+      "ms-python.python",
+      "charliermarsh.ruff",
+      "ms-toolsai.jupyter",
+      // Other serialization languages
+      "redhat.vscode-yaml",
+      "mkhl.shfmt",
+      "IronGeek.vscode-env"
+    ]
+  },
+
+  "forwardPorts": [8000, 5000],
+
+  "postCreateCommand": "/bin/bash .devcontainer/post-create.sh",
+  "postStartCommand": "/bin/bash .devcontainer/post-start.sh"
 }

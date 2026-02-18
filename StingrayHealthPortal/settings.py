@@ -64,7 +64,7 @@ ROOT_URLCONF = "StingrayHealthPortal.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / 'templates'],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -134,20 +134,24 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # Staticfiles finders (include default finders)
 STATICFILES_FINDERS = [
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'compressor.finders.CompressorFinder',
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    "compressor.finders.CompressorFinder",
 ]
 
-COMPRESS_ROOT = BASE_DIR / 'static'
+COMPRESS_ROOT = BASE_DIR / "static"
 COMPRESS_ENABLED = True
 
 # Tailwind CSS settings
-TAILWIND_APP_NAME = 'theme'
+TAILWIND_APP_NAME = "theme"
 
 # NPM and Node.js settings for Tailwind
-TAILWIND_CSS_DEV_COMMAND = 'npx tailwindcss -i ./src/input.css -o ./static/css/dist/styles.css --watch'
-TAILWIND_CSS_BUILD_COMMAND = 'npx tailwindcss -i ./src/input.css -o ./static/css/dist/styles.css'
+TAILWIND_CSS_DEV_COMMAND = (
+    "npx tailwindcss -i ./src/input.css -o ./static/css/dist/styles.css --watch"
+)
+TAILWIND_CSS_BUILD_COMMAND = (
+    "npx tailwindcss -i ./src/input.css -o ./static/css/dist/styles.css"
+)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
@@ -158,26 +162,29 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 SITE_ID = 1
 
 AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
 ]
 
 # Allauth configuration for simple email/password authentication
-ACCOUNT_LOGIN_METHODS = {'email', 'username'}
-ACCOUNT_SIGNUP_FIELDS = ['email*', 'username*', 'password1*', 'password2*']
-ACCOUNT_EMAIL_VERIFICATION = 'none'  # Disable email verification
-LOGIN_REDIRECT_URL = '/portal/'
-ACCOUNT_LOGOUT_REDIRECT_URL = '/'
+ACCOUNT_LOGIN_METHODS = {"email", "username"}
+ACCOUNT_SIGNUP_FIELDS = ["email*", "username*", "password1*", "password2*"]
+ACCOUNT_EMAIL_VERIFICATION = "none"  # Disable email verification
+LOGIN_REDIRECT_URL = "/portal/"
+ACCOUNT_LOGOUT_REDIRECT_URL = "/"
 ACCOUNT_SESSION_REMEMBER = True
 
 # Email backend for development (prints to console)
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 # Stripe API Keys (use environment variables)
 STRIPE_LIVE_SECRET_KEY = os.environ.get("STRIPE_LIVE_SECRET_KEY", "")
 STRIPE_TEST_SECRET_KEY = os.environ.get("STRIPE_TEST_SECRET_KEY", "")
 STRIPE_LIVE_PUBLIC_KEY = os.environ.get("STRIPE_LIVE_PUBLIC_KEY", "")
-STRIPE_TEST_PUBLIC_KEY = os.environ.get("STRIPE_TEST_PUBLIC_KEY", "pk_test_51Sn3d8BjJ6zCPbztLMfQYWUbOAzBrN7w2T6fXaRVl2SsmPFKMIgyQPf4XMbmN0YyjaJpszgBYHmHHP0SssMBULzX00hmBop8BJ")
+STRIPE_TEST_PUBLIC_KEY = os.environ.get(
+    "STRIPE_TEST_PUBLIC_KEY",
+    "pk_test_51Sn3d8BjJ6zCPbztLMfQYWUbOAzBrN7w2T6fXaRVl2SsmPFKMIgyQPf4XMbmN0YyjaJpszgBYHmHHP0SssMBULzX00hmBop8BJ",
+)
 
 # Set to True in production
 STRIPE_LIVE_MODE = os.environ.get("STRIPE_LIVE_MODE", "False").lower() == "true"
