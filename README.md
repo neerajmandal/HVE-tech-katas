@@ -49,18 +49,7 @@ uv run ./scripts/start.sh
 
 ## Tech Kata Challenge
 
-This repository is set up for an HVE coding kata (2.5 hours). See [tech-kata/HVE-secure-messaging-kata.md](tech-kata/HVE-secure-messaging-kata.md) for the full challenge description.
-
-### HVE Techniques Covered
-
-| Technique | What You'll Build |
-|-----------|-------------------|
-| DB Design | Doctors, Patients, Messages tables |
-| Architecture Diagram | Simple 3-tier (UI → API → DB) |
-| ADR | "Why we chose polling vs WebSockets for real-time" |
-| Copilot Code Explain | Walk through message retrieval logic |
-| Bug Fix | "Messages showing in wrong order" |
-| FHIR Integration | Map messages to FHIR Communication resource |
+This repository is set up for an HVE coding kata (2.5 hours). See [CHALLENGES.md](CHALLENGES.md) for the full challenge description.
 
 ## Technology Stack
 
@@ -89,7 +78,7 @@ This repository is set up for an HVE coding kata (2.5 hours). See [tech-kata/HVE
 
 ## Need Help?
 
-Check the [tech-kata/HVE-secure-messaging-kata.md](tech-kata/HVE-secure-messaging-kata.md) file for:
+Check the [CHALLENGES.md](CHALLENGES.md) file for:
 - Detailed schedule with breaks
 - Ticket descriptions for each HVE technique
 - FHIR integration guidance

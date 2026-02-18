@@ -1,5 +1,5 @@
 {
-  "name": "Stingrays Health",
+  "name": "Stingray Health",
   "image": "mcr.microsoft.com/devcontainers/python:3.12",
 
   "workspaceFolder": "/workspace",
