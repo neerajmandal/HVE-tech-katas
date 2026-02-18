@@ -30,3 +30,6 @@ uv run python manage.py collectstatic --noinput
 
 print_step "Running database migrations..."
 uv run python manage.py migrate
+
+print_step "Populating sample data..."
+uv run python manage.py seed_dummy_data
