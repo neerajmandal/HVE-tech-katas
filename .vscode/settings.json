@@ -1,0 +1,84 @@
+{
+  // Prevent extensions from stealing focus, see microsoft/vscode#205225
+  "workbench.view.showQuietly": {
+    "workbench.panel.output": true
+  },
+  // Code actions on save configuration must be global for now, see microsoft/vscode#217727
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit",
+    "source.fixAll.biome": "explicit"
+  },
+  "editor.formatOnSave": true,
+  // Use Ruff as the default formatter for Python files
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff"
+  },
+  // Use Biome as the default formatter for web and JSON files
+  "[typescript]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  // Auto-approve certain URLs and terminal commands for Copilot Chat
+  "chat.tools.urls.autoApprove": {
+    "https://pypi.org": true,
+    "https://*.readthedocs.org": true,
+    "https://hl7.org": true
+  },
+  // Auto-approving relatively safe terminal commands while leaving potentially destructive commands for explicit user approval
+  "chat.tools.terminal.autoApprove": {
+    // Safety: don't allow any of these commands to be run without explicit user approval
+    "rm": false,
+    "rmdir": false,
+    "del": false,
+    "kill": false,
+    "curl": false,
+    "wget": false,
+    "eval": false,
+    "chmod": false,
+    "chown": false,
+    "/^Remove-Item\\b/i": false,
+    // Allow these commands as safe for auto-approval
+    "grep": true,
+    "rg": true,
+    "git grep": true,
+    "git show": true,
+    "git log": true,
+    "ls": true,
+    "jq": true,
+    "head": true,
+    "less": true,
+    "more": true,
+    "dirname": true,
+    "basename": true,
+    "cd": true,
+    "tree": true,
+    "diff": true,
+    "cat": true,
+    "wc": true,
+    "mkdir": true,
+    "tail": true,
+    // Allow package manager commands but not install/uninstall commands
+    "npx biome": true,
+    "npx tsc --noEmit": true,
+    "uv run ruff": true,
+    "uv run pytest": true,
+    "uv run python manage.py": true,
+    // Bead management
+    "bd": true,
+    "npx bd": true
+  }
+}
