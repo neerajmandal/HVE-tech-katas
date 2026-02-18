@@ -50,6 +50,7 @@
     "vscode": {
       "settings": {
         "terminal.integrated.defaultProfile.linux": "bash",
+        "defaultInterpreterPath": "/workspace/.venv/bin/python",
         "python.pythonPath": "/workspace/.venv/bin/python",
         "python.venvPath": "/workspace/.venv"
       }
