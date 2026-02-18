@@ -89,19 +89,27 @@
             <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4 p-3 bg-gray-50 rounded-lg">
                 <div>
                     <p class="text-xs text-gray-400 uppercase font-medium">Blood Pressure</p>
-                    <p class="text-sm font-semibold text-gray-800">{{ visit.vitals_bp }} mmHg</p>
+                    <p class="text-sm font-semibold text-gray-800">
+                        {% if visit.vitals_bp %}{{ visit.vitals_bp }} mmHg{% else %}N/A{% endif %}
+                    </p>
                 </div>
                 <div>
                     <p class="text-xs text-gray-400 uppercase font-medium">Heart Rate</p>
-                    <p class="text-sm font-semibold text-gray-800">{{ visit.vitals_heart_rate }} bpm</p>
+                    <p class="text-sm font-semibold text-gray-800">
+                        {% if visit.vitals_heart_rate %}{{ visit.vitals_heart_rate }} bpm{% else %}N/A{% endif %}
+                    </p>
                 </div>
                 <div>
                     <p class="text-xs text-gray-400 uppercase font-medium">Temperature</p>
-                    <p class="text-sm font-semibold text-gray-800">{{ visit.vitals_temperature }}°F</p>
+                    <p class="text-sm font-semibold text-gray-800">
+                        {% if visit.vitals_temperature %}{{ visit.vitals_temperature }}°F{% else %}N/A{% endif %}
+                    </p>
                 </div>
                 <div>
                     <p class="text-xs text-gray-400 uppercase font-medium">Weight</p>
-                    <p class="text-sm font-semibold text-gray-800">{{ visit.vitals_weight }} lbs</p>
+                    <p class="text-sm font-semibold text-gray-800">
+                        {% if visit.vitals_weight %}{{ visit.vitals_weight }} lbs{% else %}N/A{% endif %}
+                    </p>
                 </div>
             </div>
 

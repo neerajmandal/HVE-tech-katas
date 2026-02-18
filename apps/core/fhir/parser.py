@@ -4,10 +4,13 @@ import json
 import logging
 from collections.abc import Iterable
 from datetime import date, datetime
+from decimal import Decimal
 from pathlib import Path
+from types import SimpleNamespace
 from typing import TypeVar
 
 from fhir.resources.diagnosticreport import DiagnosticReport
+from fhir.resources.documentreference import DocumentReference
 from fhir.resources.encounter import Encounter
 from fhir.resources.observation import Observation
 from fhir.resources.patient import Patient
@@ -18,12 +21,22 @@ logger = logging.getLogger(__name__)
 _TResource = TypeVar("_TResource")
 
 
+def _format_number(value: object) -> str:
+    if isinstance(value, bool):
+        return str(value)
+
+    if isinstance(value, (int, float, Decimal)):
+        return f"{float(value):.2f}"
+
+    return str(value)
+
+
 def load_patients(data_path: Path) -> list[Patient]:
     return _load_ndjson_resources(data_path / "Patient.000.ndjson", Patient)
 
 
-def load_encounters(data_path: Path) -> list[Encounter]:
-    return _load_ndjson_resources(data_path / "Encounter.000.ndjson", Encounter)
+def load_encounters(data_path: Path) -> list[object]:
+    return _load_ndjson_namespaces(data_path / "Encounter.000.ndjson")
 
 
 def load_diagnostic_reports(data_path: Path) -> list[DiagnosticReport]:
@@ -34,6 +47,12 @@ def load_diagnostic_reports(data_path: Path) -> list[DiagnosticReport]:
 
 def load_observations(data_path: Path) -> list[Observation]:
     return _load_ndjson_resources(data_path / "Observation.000.ndjson", Observation)
+
+
+def load_document_references(data_path: Path) -> list[DocumentReference]:
+    return _load_ndjson_resources(
+        data_path / "DocumentReference.000.ndjson", DocumentReference
+    )
 
 
 def _load_ndjson_resources(
@@ -68,6 +87,47 @@ def _load_ndjson_resources(
     return resources
 
 
+def _load_ndjson_namespaces(file_path: Path) -> list[object]:
+    resources: list[object] = []
+
+    if not file_path.exists():
+        logger.warning("FHIR source file does not exist: %s", file_path)
+        return resources
+
+    with file_path.open("r", encoding="utf-8") as source:
+        for line_number, line in enumerate(source, start=1):
+            payload = line.strip()
+            if not payload:
+                continue
+
+            try:
+                data = json.loads(payload)
+            except json.JSONDecodeError as error:
+                logger.warning(
+                    "Skipping invalid JSON at %s:%s (%s)",
+                    file_path,
+                    line_number,
+                    error,
+                )
+                continue
+
+            resources.append(_to_namespace(data))
+
+    return resources
+
+
+def _to_namespace(value: object) -> object:
+    if isinstance(value, dict):
+        return SimpleNamespace(
+            **{key: _to_namespace(item) for key, item in value.items()}
+        )
+
+    if isinstance(value, list):
+        return [_to_namespace(item) for item in value]
+
+    return value
+
+
 def reference_id(reference: str | None, expected_prefix: str) -> str | None:
     if not reference:
         return None
@@ -80,15 +140,23 @@ def reference_id(reference: str | None, expected_prefix: str) -> str | None:
     return suffix or None
 
 
-def parse_fhir_date(value: str | None) -> date | None:
+def parse_fhir_date(value: object | None) -> date | None:
     if not value:
         return None
 
+    if isinstance(value, datetime):
+        return value.date()
+
+    if isinstance(value, date):
+        return value
+
+    value_text = str(value)
+
     try:
-        return datetime.fromisoformat(value.replace("Z", "+00:00")).date()
+        return datetime.fromisoformat(value_text.replace("Z", "+00:00")).date()
     except ValueError:
         try:
-            return date.fromisoformat(value)
+            return date.fromisoformat(value_text)
         except ValueError:
             logger.debug("Unable to parse FHIR date value: %s", value)
             return None
@@ -120,7 +188,7 @@ def observation_value_text(observation: Observation) -> str:
     if value_quantity is not None:
         quantity_value = getattr(value_quantity, "value", None)
         if quantity_value is not None:
-            return str(quantity_value)
+            return _format_number(quantity_value)
 
     value_codeable_concept = getattr(observation, "valueCodeableConcept", None)
     if value_codeable_concept is not None:
@@ -144,7 +212,7 @@ def observation_value_text(observation: Observation) -> str:
     for field_name in direct_fields:
         value = getattr(observation, field_name, None)
         if value is not None:
-            return str(value)
+            return _format_number(value)
 
     return ""
 
@@ -180,8 +248,8 @@ def observation_reference_range_text(observation: Observation) -> str:
     low_value = getattr(low, "value", None) if low else None
     high_value = getattr(high, "value", None) if high else None
     if low_value is not None or high_value is not None:
-        low_part = "" if low_value is None else str(low_value)
-        high_part = "" if high_value is None else str(high_value)
+        low_part = "" if low_value is None else _format_number(low_value)
+        high_part = "" if high_value is None else _format_number(high_value)
         return f"{low_part}-{high_part}".strip("-")
 
     return ""

@@ -1,8 +1,55 @@
-
 import json
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
+
+from .fhir import get_portal_records_repository
+
+VISIT_TYPE_DISPLAY = {
+    "checkup": "Annual Checkup",
+    "follow_up": "Follow-up",
+    "urgent": "Urgent Care",
+    "specialist": "Specialist Referral",
+    "preventive": "Preventive Care",
+    "history_physical": "History Physical",
+}
+
+
+class VisitTemplateAdapter:
+    def __init__(self, visit: object) -> None:
+        self._visit = visit
+
+        self.id = getattr(visit, "id", "")
+        self.doctor_name = getattr(visit, "doctor_name", "")
+        self.specialty = getattr(visit, "specialty", "")
+        self.visit_date = getattr(visit, "visit_date", None)
+        self.visit_type = getattr(visit, "visit_type", "")
+        self.reason = getattr(visit, "reason", "")
+        self.diagnosis = getattr(visit, "diagnosis", "")
+        self.treatment_plan = getattr(visit, "treatment_plan", "")
+        self.follow_up_date = getattr(visit, "follow_up_date", None)
+        self.notes = getattr(visit, "notes", "")
+        self.vitals_bp = getattr(visit, "vitals_bp", "")
+        self.vitals_heart_rate = getattr(visit, "vitals_heart_rate", "")
+        self.vitals_temperature = getattr(visit, "vitals_temperature", "")
+        self.vitals_weight = getattr(visit, "vitals_weight", "")
+
+    def get_visit_type_display(self) -> str:
+        if hasattr(self._visit, "get_visit_type_display"):
+            return self._visit.get_visit_type_display()
+        return VISIT_TYPE_DISPLAY.get(
+            self.visit_type, self.visit_type.replace("_", " ").title()
+        )
+
+
+def adapt_visits_for_template(visits: object) -> tuple[object, ...]:
+    adapted: list[object] = []
+    for visit in visits:
+        if hasattr(visit, "get_visit_type_display"):
+            adapted.append(visit)
+        else:
+            adapted.append(VisitTemplateAdapter(visit))
+    return tuple(adapted)
 
 
 def home(request):
@@ -81,32 +128,43 @@ def investment_calculator(request):
 @login_required
 def patient_dashboard(request):
     """Patient dashboard showing overview of health records"""
-    from .models import DoctorVisit, LabTest
-
-    user = request.user
-
-    recent_labs = LabTest.objects.filter(patient=user)[:5]
-    total_labs = LabTest.objects.filter(patient=user).count()
-    pending_labs = LabTest.objects.filter(patient=user, status="pending").count()
-    abnormal_labs = LabTest.objects.filter(patient=user, is_abnormal=True).count()
-
-    recent_visits = DoctorVisit.objects.filter(patient=user)[:5]
-    total_visits = DoctorVisit.objects.filter(patient=user).count()
-
-    from django.utils import timezone
-
-    upcoming_followups = DoctorVisit.objects.filter(
-        patient=user, follow_up_date__gte=timezone.now().date()
-    ).order_by("follow_up_date")[:3]
+    repository = get_portal_records_repository()
+    bundle = repository.get_dashboard_records(request.user.username)
 
     context = {
-        "recent_labs": recent_labs,
-        "total_labs": total_labs,
-        "pending_labs": pending_labs,
-        "abnormal_labs": abnormal_labs,
-        "recent_visits": recent_visits,
-        "total_visits": total_visits,
-        "upcoming_followups": upcoming_followups,
+        "recent_labs": bundle.recent_labs,
+        "total_labs": bundle.total_labs,
+        "pending_labs": bundle.pending_labs,
+        "abnormal_labs": bundle.abnormal_labs,
+        "recent_visits": adapt_visits_for_template(bundle.recent_visits),
+        "total_visits": bundle.total_visits,
+        "upcoming_followups": adapt_visits_for_template(bundle.upcoming_followups),
+        "latest_vitals_bp": getattr(bundle, "latest_vitals_bp", ""),
+        "latest_vitals_heart_rate": getattr(bundle, "latest_vitals_heart_rate", ""),
+        "latest_vitals_temperature": getattr(bundle, "latest_vitals_temperature", ""),
+        "latest_vitals_weight": getattr(bundle, "latest_vitals_weight", ""),
+        "latest_vitals_bp_status": getattr(
+            bundle, "latest_vitals_bp_status", "unknown"
+        ),
+        "latest_vitals_heart_rate_status": getattr(
+            bundle, "latest_vitals_heart_rate_status", "unknown"
+        ),
+        "latest_vitals_temperature_status": getattr(
+            bundle, "latest_vitals_temperature_status", "unknown"
+        ),
+        "latest_vitals_weight_status": getattr(
+            bundle, "latest_vitals_weight_status", "unknown"
+        ),
+        "latest_vitals_bp_trend": getattr(bundle, "latest_vitals_bp_trend", "flat"),
+        "latest_vitals_heart_rate_trend": getattr(
+            bundle, "latest_vitals_heart_rate_trend", "flat"
+        ),
+        "latest_vitals_temperature_trend": getattr(
+            bundle, "latest_vitals_temperature_trend", "flat"
+        ),
+        "latest_vitals_weight_trend": getattr(
+            bundle, "latest_vitals_weight_trend", "flat"
+        ),
     }
 
     return render(request, "core/dashboard.html", context)
@@ -115,24 +173,20 @@ def patient_dashboard(request):
 @login_required
 def lab_tests(request):
     """Display patient's lab test results"""
-    from .models import LabTest
-
-    user = request.user
-    tests = LabTest.objects.filter(patient=user)
+    repository = get_portal_records_repository()
 
     status_filter = request.GET.get("status", "all")
-    if status_filter != "all":
-        tests = tests.filter(status=status_filter)
+    status = status_filter if status_filter != "all" else None
 
     category_filter = request.GET.get("category", "all")
-    if category_filter != "all":
-        tests = tests.filter(test_category=category_filter)
+    category = category_filter if category_filter != "all" else None
 
-    categories = (
-        LabTest.objects.filter(patient=user)
-        .values_list("test_category", flat=True)
-        .distinct()
+    tests = repository.get_lab_results(
+        request.user.username,
+        status=status,
+        category=category,
     )
+    categories = repository.get_lab_categories(request.user.username)
 
     context = {
         "tests": tests,
@@ -147,17 +201,17 @@ def lab_tests(request):
 @login_required
 def doctor_visits(request):
     """Display patient's doctor visit history"""
-    from .models import DoctorVisit
-
-    user = request.user
-    visits = DoctorVisit.objects.filter(patient=user)
+    repository = get_portal_records_repository()
 
     type_filter = request.GET.get("type", "all")
-    if type_filter != "all":
-        visits = visits.filter(visit_type=type_filter)
+    visit_type = type_filter if type_filter != "all" else None
+    visits = repository.get_visit_summaries(
+        request.user.username,
+        visit_type=visit_type,
+    )
 
     context = {
-        "visits": visits,
+        "visits": adapt_visits_for_template(visits),
         "type_filter": type_filter,
     }
 
@@ -167,34 +221,45 @@ def doctor_visits(request):
 @login_required
 def invoice_list(request):
     """Display billing dashboard with all patient invoices for clinic staff"""
-    from .models import Invoice
-
-    invoices = (
-        Invoice.objects.all()
-        .select_related("patient")
-        .prefetch_related("line_items")
-        .order_by("-created_at")
-    )
+    repository = get_portal_records_repository()
 
     status_filter = request.GET.get("status", "all")
-    if status_filter != "all":
-        invoices = invoices.filter(status=status_filter)
+    status = status_filter if status_filter != "all" else None
 
-    all_invoices = Invoice.objects.all()
+    invoices = tuple(repository.get_invoices(status=status))
+    all_invoices = tuple(repository.get_invoices())
 
-    unpaid_invoices = all_invoices.filter(status__in=["pending", "overdue"])
-    total_unpaid_count = unpaid_invoices.count()
-    total_unpaid_amount = sum(invoice.total for invoice in unpaid_invoices)
+    unpaid_invoices = [
+        invoice
+        for invoice in all_invoices
+        if getattr(invoice, "status", "") in ["pending", "overdue"]
+    ]
+    total_unpaid_count = len(unpaid_invoices)
+    total_unpaid_amount = sum(
+        float(getattr(invoice, "total", 0) or 0) for invoice in unpaid_invoices
+    )
 
-    overdue_invoices = all_invoices.filter(status="overdue")
-    total_overdue_count = overdue_invoices.count()
-    total_overdue_amount = sum(invoice.total for invoice in overdue_invoices)
+    overdue_invoices = [
+        invoice
+        for invoice in all_invoices
+        if getattr(invoice, "status", "") == "overdue"
+    ]
+    total_overdue_count = len(overdue_invoices)
+    total_overdue_amount = sum(
+        float(getattr(invoice, "total", 0) or 0) for invoice in overdue_invoices
+    )
 
-    paid_invoices = all_invoices.filter(status="paid")
-    total_paid_count = paid_invoices.count()
-    total_paid_amount = sum(invoice.total for invoice in paid_invoices)
+    paid_invoices = [
+        invoice for invoice in all_invoices if getattr(invoice, "status", "") == "paid"
+    ]
+    total_paid_count = len(paid_invoices)
+    total_paid_amount = sum(
+        float(getattr(invoice, "total", 0) or 0) for invoice in paid_invoices
+    )
 
-    total_revenue = sum(invoice.total for invoice in all_invoices)
+    total_revenue = sum(
+        float(getattr(invoice, "total", 0) or 0) for invoice in all_invoices
+    )
 
     collection_rate = (
         (total_paid_amount / total_revenue * 100) if total_revenue > 0 else 0

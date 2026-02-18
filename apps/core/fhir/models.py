@@ -31,6 +31,10 @@ class VisitSummary:
     diagnosis: str = ""
     treatment_plan: str = ""
     follow_up_date: date | None = None
+    vitals_bp: str = ""
+    vitals_heart_rate: str = ""
+    vitals_temperature: str = ""
+    vitals_weight: str = ""
     notes: str = ""
 
 
@@ -54,3 +58,15 @@ class PortalRecordBundle:
     recent_visits: tuple[VisitSummary, ...] = field(default_factory=tuple)
     total_visits: int = 0
     upcoming_followups: tuple[VisitSummary, ...] = field(default_factory=tuple)
+    latest_vitals_bp: str = ""
+    latest_vitals_heart_rate: str = ""
+    latest_vitals_temperature: str = ""
+    latest_vitals_weight: str = ""
+    latest_vitals_bp_status: str = "unknown"
+    latest_vitals_heart_rate_status: str = "unknown"
+    latest_vitals_temperature_status: str = "unknown"
+    latest_vitals_weight_status: str = "unknown"
+    latest_vitals_bp_trend: str = "flat"
+    latest_vitals_heart_rate_trend: str = "flat"
+    latest_vitals_temperature_trend: str = "flat"
+    latest_vitals_weight_trend: str = "flat"

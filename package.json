@@ -8,6 +8,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^2.2.6",
+    "@beads/bd": "^0.52.0",
     "tailwindcss": "^4.1.17"
   },
   "dependencies": {

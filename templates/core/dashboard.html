@@ -59,6 +59,72 @@
     </div>
 </div>
 
+<!-- Latest Vitals -->
+<div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 mb-6">
+    <div class="flex items-center justify-between mb-4">
+        <h3 class="text-base font-semibold text-gray-800">Latest Vitals</h3>
+        <span class="text-xs text-gray-500">Most recent patient readings</span>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 p-3 bg-gray-50 rounded-lg">
+        <div>
+            <p class="text-xs text-gray-400 uppercase font-medium">Blood Pressure</p>
+            <p class="text-sm font-semibold
+                {% if latest_vitals_bp_status == 'normal' %}text-green-700
+                {% elif latest_vitals_bp_status == 'high' %}text-red-700
+                {% elif latest_vitals_bp_status == 'low' %}text-amber-700
+                {% else %}text-gray-800{% endif %}">
+                {% if latest_vitals_bp %}{{ latest_vitals_bp }} mmHg{% else %}N/A{% endif %}
+            </p>
+            <p class="text-xs text-gray-500 mt-0.5">
+                {% if latest_vitals_bp_trend == 'up' %}↑{% elif latest_vitals_bp_trend == 'down' %}↓{% else %}→{% endif %}
+                from last reading
+            </p>
+        </div>
+        <div>
+            <p class="text-xs text-gray-400 uppercase font-medium">Heart Rate</p>
+            <p class="text-sm font-semibold
+                {% if latest_vitals_heart_rate_status == 'normal' %}text-green-700
+                {% elif latest_vitals_heart_rate_status == 'high' %}text-red-700
+                {% elif latest_vitals_heart_rate_status == 'low' %}text-amber-700
+                {% else %}text-gray-800{% endif %}">
+                {% if latest_vitals_heart_rate %}{{ latest_vitals_heart_rate }} bpm{% else %}N/A{% endif %}
+            </p>
+            <p class="text-xs text-gray-500 mt-0.5">
+                {% if latest_vitals_heart_rate_trend == 'up' %}↑{% elif latest_vitals_heart_rate_trend == 'down' %}↓{% else %}→{% endif %}
+                from last reading
+            </p>
+        </div>
+        <div>
+            <p class="text-xs text-gray-400 uppercase font-medium">Temperature</p>
+            <p class="text-sm font-semibold
+                {% if latest_vitals_temperature_status == 'normal' %}text-green-700
+                {% elif latest_vitals_temperature_status == 'high' %}text-red-700
+                {% elif latest_vitals_temperature_status == 'low' %}text-amber-700
+                {% else %}text-gray-800{% endif %}">
+                {% if latest_vitals_temperature %}{{ latest_vitals_temperature }}°F{% else %}N/A{% endif %}
+            </p>
+            <p class="text-xs text-gray-500 mt-0.5">
+                {% if latest_vitals_temperature_trend == 'up' %}↑{% elif latest_vitals_temperature_trend == 'down' %}↓{% else %}→{% endif %}
+                from last reading
+            </p>
+        </div>
+        <div>
+            <p class="text-xs text-gray-400 uppercase font-medium">Weight</p>
+            <p class="text-sm font-semibold
+                {% if latest_vitals_weight_status == 'normal' %}text-green-700
+                {% elif latest_vitals_weight_status == 'high' %}text-red-700
+                {% elif latest_vitals_weight_status == 'low' %}text-amber-700
+                {% else %}text-gray-800{% endif %}">
+                {% if latest_vitals_weight %}{{ latest_vitals_weight }} lbs{% else %}N/A{% endif %}
+            </p>
+            <p class="text-xs text-gray-500 mt-0.5">
+                {% if latest_vitals_weight_trend == 'up' %}↑{% elif latest_vitals_weight_trend == 'down' %}↓{% else %}→{% endif %}
+                from last reading
+            </p>
+        </div>
+    </div>
+</div>
+
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
     <!-- Recent Lab Tests -->
     <div class="bg-white rounded-xl shadow-sm border border-gray-100">

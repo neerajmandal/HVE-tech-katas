@@ -188,3 +188,11 @@ STRIPE_TEST_PUBLIC_KEY = os.environ.get(
 
 # Set to True in production
 STRIPE_LIVE_MODE = os.environ.get("STRIPE_LIVE_MODE", "False").lower() == "true"
+
+# Portal records data source configuration
+PORTAL_RECORDS_SOURCE = os.environ.get("PORTAL_RECORDS_SOURCE", "fhir_file")
+FHIR_DATA_PATH = os.environ.get(
+    "FHIR_DATA_PATH",
+    str(BASE_DIR / "data" / "sample-bulk-fhir-datasets-10-patients"),
+)
+FHIR_REST_BASE_URL = os.environ.get("FHIR_REST_BASE_URL", "")

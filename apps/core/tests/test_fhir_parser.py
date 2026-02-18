@@ -12,6 +12,7 @@ from apps.core.fhir.parser import (
     _load_ndjson_resources,
     first_display,
     is_abnormal_observation,
+    load_encounters,
     load_patients,
     model_validate_json_dict,
     observation_reference_range_text,
@@ -48,6 +49,16 @@ def test_load_patients_uses_local_sample_dataset() -> None:
 
     assert len(patients) >= 10
     assert all(patient.id for patient in patients)
+
+
+def test_load_encounters_uses_local_sample_dataset() -> None:
+    encounters = load_encounters(_SAMPLE_DATA_PATH)
+
+    assert len(encounters) >= 10
+    assert any(
+        getattr(getattr(encounter, "subject", None), "reference", "")
+        for encounter in encounters
+    )
 
 
 def test_load_ndjson_resources_skips_blank_and_invalid_lines(tmp_path: Path) -> None:
@@ -112,11 +123,14 @@ def test_first_display_prefers_text_then_coding_display_then_code() -> None:
 @pytest.mark.parametrize(
     ("extra", "expected"),
     [
-        ({"valueQuantity": {"value": 56, "unit": "mg/dL", "code": "mg/dL"}}, "56"),
+        (
+            {"valueQuantity": {"value": 56, "unit": "mg/dL", "code": "mg/dL"}},
+            "56.00",
+        ),
         ({"valueCodeableConcept": {"text": "Positive"}}, "Positive"),
         ({"valueCodeableConcept": {"coding": [{"display": "Detected"}]}}, "Detected"),
         ({"valueString": "Trace"}, "Trace"),
-        ({"valueInteger": 7}, "7"),
+        ({"valueInteger": 7}, "7.00"),
         ({"valueBoolean": True}, "True"),
         ({}, ""),
     ],
@@ -157,8 +171,8 @@ def test_observation_reference_range_text_handles_text_and_bounds() -> None:
     without_ranges = _observation()
 
     assert observation_reference_range_text(with_text) == "Normal: 4-8"
-    assert observation_reference_range_text(with_bounds_only) == "3.5-7.5"
-    assert observation_reference_range_text(with_high_only) == "10"
+    assert observation_reference_range_text(with_bounds_only) == "3.50-7.50"
+    assert observation_reference_range_text(with_high_only) == "10.00"
     assert observation_reference_range_text(without_ranges) == ""
 
 

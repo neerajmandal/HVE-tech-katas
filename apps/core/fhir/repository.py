@@ -35,6 +35,9 @@ class LegacyOrmPortalRecordsRepository:
                 follow_up_date__gte=timezone.now().date(),
             ).order_by("follow_up_date")[:3]
         )
+        latest_visit = (
+            DoctorVisit.objects.filter(patient=user).order_by("-visit_date").first()
+        )
 
         return PortalRecordBundle(
             recent_labs=recent_labs,
@@ -44,6 +47,14 @@ class LegacyOrmPortalRecordsRepository:
             recent_visits=recent_visits,
             total_visits=total_visits,
             upcoming_followups=upcoming_followups,
+            latest_vitals_bp=getattr(latest_visit, "vitals_bp", "") or "",
+            latest_vitals_heart_rate=(
+                str(getattr(latest_visit, "vitals_heart_rate", "") or "")
+            ),
+            latest_vitals_temperature=(
+                str(getattr(latest_visit, "vitals_temperature", "") or "")
+            ),
+            latest_vitals_weight=str(getattr(latest_visit, "vitals_weight", "") or ""),
         )
 
     def get_lab_results(
