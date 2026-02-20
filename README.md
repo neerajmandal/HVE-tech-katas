@@ -15,18 +15,23 @@ Currently, patients at our clinic have no direct way to communicate with their a
 
 ## Quick Start
 
+If you are using MacOS, or Windows with WSL there is a setup script to automatically provision your environment:
+
+```bash
+./scripts/setup.sh
+```
+
+Or do so manually:
+
 ```bash
 # 1. Install Python dependencies
 uv sync
 
-# 2. Install Node dependencies for Tailwind CSS
+# 2. Install Node dependencies
 npm install
 
-# 3. Create database tables
-uv run python manage.py migrate
-
-# 4. Start the development server
-uv run ./scripts/start.sh
+# 3. Run setup script
+npm run setup
 ```
 
 ## Access the Application
@@ -61,7 +66,7 @@ This repository is set up for an HVE coding kata (2.5 hours). See [CHALLENGES.md
 
 ## Project Structure
 
-```
+```text
 ├── apps/core/              # Main application
 │   ├── models.py          # Patient, Doctor, Message models
 │   ├── views.py           # Portal views
@@ -79,6 +84,7 @@ This repository is set up for an HVE coding kata (2.5 hours). See [CHALLENGES.md
 ## Need Help?
 
 Check the [CHALLENGES.md](CHALLENGES.md) file for:
+
 - Detailed schedule with breaks
 - Ticket descriptions for each HVE technique
 - FHIR integration guidance
