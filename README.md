@@ -67,18 +67,22 @@ This repository is set up for an HVE coding kata (2.5 hours). See [CHALLENGES.md
 ## Project Structure
 
 ```text
-├── apps/core/              # Main application
-│   ├── models.py          # Patient, Doctor, Message models
-│   ├── views.py           # Portal views
-│   └── management/
-│       └── commands/      # Management commands
+├── apps/
+│   ├── core/              # Main portal application
+│   └── pro/               # Professional/Doctor features
+├── StingrayHealthPortal/  # Django project
 ├── templates/             # Django templates
-│   ├── base.html         # Base template
-│   └── core/             # Core app templates
-├── StingrayHealthPortal/  # Django settings
-├── tech-kata/            # Kata challenge documentation
-│   └── HVE-secure-messaging-kata.md  # Full challenge description
-└── scripts/              # Development scripts
+│   ├── base.html          # Base HTML page template
+│   ├── account/           # Authentication templates
+│   ├── core/              # Core app templates
+│   └── pro/               # Pro app templates
+├── static/                # Static assets (CSS, images)
+├── data/                  # Sample FHIR datasets
+├── docs/                  # Documentation
+│   ├── ADRs/              # Architecture Decision Records
+│   └── BRDs/              # Business Requirements Documents
+├── scripts/               # Development and setup scripts
+└── manage.py              # Django management script
 ```
 
 ## Need Help?

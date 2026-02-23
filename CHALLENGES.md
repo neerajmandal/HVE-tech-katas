@@ -149,7 +149,7 @@ Use GitHub Copilot to explore the codebase and understand its inner workings bef
 ## Task 1.2: Database Design for Messaging
 
 We need to design a database schema to support secure messaging between patients and healthcare providers.
-The full requirements are available in the [messaging-portal.md](../docs/BRDs/messaging-portal.md) BRD file.
+The full requirements are available in the [messaging-portal.md](docs/BRDs/messaging-portal.md) BRD file.
 
 ### Your Task
 
@@ -215,7 +215,7 @@ The team needs to decide how messages will be delivered in real-time. Two option
 
 ### Your Task
 
-Using GitHub Copilot, write an Architecture Decision Record (ADR) following [adr-template.md](../docs/ADRs/adr-template.md) that:
+Using GitHub Copilot, write an Architecture Decision Record (ADR) following [adr-template.md](docs/ADRs/adr-template.md) that:
 
 1. Describes the context and problem
 2. Lists the options considered
@@ -239,7 +239,7 @@ Codex 5.3 or Sonnet 4.6 is recommended.
 
 ### Success Criteria
 
-Functionality described in the [messaging-portal.md](../docs/BRDs/messaging-portal.md) BRD file should be available:
+Functionality described in the [messaging-portal.md](docs/BRDs/messaging-portal.md) BRD file should be available:
 
 - [ ] doctor-patient relationships can be managed via the admin UI
 - [ ] patients can sign-in and message their doctors or view existing message threads
@@ -254,8 +254,9 @@ Our patient health data is currently stored in our custom-designed SQL tables wh
 Recent regulations require that patients be able to obtain their own healthcare data in an interoperable format.
 
 Our healthcare system needs to integrate with FHIR (Fast Healthcare Interoperability Resources) standard for interoperability.
-
 Update the server to populate the *Labs Tests* and *Doctor Visits* tabs using sample FHIR dataset at `data/sample-bulk-fhir-datasets-10-patients`.
+
+A full description of desired functionality is available in [fhir-portal-integration-brd.md](docs/BRDs/fhir-portal-integration-brd.md).
 
 ### Success Criteria
 
@@ -280,6 +281,7 @@ Process changes to consider:
 - Smaller workstreams working in parallel
 
 Tooling to consider:
+
 - HVE Core extension (or else, build agent skills for a RPI workflow)
 - Install MCP servers: Playwright, Serena, GitHub
 - Pre-commit hooks with [prek](https://github.com/j178/prek) to enforce code style and quality
