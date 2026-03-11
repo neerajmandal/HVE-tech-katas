@@ -7,4 +7,4 @@ source "${SCRIPT_PATH}/../scripts/common.sh"
 ###
 ### main execution path
 ###
-./scripts/setup.sh
+node ./scripts/setup.mjs

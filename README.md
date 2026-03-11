@@ -18,7 +18,7 @@ Currently, patients at our clinic have no direct way to communicate with their a
 If you are using MacOS, or Windows with WSL there is a setup script to automatically provision your environment:
 
 ```bash
-./scripts/setup.sh
+node ./scripts/setup.mjs
 ```
 
 Or do so manually:

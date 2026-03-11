@@ -110,7 +110,7 @@ Quick installation:
 A helpful setup script is available to install all dependencies and initialize the Django app:
 
 ```sh
-bash ./scripts/setup.sh
+node ./scripts/setup.mjs
 ```
 
 The webserver can be started by *`Ctrl/Cmd+Shift+P` > Run Task > Django: Run Server*, after which it will be available at [https://localhost:8000](http://localhost:8000).
