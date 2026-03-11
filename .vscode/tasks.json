@@ -4,8 +4,8 @@
     {
       "label": "Django: Run Server",
       "type": "shell",
-      "command": "uv",
-      "args": ["run", "python", "manage.py", "runserver"],
+      "command": "npm",
+      "args": ["run", "dev"],
       "isBackground": true,
       "problemMatcher": {
         "pattern": {
@@ -25,8 +25,8 @@
     {
       "label": "Django: Run Migrations",
       "type": "shell",
-      "command": "uv",
-      "args": ["run", "python", "manage.py", "migrate"],
+      "command": "npm",
+      "args": ["run", "migrate"],
       "problemMatcher": "$python"
     }
   ]

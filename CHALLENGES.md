@@ -18,8 +18,6 @@
 - [Challenges](#challenges)
   - [Challenge Summary](#challenge-summary)
 - [Setup](#setup)
-  - [Prerequisites](#prerequisites)
-  - [Repo setup](#repo-setup)
 - [Block 1: Database Design \& Architecture (20 min)](#block-1-database-design--architecture-20-min)
   - [Task 1.1: Explore the codebase](#task-11-explore-the-codebase)
   - [Task 1.2: Database Design for Messaging](#task-12-database-design-for-messaging)
@@ -89,31 +87,16 @@ Through adding functionality to the portal, you will get a chance to try differe
 
 # Setup
 
-## Prerequisites
-
-- [uv](https://docs.astral.sh/uv/getting-started/installation/)
-- [node.js](https://nodejs.org/en)
-- WSL (if on Windows)
-
-Quick installation:
-
-- MacOS: `brew install node uv`
-- Windows:
-
-  ```pwsh
-  wsl --install
-  winget install -e --id astral-sh.uv OpenJS.NodeJS
-  ```
-
-## Repo setup
 
 A helpful setup script is available to install all dependencies and initialize the Django app:
 
-```sh
-node ./scripts/setup.mjs
+```bash
+npm run setup
 ```
 
-The webserver can be started by *`Ctrl/Cmd+Shift+P` > Run Task > Django: Run Server*, after which it will be available at [https://localhost:8000](http://localhost:8000).
+For detailed installation instructions, see [SETUP.md](SETUP.md).
+
+The web front-end is available at [https://localhost:8000](http://localhost:8000) and can be started by running `npm run dev` in a terminal, or *`Ctrl/Cmd+Shift+P` > Run Task > Django: Run Server* in VS Code.
 
 There are 10 users added with username `patient1` - `patient10` and password `password123`.
 

@@ -1,7 +1,9 @@
 {
   "scripts": {
+    "dev": "uv run python manage.py runserver",
+    "migrate": "uv run python manage.py migrate",
     "setup": "node scripts/setup.mjs",
-    "autofix:py": "uv run python",
+    "autofix:py": "uv run ruff check --fix && npm run format",
     "autofix:ts": "npx @biomejs/biome check --unsafe --write ./ && npm run typecheck",
     "autofix": "npm run autofix:ts && npm run autofix:py",
     "lint": "npx @biomejs/biome check ./ --formatter-enabled=false",
@@ -9,10 +11,12 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^2.2.6",
+    "@tailwindcss/forms": "^0.5.11",
+    "@tailwindcss/typography": "^0.5.19",
+    "@tailwindcss/cli": "^4.1.17",
     "tailwindcss": "^4.1.17"
   },
   "dependencies": {
-    "@tailwindcss/cli": "^4.1.17",
     "flowbite": "^3.1.2"
   }
 }

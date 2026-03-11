@@ -15,24 +15,13 @@ Currently, patients at our clinic have no direct way to communicate with their a
 
 ## Quick Start
 
-If you are using MacOS, or Windows with WSL there is a setup script to automatically provision your environment:
+If you are using MacOS, or Windows with WSL there is a setup script to automatically provision your environment if you have `node` >= 20 and `uv` installed:
 
 ```bash
-node ./scripts/setup.mjs
-```
-
-Or do so manually:
-
-```bash
-# 1. Install Python dependencies
-uv sync
-
-# 2. Install Node dependencies
-npm install
-
-# 3. Run setup script
 npm run setup
 ```
+
+For detailed installation instructions, see [SETUP.md](SETUP.md)
 
 ## Access the Application
 
