@@ -13,6 +13,9 @@ const ZIP_PATH = path.join(DATA_DIR, "10-patients.zip");
 const DATASET_URL =
   "https://github.com/smart-on-fhir/sample-bulk-fhir-datasets/archive/refs/heads/10-patients.zip";
 
+// Ensure all operations run from the workspace root
+process.chdir(WORKSPACE_ROOT);
+
 function printStage(message) {
   console.log(`\n\n*** ${message}`);
 }
@@ -64,8 +67,6 @@ function extractDatasetArchive() {
 }
 
 async function main() {
-  process.chdir(WORKSPACE_ROOT);
-
   printStage("Extracting sample data archive...");
   fs.mkdirSync(DATA_DIR, { recursive: true });
   await downloadDatasetArchive();
