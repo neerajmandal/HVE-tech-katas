@@ -26,7 +26,7 @@ brew install node uv
 ```bash
 git clone <repo-url>
 cd HVE-tech-katas
-bash ./scripts/setup.sh
+node ./scripts/setup.mjs
 ```
 
 ## 3. Verify it runs
