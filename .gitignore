@@ -58,10 +58,6 @@ yarn-error.log*
 lerna-debug.log*
 .pnpm-debug.log*
 
-# Package files
-package-lock.json
-yarn.lock
-
 # Static files (generated)
 static/CACHE/
 static/output.css
