@@ -24,7 +24,6 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("accounts/", include("allauth.urls")),
     path("", include("apps.core.urls")),
-    path("pro/", include("apps.pro.urls")),
 ]
 
 # Serve static files during development

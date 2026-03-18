@@ -12,7 +12,6 @@ This document provides guidance for agents working on the Stingray Health Portal
 
 **Key Apps:**
 - `apps.core`: Main portal features (patient dashboard, lab tests, doctor visits, invoices)
-- `apps.pro`: Professional/premium features
 - Authentication: Django Allauth
 
 To setup the project from scratch, run `npm run setup`.
