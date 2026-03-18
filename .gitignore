@@ -3,6 +3,7 @@ data/
 
 # HVE
 .copilot-tracking/
+.playwright-cli/
 
 # Claude
 .claude/
