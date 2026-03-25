@@ -22,8 +22,11 @@ Quick installation:
   winget install -e astral-sh.uv OpenJS.NodeJS.LTS Git.Git GitHub.CLI
   ```
 
-  > [!TIP]
-  > You may need to restart your terminal in order to make the new software available.
+  > [!WARNING]
+  > While this command runs in PowerShell, the next commands should run in `bash`, such as git bash.
+
+> [!TIP]
+> You may need to restart your terminal or even computer in order to make the new software available.
 
 ## 2. Clone the repo and set up
 
@@ -50,7 +53,7 @@ npm run setup
    The dev container is provided as a fallback for those who have issues with the local environment setup, but dev container setups lack some MCP functionality.
 3. Sign-in to GitHub Copilot if you have not already
 
-## 3. Verify it runs
+## 4. Verify it runs
 
 - Start the server by either:
   - In the terminal, run `npm run dev`
