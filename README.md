@@ -43,7 +43,7 @@ For detailed installation instructions, see [SETUP.md](SETUP.md)
 
 ## Tech Kata Challenge
 
-This repository is set up for an HVE coding kata (2.5 hours). See [CHALLENGES.md](CHALLENGES.md) for the full challenge description.
+This repository is set up for an HVE coding kata (2.5 hours). See [CHALLENGES.md](CHALLENGES.md) for the full challenge description, or [CHALLENGES-v2.md](CHALLENGES-v2.md) for the v2 challenges.
 
 ## Technology Stack
 
@@ -76,7 +76,7 @@ This repository is set up for an HVE coding kata (2.5 hours). See [CHALLENGES.md
 
 ## Need Help?
 
-Check the [CHALLENGES.md](CHALLENGES.md) file for:
+Check the [CHALLENGES-v2.md](CHALLENGES-v2.md) files for:
 
 - Detailed schedule with breaks
 - Ticket descriptions for each HVE technique
