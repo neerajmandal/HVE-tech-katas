@@ -58,7 +58,7 @@
     "extensions": [
       // General editing
       "ms-vsliveshare.vsliveshare",
-      "GitHub.copilot",
+      "GitHub.copilot-chat",
       "EditorConfig.EditorConfig",
       "streetsidesoftware.code-spell-checker",
       // HVE

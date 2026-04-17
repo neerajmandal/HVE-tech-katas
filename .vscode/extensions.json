@@ -1,23 +1,23 @@
 {
   "recommendations": [
-    "ms-vsliveshare.vsliveshare",
-    "GitHub.copilot",
-    "EditorConfig.EditorConfig",
-    "streetsidesoftware.code-spell-checker",
-    "ise-hve-essentials.hve-core",
-    "yzhang.markdown-all-in-one",
-    "DavidAnson.vscode-markdownlint",
-    "bierner.markdown-preview-github-styles",
-    "shd101wyy.markdown-preview-enhanced",
-    "hediet.vscode-drawio",
-    "tomoyukim.vscode-mermaid-editor",
     "bierner.markdown-mermaid",
+    "bierner.markdown-preview-github-styles",
     "bpruitt-goddard.mermaid-markdown-syntax-highlighting",
-    "ms-python.python",
     "charliermarsh.ruff",
-    "ms-toolsai.jupyter",
-    "redhat.vscode-yaml",
+    "DavidAnson.vscode-markdownlint",
+    "EditorConfig.EditorConfig",
+    "GitHub.copilot-chat",
+    "hediet.vscode-drawio",
+    "IronGeek.vscode-env",
+    "ise-hve-essentials.hve-core",
     "mkhl.shfmt",
-    "IronGeek.vscode-env"
+    "ms-python.python",
+    "ms-toolsai.jupyter",
+    "ms-vsliveshare.vsliveshare",
+    "redhat.vscode-yaml",
+    "shd101wyy.markdown-preview-enhanced",
+    "streetsidesoftware.code-spell-checker",
+    "tomoyukim.vscode-mermaid-editor",
+    "yzhang.markdown-all-in-one"
   ]
 }
