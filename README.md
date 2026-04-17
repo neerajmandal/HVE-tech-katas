@@ -15,18 +15,24 @@ Currently, patients at our clinic have no direct way to communicate with their a
 
 ## Quick Start
 
-If you are using MacOS, or Windows with WSL there is a setup script to automatically provision your environment if you have `node` >= 20 and `uv` installed:
+Use of the VS Code devcontainer is recommended as the standard development environment.
+It keeps Django, Playwright, and the visible browser session inside one Linux container and avoids host-specific setup drift.
 
-```bash
-npm run setup
-```
-
-For detailed installation instructions, see [SETUP.md](SETUP.md)
+For detailed installation instructions, see [SETUP.md](SETUP.md).
 
 ## Access the Application
 
-- **App URL**: http://localhost:8000
-- **Admin Panel**: http://localhost:8000/admin
+- **App URL**: <http://localhost:8000>
+- **Admin Panel**: <http://localhost:8000/admin>
+- **Debugging View**: <http://localhost:6080>
+
+### What's The Difference?
+
+The App URL works in the browser in your host machine just like any other website.
+However, the agent can't reach that browser because it's running in your container.
+The [Debugging View](http://localhost:6080) has special support so the agent can use it, but it's a little ugly.
+
+Because each has an advantage (ease of use vs agent use), we've provided both.
 
 ## Test Credentials
 
