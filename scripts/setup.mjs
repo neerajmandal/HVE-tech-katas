@@ -12,6 +12,7 @@ const DATA_DIR = path.join(WORKSPACE_ROOT, "data");
 const ZIP_PATH = path.join(DATA_DIR, "10-patients.zip");
 const DATASET_URL =
   "https://github.com/smart-on-fhir/sample-bulk-fhir-datasets/archive/refs/heads/10-patients.zip";
+const args = new Set(process.argv.slice(2));
 
 // Ensure all operations run from the workspace root
 process.chdir(WORKSPACE_ROOT);
@@ -30,6 +31,34 @@ function run(command) {
     stdio: "inherit",
     shell: true,
   });
+}
+
+function hasCommand(command) {
+  try {
+    execSync(`command -v ${command}`, {
+      cwd: WORKSPACE_ROOT,
+      stdio: "ignore",
+      shell: true,
+    });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function shouldProvisionBrowser() {
+  return args.has("--provision-browser");
+}
+
+function provisionBrowser() {
+  printStage("Provisioning browser prerequisites...");
+
+  if (process.platform === "linux" && hasCommand("sudo")) {
+    run("npm run install:browser:container");
+    return;
+  }
+
+  run("npm run install:browser");
 }
 
 async function downloadDatasetArchive() {
@@ -77,6 +106,10 @@ async function main() {
 
   printStage("Setting up Node environment...");
   run("npm install");
+
+  if (shouldProvisionBrowser()) {
+    provisionBrowser();
+  }
 
   printStage("Setting up Django...");
   printStep("Compiling Tailwind CSS...");
