@@ -47,7 +47,7 @@
   "features": {
     "ghcr.io/devcontainers/features/azure-cli:1": {},
     "ghcr.io/devcontainers/features/desktop-lite:1": {
-      "password": "vscode",
+      "password": "vscode", // pragma: allowlist secret
       "webPort": "6080"
     },
     "ghcr.io/devcontainers/features/node:1": {

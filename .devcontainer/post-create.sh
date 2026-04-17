@@ -34,7 +34,7 @@ function fix_volume_ownerships() {
 function ensure_devcontainer_packages() {
   print_stage "Installing devcontainer system packages"
 
-  if command -v shfmt >/dev/null 2>&1; then
+  if command -v shfmt > /dev/null 2>&1; then
     print_step "shfmt already installed"
     return
   fi
