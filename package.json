@@ -10,7 +10,7 @@
     "build": "npm run build:css && npm run build:static",
     "dev": "uv run python manage.py runserver",
     "install:browser": "npx playwright install chromium",
-    "install:browser:container": "npm run install:browser && sudo env \"PATH=$PATH\" npx playwright install-deps chromium",
+    "install:browser:container": "npm run install:browser && npx playwright install-deps chromium",
     "lint": "npx @biomejs/biome check ./ --formatter-enabled=false",
     "setup": "node scripts/setup.mjs",
     "setup:devcontainer": "node scripts/setup.mjs --provision-browser",

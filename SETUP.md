@@ -40,7 +40,7 @@ cd HVE-tech-katas
 
 1. Open the repository in VS Code.
 1. Reopen it in the existing devcontainer when prompted.
-1. Wait (~20 min❗️) for the one-time post-create provisioning to finish.
+1. Wait (~2-5 min️) for the one-time post-create provisioning to finish.
 This installs Python and Node dependencies, seeds the database, and provisions Chromium for Playwright inside the container.
 1. Start the app in the container:
     ```bash

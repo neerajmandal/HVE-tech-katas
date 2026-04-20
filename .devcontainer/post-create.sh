@@ -12,8 +12,8 @@ function fix_volume_ownership() {
   volume_path="$1"
 
   if [ ! -d "$volume_path" ]; then
-    echo "Creating missing volume path $volume_path"
-    sudo mkdir -p "$volume_path"
+    echo "ERROR: the volume path provided '$volume_path' does not exist."
+    exit 1
   fi
 
   echo "Setting volume ownership for $volume_path"
