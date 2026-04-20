@@ -43,18 +43,15 @@ cd HVE-tech-katas
 1. Wait (~20 min❗️) for the one-time post-create provisioning to finish.
 This installs Python and Node dependencies, seeds the database, and provisions Chromium for Playwright inside the container.
 1. Start the app in the container:
-  ```bash
-  npm run dev
-  ```
+    ```bash
+    npm run dev
+    ```
 1. Open forwarded port 6080 from VS Code, or browse to <http://localhost:6080> if port forwarding is mapped locally.
 1. When the noVNC viewer prompts for a password, enter `vscode`.
 1. Launch the in-container browser from a separate terminal in the devcontainer:
-
-  ```bash
-  npm run browser:open
-  ```
-
-1. Use this optional command when you want Playwright to record actions and selectors while the browser stays visible on the container desktop:
+    ```bash
+    npm run browser:open
+    ```
 
 ## 3. Verify it runs
 
