@@ -9,23 +9,6 @@ The workshop will take about 3 hours to complete. Before starting, please ensure
 - [Visual Studio Code](https://code.visualstudio.com/)
 - [Dev Containers extension](https://code.visualstudio.com/docs/devcontainers/containers)
 
-Quick installation:
-
-* macOS:
-
-[VSCode](https://code.visualstudio.com/download)
-[Docker Desktop](https://docs.docker.com/desktop/setup/install/mac-install/)
-
-  ```bash
-  brew install git
-  ```
-
-* Windows:
-
-  ```pwsh
-  winget install -e Git.Git Microsoft.VisualStudioCode Docker.DockerDesktop
-  ```
-
   > [!TIP]
   > You may need to restart your terminal in order to make the new software available.
 
@@ -43,12 +26,15 @@ cd HVE-tech-katas
 1. Wait (~2-5 min️) for the one-time post-create provisioning to finish.
 This installs Python and Node dependencies, seeds the database, and provisions Chromium for Playwright inside the container.
 1. Start the app in the container:
+
     ```bash
     npm run dev
     ```
+
 1. Open forwarded port 6080 from VS Code, or browse to <http://localhost:6080> if port forwarding is mapped locally.
 1. When the noVNC viewer prompts for a password, enter `vscode`.
 1. Launch the in-container browser from a separate terminal in the devcontainer:
+
     ```bash
     npm run browser:open
     ```

@@ -23,7 +23,7 @@ The supported workflow keeps Django, Playwright, and Chromium inside the contain
 
 ## Running the Application
 
-Start the Development Server with `npm run dev`, server runs at **[http://localhost:8000](http://localhost:8000)** with hot-reload enabled.
+Start the Development Server with `npm run dev`, server runs at **<http://localhost:8000>** with hot-reload enabled.
 
 Check listening ports before attempting to launch the server yourself in case the user already has it running.
 
@@ -44,7 +44,7 @@ The `seed_dummy_data` management command creates 20 test users (run automaticall
 
 ### Admin Access
 
-The Django admin panel is available at **[http://localhost:8000/admin/](http://localhost:8000/admin/)**. Admin credentials can be created with:
+The Django admin panel is available at **<http://localhost:8000/admin/>**. Admin credentials can be created with:
 
 ```bash
 uv run python manage.py createsuperuser
@@ -229,11 +229,11 @@ To start fresh remove `db.sqlite3` and re-run setup.
 - Django settings: `StingrayHealthPortal/settings.py`
 - Core models: `apps/core/models.py`
 
-**Browsers**
+**Browsers:**
 
 - Do not use the VSCode integrated browser.
-- If the user wants to manipulate the browser directly, default to references to the forwarded port http://localhost:8000.
-- If the user wants the agent to manipulate the browser, refer the user to Chromium instance at http://localhost:6080.
+- If the user wants to manipulate the browser directly, default to references to the forwarded port <http://localhost:8000>.
+- If the user wants the agent to manipulate the browser, leverage the Chromium instance at <http://localhost:6080>.
 
 ## Landing the Plane (Session Completion)
 
