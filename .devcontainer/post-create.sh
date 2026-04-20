@@ -31,25 +31,11 @@ function fix_volume_ownerships() {
   fix_volume_ownership "/workspace/node_modules"
 }
 
-function ensure_devcontainer_packages() {
-  print_stage "Installing devcontainer system packages"
-
-  if command -v shfmt > /dev/null 2>&1; then
-    print_step "shfmt already installed"
-    return
-  fi
-
-  print_step "Installing shfmt"
-  sudo apt-get update
-  sudo apt-get install -y shfmt
-}
-
 ###
 ### main execution path
 ###
 
 fix_volume_ownerships
-ensure_devcontainer_packages
 
 print_stage "Running one-time devcontainer provisioning"
 cd "$WORKSPACE_ROOT"
