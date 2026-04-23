@@ -89,3 +89,6 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.temp
+
+# TS compilation files
+*.tsbuildinfo

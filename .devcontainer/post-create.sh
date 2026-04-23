@@ -17,7 +17,7 @@ function fix_volume_ownership() {
   fi
 
   echo "Setting volume ownership for $volume_path"
-  sudo chown $USER:$USER "$volume_path"
+  sudo chown -R "$USER:$USER" "$volume_path"
 }
 
 function fix_volume_ownerships() {
@@ -25,6 +25,8 @@ function fix_volume_ownerships() {
   fix_volume_ownership "/home/$USER/.azure"
   fix_volume_ownership "/home/$USER/.local"
   fix_volume_ownership "/home/$USER/.config"
+  fix_volume_ownership "/home/$USER/.cache"
+  fix_volume_ownership "/home/$USER/.cache/ms-playwright"
   fix_volume_ownership "/workspace/.venv"
   fix_volume_ownership "/workspace/node_modules"
 }
@@ -34,3 +36,7 @@ function fix_volume_ownerships() {
 ###
 
 fix_volume_ownerships
+
+print_stage "Running one-time devcontainer provisioning"
+cd "$WORKSPACE_ROOT"
+npm run setup:devcontainer

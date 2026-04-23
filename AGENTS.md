@@ -5,20 +5,25 @@ This document provides guidance for agents working on the Stingray Health Portal
 ## Project Overview
 
 **Tech Stack:**
+
 - Backend: Django 5.2 + Python 3.11+
 - Frontend: Tailwind CSS 4.1 + Flowbite components
 - Database: SQLite (development)
 - Package Managers: uv (Python), npm (Node.js)
 
 **Key Apps:**
+
 - `apps.core`: Main portal features (patient dashboard, lab tests, doctor visits, invoices)
 - Authentication: Django Allauth
 
-To setup the project from scratch, run `npm run setup`.
+To set up the project from scratch, run `npm run setup`.
+
+When browser debugging or visual validation is needed on macOS or Windows, prefer the existing devcontainer.
+The supported workflow keeps Django, Playwright, and Chromium inside the container and exposes the visible desktop to the host on port 6080.
 
 ## Running the Application
 
-Start the Development Server with `npm run dev`, server runs at **http://localhost:8000** with hot-reload enabled.
+Start the Development Server with `npm run dev`, server runs at **<http://localhost:8000>** with hot-reload enabled.
 
 Check listening ports before attempting to launch the server yourself in case the user already has it running.
 
@@ -39,7 +44,7 @@ The `seed_dummy_data` management command creates 20 test users (run automaticall
 
 ### Admin Access
 
-The Django admin panel is available at **http://localhost:8000/admin/**. Admin credentials can be created with:
+The Django admin panel is available at **<http://localhost:8000/admin/>**. Admin credentials can be created with:
 
 ```bash
 uv run python manage.py createsuperuser
@@ -49,7 +54,7 @@ uv run python manage.py createsuperuser
 
 ### URL Routing
 
-```
+```text
 http://localhost:8000/                    # Home page
 http://localhost:8000/portal/             # Patient dashboard (requires login)
 http://localhost:8000/portal/lab-tests/   # Lab tests (requires login)
@@ -62,18 +67,18 @@ http://localhost:8000/admin/              # Django admin
 
 ### Key Files and Directories
 
-```
+```text
 StingrayHealthPortal/          # Django project settings
-├── settings.py               # Django configuration
-├── urls.py                   # Main URL routing
-└── wsgi.py / asgi.py        # Application entry points
+├── settings.py                # Django configuration
+├── urls.py                    # Main URL routing
+└── wsgi.py / asgi.py          # Application entry points
 
 apps/                          # Django applications
 ├── core/                      # Main portal app
-│   ├── models.py            # application models
-│   ├── views.py             # View functions for portal pages
-│   ├── urls.py              # Core app URL routing
-│   └── migrations/          # Database migrations
+│   ├── models.py              # Application models
+│   ├── views.py               # View functions for portal pages
+│   ├── urls.py                # Core app URL routing
+│   └── migrations/            # Database migrations
 templates/                     # HTML templates
 static/                        # Static assets
 ```
@@ -89,9 +94,18 @@ Before running Playwright tests:
 1. **Ensure server is running:**
 2. **Create a test user** (if not already seeded)
 3. **Install Playwright** (if not already present):
-   ```bash
-   npm install --save-dev @playwright/test
-   ```
+
+```bash
+npm run install:browser
+```
+
+In the devcontainer, one-time provisioning already installs Chromium and its Linux dependencies.
+Use these commands from an in-container terminal when you need a visible browser session:
+
+```bash
+npm run browser:open
+npm run browser:codegen
+```
 
 ### Example Playwright Test
 
@@ -137,12 +151,20 @@ test.describe('Patient Portal', () => {
 - **Headings:** `h1`, `h2`, `h3` for page titles
 - **Tailwind/Flowbite components:** Use data attributes or class-based selectors
 
-### Playwright validation best practices
+### Playwright Validation Best Practices
 
 - Visually validate in the browser, not just console logs. Render bugs can hide in executed code paths.
+- In the devcontainer, advise the user to check the browser through the noVNC desktop on port 6080 so actions remain observable while Chromium stays inside the container.
 - Use Playwright to screenshot pages and compare against expectations.
-- Check the browser console for JavaScript errors: Open DevTools → Console tab.
-- For debugging, you can query the Django shell: `uv run python manage.py shell`
+- Check the browser console for JavaScript errors by opening DevTools from the container browser session.
+- For debugging, you can query the Django shell with `uv run python manage.py shell`.
+
+### Browser Debugging Guardrails
+
+- Treat port 6080 as a local development surface. Do not intentionally expose it outside trusted localhost forwarding.
+- On Windows, prefer Docker Desktop with WSL2.
+- On macOS and Windows, expect extra CPU and memory overhead when Fluxbox and headed Chromium are active in the container.
+- Close headed browser windows when you finish validation so they do not interfere with later runs.
 
 ## Common Development Tasks
 
@@ -181,6 +203,7 @@ To start fresh remove `db.sqlite3` and re-run setup.
 ## General Guidelines
 
 **Code Quality & Practices:**
+
 - Do not add untracked files unless you created them as part of the feature/fix.
 - Avoid unnecessary comments like "foo now handles bar" or "foo now lives in bar"—the git history provides this context.
 - When adding debug prints, prefix them with a `// Debug:` comment for easy identification and removal later.
@@ -188,25 +211,36 @@ To start fresh remove `db.sqlite3` and re-run setup.
 - When refactoring or removing code, grep for all remaining references to ensure clean removal.
 
 **Django Migrations:**
+
 - Always create migrations when models change: `uv run python manage.py makemigrations`
 - Review migration files before applying them.
 - Test migrations in a fresh database: `rm db.sqlite3 && npm run setup`
 
 **Static Files:**
+
 - Static files must be collected after CSS changes: `npm run collectstatic`
 - Do not manually edit `static/output.css`—it's generated from `static/input.css` by Tailwind.
+- Lists should start with a hyphen, not an asterisk.
 
 **Important File Locations:**
+
 - Test users: Created by `seed_dummy_data` command (patient1–patient20, password: password123)
 - Sample FHIR data: `data/sample-bulk-fhir-datasets-10-patients/`
 - Django settings: `StingrayHealthPortal/settings.py`
 - Core models: `apps/core/models.py`
+
+**Browsers:**
+
+- Do not use the VSCode integrated browser.
+- If the user wants to manipulate the browser directly, default to references to the forwarded port <http://localhost:8000>.
+- If the user wants the agent to manipulate the browser, leverage the Chromium instance at <http://localhost:6080>.
 
 ## Landing the Plane (Session Completion)
 
 When finishing work, complete these steps in order. **Work is NOT done until all steps are complete.**
 
 1. **Run quality gates:**
+
    ```bash
    npm run lint
    npm run typecheck
@@ -223,14 +257,17 @@ When finishing work, complete these steps in order. **Work is NOT done until all
    - Verify migrations apply cleanly: `rm db.sqlite3 && uv run python manage.py migrate`
 
 4. **Commit your work** (AFTER testing):**
+
    ```bash
    git add <files>
    git commit -m "feat(component): description of changes"
    ```
+
    Use conventional commit format: `feat(...)`, `fix(...)`, `refactor(...)`, etc.
    Example: `feat(messaging): add patient-to-doctor message threading`
 
 5. **Push to remote:**
+
    ```bash
    git pull --rebase
    git push

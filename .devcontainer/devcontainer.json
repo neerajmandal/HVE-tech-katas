@@ -24,6 +24,12 @@
       "source": "${devcontainerId}-userconfig",
       "target": "/home/vscode/.config"
     },
+    // Persist Playwright browser binaries across container restarts
+    {
+      "type": "volume",
+      "source": "${devcontainerId}-playwrightcache",
+      "target": "/home/vscode/.cache/ms-playwright"
+    },
     // Put Python environment into volume for better performance
     {
       "type": "volume",
@@ -34,12 +40,17 @@
     {
       "type": "volume",
       "source": "${devcontainerId}-nodemodules",
-      "target": "/workspace/src/web/node_modules"
+      "target": "/workspace/node_modules"
     }
   ],
 
   "features": {
     "ghcr.io/devcontainers/features/azure-cli:1": {},
+    "ghcr.io/devcontainers-extra/features/shfmt:1": {},
+    "ghcr.io/devcontainers/features/desktop-lite:1": {
+      "password": "password123", // pragma: allowlist secret
+      "webPort": "6080"
+    },
     "ghcr.io/devcontainers/features/node:1": {
       "version": "22.19.0"
     },
@@ -84,7 +95,19 @@
     ]
   },
 
-  "forwardPorts": [8000, 5000],
+  "forwardPorts": [8000, 5000, 6080],
+  "portsAttributes": {
+    "5000": {
+      "label": "Secondary app port"
+    },
+    "6080": {
+      "label": "Container desktop"
+    },
+    "8000": {
+      "label": "Django app"
+    }
+  },
+  "runArgs": ["--shm-size=1g"],
 
   "postCreateCommand": "/bin/bash .devcontainer/post-create.sh",
   "postStartCommand": "/bin/bash .devcontainer/post-start.sh"
