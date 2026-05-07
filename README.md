@@ -27,6 +27,32 @@ Then activate the virtual environment:
 - Windows (PowerShell): `.venv\Scripts\Activate.ps1`
 - Windows (Git Bash): `source .venv/Scripts/activate`
 
+### Manual setup (in the virtual environment)
+
+If you prefer to run the steps yourself, run them in this order **after** activating the virtual environment:
+
+```bash
+# 1. Create & activate the virtual environment (skip if already done)
+python -m venv .venv
+source .venv/Scripts/activate          # Windows Git Bash
+# source .venv/bin/activate            # macOS / Linux / WSL
+# .venv\Scripts\Activate.ps1           # Windows PowerShell
+
+# 2. Install dependencies
+pip install -r requirements.txt
+pip install -r requirements-dev.txt
+npm install
+
+# 3. Apply database migrations
+python manage.py migrate
+
+# 4. Seed dummy data (test patients + sample FHIR data)
+python manage.py seed_dummy_data
+
+# 5. Start the dev server
+python manage.py runserver
+```
+
 For detailed installation instructions, see [SETUP.md](SETUP.md)
 
 ## Access the Application
