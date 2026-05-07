@@ -41,7 +41,6 @@ source .venv/Scripts/activate          # Windows Git Bash
 # 2. Install dependencies
 pip install -r requirements.txt
 pip install -r requirements-dev.txt
-npm install
 
 # 3. Apply database migrations
 python manage.py migrate
