@@ -7,13 +7,6 @@ requires-python = ">=3.11"
 # Runtime dependencies are pinned in requirements.txt.
 # Development dependencies are pinned in requirements-dev.txt.
 
-[tool.ruff]
-line-length = 88
-
-[tool.ruff.lint]
-select = ["E", "F", "I", "UP"]
-ignore = ["E501"]
-
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "StingrayHealthPortal.settings"
 python_files = ["test_*.py", "*_test.py"]

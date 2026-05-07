@@ -99,14 +99,7 @@ async function main() {
 
   printStage("Setting up Python environment...");
   if (fs.existsSync(VENV_PYTHON)) {
-    // Existing venvs created without pip (e.g. by uv) need to be recreated.
-    try {
-      execSync(`${quote(VENV_PYTHON)} -m pip --version`, { stdio: "ignore", shell: true });
-      printStep("Virtual environment already exists, reusing it.");
-    } catch {
-      printStep("Existing virtual environment is missing pip; recreating it...");
-      fs.rmSync(VENV_DIR, { recursive: true, force: true });
-    }
+    printStep("Virtual environment already exists, reusing it.");
   }
   if (!fs.existsSync(VENV_PYTHON)) {
     const systemPython = pickSystemPython();
@@ -124,11 +117,6 @@ async function main() {
   run("npm install");
 
   printStage("Setting up Django...");
-  printStep("Compiling Tailwind CSS...");
-  run(
-    "npx @tailwindcss/cli -i static/input.css -o static/output.css --config tailwind.config.js",
-  );
-
   printStep("Collecting static files...");
   run(`${quote(VENV_PYTHON)} manage.py collectstatic --noinput`);
 

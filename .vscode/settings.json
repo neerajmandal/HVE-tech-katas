@@ -9,10 +9,6 @@
     "source.fixAll.biome": "explicit"
   },
   "editor.formatOnSave": true,
-  // Use Ruff as the default formatter for Python files
-  "[python]": {
-    "editor.defaultFormatter": "charliermarsh.ruff"
-  },
   // Use Biome as the default formatter for web and JSON files
   "[typescript]": {
     "editor.defaultFormatter": "biomejs.biome"
@@ -74,7 +70,6 @@
     // Allow package manager commands but not install/uninstall commands
     "npx biome": true,
     "npx tsc --noEmit": true,
-    "ruff": true,
     "pytest": true,
     "python manage.py": true,
     // Bead management
