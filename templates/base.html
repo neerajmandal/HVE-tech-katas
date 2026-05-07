@@ -9,14 +9,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Stingray Health Portal</title>
 
-  {% load compress %}
   {% load static %}
 
   <script src="https://cdn.tailwindcss.com"></script>
-
-  {% compress css %}
-  <link rel="stylesheet" href="{% static 'output.css' %}">
-  {% endcompress %}
 
   {% block extra_head %}{% endblock extra_head %}
 
