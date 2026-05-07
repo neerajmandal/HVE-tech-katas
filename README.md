@@ -15,11 +15,17 @@ Currently, patients at our clinic have no direct way to communicate with their a
 
 ## Quick Start
 
-If you are using MacOS, or Windows with WSL there is a setup script to automatically provision your environment if you have `node` >= 20 and `uv` installed:
+If you have `node` >= 20 and `python` >= 3.11 installed, the setup script will create a virtual environment and install everything for you:
 
 ```bash
 npm run setup
 ```
+
+Then activate the virtual environment:
+
+- macOS / Linux / WSL: `source .venv/bin/activate`
+- Windows (PowerShell): `.venv\Scripts\Activate.ps1`
+- Windows (Git Bash): `source .venv/Scripts/activate`
 
 For detailed installation instructions, see [SETUP.md](SETUP.md)
 

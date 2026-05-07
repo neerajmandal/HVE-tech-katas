@@ -8,7 +8,13 @@ This document provides guidance for agents working on the Stingray Health Portal
 - Backend: Django 5.2 + Python 3.11+
 - Frontend: Tailwind CSS 4.1 + Flowbite components
 - Database: SQLite (development)
-- Package Managers: uv (Python), npm (Node.js)
+- Package Managers: pip + venv (Python), npm (Node.js)
+
+> **Note:** All Python commands below assume the project virtual environment (`.venv`) is activated. Activate it with:
+>
+> - macOS / Linux / WSL: `source .venv/bin/activate`
+> - Windows (PowerShell): `.venv\Scripts\Activate.ps1`
+> - Windows (Git Bash): `source .venv/Scripts/activate`
 
 **Key Apps:**
 - `apps.core`: Main portal features (patient dashboard, lab tests, doctor visits, invoices)
@@ -24,7 +30,7 @@ Check listening ports before attempting to launch the server yourself in case th
 
 ### Run Migrations
 
-After editing database migrations, run migrations with `uv run python manage.py migrate`.
+After editing database migrations, run migrations with `python manage.py migrate` (or `npm run migrate`).
 
 This runs the complete setup: downloads sample data, installs dependencies, compiles Tailwind, applies migrations, and seeds dummy data.
 
@@ -42,7 +48,7 @@ The `seed_dummy_data` management command creates 20 test users (run automaticall
 The Django admin panel is available at **http://localhost:8000/admin/**. Admin credentials can be created with:
 
 ```bash
-uv run python manage.py createsuperuser
+python manage.py createsuperuser
 ```
 
 ## Application Structure
@@ -142,7 +148,7 @@ test.describe('Patient Portal', () => {
 - Visually validate in the browser, not just console logs. Render bugs can hide in executed code paths.
 - Use Playwright to screenshot pages and compare against expectations.
 - Check the browser console for JavaScript errors: Open DevTools → Console tab.
-- For debugging, you can query the Django shell: `uv run python manage.py shell`
+- For debugging, you can query the Django shell: `python manage.py shell`
 
 ## Common Development Tasks
 
@@ -153,10 +159,10 @@ npm run autofix:py # Auto-fix Python code
 npm run autofix:ts # Auto-fix Typescript code
 npm run autofix # Auto-fix all code
 npm run build # Build Tailwind CSS and collect static assets
-uv run python manage.py makemigrations # Create a new migration
-uv run python manage.py migrate # Apply migrations
-uv run python manage.py showmigrations # Show migration status
-uv run python manage.py seed_dummy_data # Seed sample FHIR data and dummy patients
+python manage.py makemigrations # Create a new migration
+python manage.py migrate # Apply migrations
+python manage.py showmigrations # Show migration status
+python manage.py seed_dummy_data # Seed sample FHIR data and dummy patients
 ```
 
 ## Debugging Tips
@@ -167,7 +173,7 @@ To inspect the SQLite database:
 
 ```bash
 # Open Django shell
-uv run python manage.py shell
+python manage.py shell
 
 # Query users
 from django.contrib.auth.models import User
@@ -188,7 +194,7 @@ To start fresh remove `db.sqlite3` and re-run setup.
 - When refactoring or removing code, grep for all remaining references to ensure clean removal.
 
 **Django Migrations:**
-- Always create migrations when models change: `uv run python manage.py makemigrations`
+- Always create migrations when models change: `python manage.py makemigrations`
 - Review migration files before applying them.
 - Test migrations in a fresh database: `rm db.sqlite3 && npm run setup`
 
@@ -220,7 +226,7 @@ When finishing work, complete these steps in order. **Work is NOT done until all
 
 3. **Database state:**
    - Ensure all migrations are created and committed
-   - Verify migrations apply cleanly: `rm db.sqlite3 && uv run python manage.py migrate`
+   - Verify migrations apply cleanly: `rm db.sqlite3 && python manage.py migrate`
 
 4. **Commit your work** (AFTER testing):**
    ```bash

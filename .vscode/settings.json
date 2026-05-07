@@ -74,9 +74,9 @@
     // Allow package manager commands but not install/uninstall commands
     "npx biome": true,
     "npx tsc --noEmit": true,
-    "uv run ruff": true,
-    "uv run pytest": true,
-    "uv run python manage.py": true,
+    "ruff": true,
+    "pytest": true,
+    "python manage.py": true,
     // Bead management
     "bd": true,
     "npx bd": true

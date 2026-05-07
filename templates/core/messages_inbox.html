@@ -1,0 +1,73 @@
+{% extends "portal_base.html" %}
+
+{% block page_title %}Messages{% endblock %}
+{% block page_subtitle %}Your secure messages with care team{% endblock %}
+
+{% block content %}
+<div class="mb-6 flex items-center justify-between">
+    <div>
+        <h3 class="text-lg font-semibold text-gray-800">Inbox</h3>
+    </div>
+    <a href="{% url 'message_compose' %}"
+       class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-teal-600 rounded-lg hover:bg-teal-700 transition-colors">
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+        </svg>
+        New Message
+    </a>
+</div>
+
+<div class="bg-white rounded-xl shadow-sm border border-gray-100">
+    <div class="divide-y divide-gray-100">
+        {% for item in thread_data %}
+        <a href="{% url 'message_thread' thread_id=item.thread.pk %}"
+           class="block px-5 py-4 hover:bg-gray-50 transition-colors {% if item.unread_count > 0 %}bg-teal-50/40{% endif %}">
+            <div class="flex items-start justify-between">
+                <div class="flex items-start space-x-3 min-w-0">
+                    {% if item.thread.patient == request.user %}
+                        {% with other=item.thread.provider %}
+                        <img src="https://ui-avatars.com/api/?name={{ other.first_name }}+{{ other.last_name }}&background=0d9488&color=fff&size=80&bold=true"
+                             alt="{{ other.get_full_name }}"
+                             class="w-10 h-10 rounded-full flex-shrink-0" />
+                        <div class="min-w-0">
+                            <p class="text-sm font-semibold text-gray-800 truncate">{{ other.get_full_name }}</p>
+                        {% endwith %}
+                    {% else %}
+                        {% with other=item.thread.patient %}
+                        <img src="https://ui-avatars.com/api/?name={{ other.first_name }}+{{ other.last_name }}&background=6366f1&color=fff&size=80&bold=true"
+                             alt="{{ other.get_full_name }}"
+                             class="w-10 h-10 rounded-full flex-shrink-0" />
+                        <div class="min-w-0">
+                            <p class="text-sm font-semibold text-gray-800 truncate">{{ other.get_full_name }}</p>
+                        {% endwith %}
+                    {% endif %}
+                            <p class="text-sm {% if item.unread_count > 0 %}font-semibold text-gray-900{% else %}text-gray-600{% endif %} truncate">
+                                {{ item.thread.subject }}
+                            </p>
+                            {% if item.last_message %}
+                            <p class="text-xs text-gray-400 truncate mt-0.5">{{ item.last_message.content|truncatechars:80 }}</p>
+                            {% endif %}
+                        </div>
+                </div>
+                <div class="flex flex-col items-end flex-shrink-0 ml-4">
+                    {% if item.last_message %}
+                    <span class="text-xs text-gray-400">{{ item.last_message.created_at|timesince }} ago</span>
+                    {% endif %}
+                    {% if item.unread_count > 0 %}
+                    <span class="mt-1 inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-teal-600 rounded-full">{{ item.unread_count }}</span>
+                    {% endif %}
+                </div>
+            </div>
+        </a>
+        {% empty %}
+        <div class="px-5 py-12 text-center">
+            <svg class="mx-auto w-12 h-12 text-gray-300 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path>
+            </svg>
+            <p class="text-sm text-gray-400">No messages yet</p>
+            <a href="{% url 'message_compose' %}" class="mt-2 inline-block text-sm text-teal-600 hover:text-teal-700 font-medium">Send your first message</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

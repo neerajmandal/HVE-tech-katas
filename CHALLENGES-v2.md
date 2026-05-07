@@ -192,7 +192,7 @@ Use the `task-implementor` agent to build the messaging portal:
 1. Execute the plan from Task 2.2
 2. Monitor the implementation for deviations from the plan
 3. Intervene when the agent makes choices that conflict with the BRD or existing patterns
-4. Run migrations after model changes: `uv run python manage.py makemigrations && uv run python manage.py migrate`
+4. Run migrations after model changes: `python manage.py makemigrations && python manage.py migrate`
 
 ### Task 2.4: Quality Validation
 
