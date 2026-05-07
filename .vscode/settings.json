@@ -28,7 +28,13 @@
   "[jsonc]": {
     "editor.defaultFormatter": "biomejs.biome"
   },
-  // Auto-approve certain URLs and terminal commands for Copilot Chat
+  // Disable the Ruff extension in this workspace
+  "ruff.enable": false,
+  // Don't use uv as the Python package manager / installer
+  "python.packageManager": "pip",
+  "python.experiments.optInto": [],
+  "python.experiments.optOutFrom": ["pythonTerminalEnvVarActivation", "pythonUseUv"],
+  "python.useUv": false,
   "chat.tools.urls.autoApprove": {
     "https://pypi.org": true,
     "https://*.readthedocs.org": true,
