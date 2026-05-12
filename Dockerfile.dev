@@ -1,0 +1,54 @@
+# syntax=docker/dockerfile:1.7
+#
+# Simple development Dockerfile for the Stingray Health Portal.
+# Uses the existing `npm run setup` script (installs deps, builds CSS,
+# runs migrations, seeds dummy data) and then starts the dev server
+# via `npm run dev`.
+#
+# Build:  docker build -f Dockerfile.dev -t stingray-dev .
+# Run:    docker run --rm -p 8000:8000 stingray-dev
+#
+# Open http://localhost:8000 (login: patient1 / password123)
+
+FROM python:3.12-slim-bookworm
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    DEBIAN_FRONTEND=noninteractive \
+    NODE_MAJOR=22
+
+WORKDIR /app
+
+# System deps: curl/ca-certs/git for tooling, unzip for the FHIR sample
+# dataset extraction, libpq for psycopg2, build essentials for any C
+# extensions, and Node.js (used by setup.mjs and Tailwind).
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl ca-certificates gnupg git unzip \
+    build-essential gcc python3-dev \
+    libpq5 libpq-dev \
+    && curl -fsSL https://deb.nodesource.com/setup_${NODE_MAJOR}.x | bash - \
+    && apt-get install -y --no-install-recommends nodejs \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install uv (fast Python package manager) from official image
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+
+# Copy the entire project. We deliberately copy everything (rather than
+# layer-caching deps) to keep this Dockerfile dead-simple and match the
+# "just run the setup script" goal.
+COPY . .
+
+# Run the existing one-shot setup script:
+#   - downloads + extracts the sample FHIR dataset
+#   - `uv sync` (Python deps)
+#   - `npm install` (Node deps)
+#   - compiles Tailwind CSS
+#   - collects static files
+#   - applies migrations
+#   - seeds 20 dummy patients (patient1..patient20 / password123)
+RUN npm run setup
+
+EXPOSE 8000
+
+# Bind to 0.0.0.0 so the server is reachable from outside the container.
+CMD ["uv", "run", "python", "manage.py", "runserver", "0.0.0.0:8000"]
