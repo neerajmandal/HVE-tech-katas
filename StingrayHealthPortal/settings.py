@@ -147,7 +147,7 @@ STATICFILES_FINDERS = [
 
 COMPRESS_ROOT = BASE_DIR / "static"
 COMPRESS_ENABLED = True
-COMPRESS_OFFLINE = not DEBUG
+COMPRESS_OFFLINE = False
 
 # Serve static files via WhiteNoise in production (with hashing + gzip/brotli).
 STORAGES = {

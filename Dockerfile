@@ -38,10 +38,9 @@ COPY . .
 # Copy built CSS from frontend stage
 COPY --from=frontend /app/static/output.css ./static/output.css
 
-# Pre-compress assets (django-compressor offline mode) then collect static files
+# Collect static files (WhiteNoise serves them at runtime)
 ENV DEBUG=False
-RUN python manage.py compress --force \
-    && python manage.py collectstatic --noinput
+RUN python manage.py collectstatic --noinput
 
 # Make runtime script executable
 RUN chmod +x start.sh
