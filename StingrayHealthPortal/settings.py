@@ -31,6 +31,16 @@ DEBUG = os.environ.get("DEBUG", "True").lower() in ("true", "1", "yes")
 
 ALLOWED_HOSTS = ["hve-tech-katas.onrender.com", "localhost", "127.0.0.1"]
 
+# CSRF: trust the Render HTTPS origin so POSTs (login, etc.) pass CSRF checks.
+CSRF_TRUSTED_ORIGINS = [
+    "https://hve-tech-katas.onrender.com",
+]
+
+# Render terminates TLS at its proxy and forwards via X-Forwarded-Proto.
+# Without this, Django sees the request as http and rejects the secure-origin
+# CSRF token from the HTTPS form.
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
 
 # Application definition
 
