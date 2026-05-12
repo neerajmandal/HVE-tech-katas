@@ -149,13 +149,13 @@ COMPRESS_ROOT = BASE_DIR / "static"
 COMPRESS_ENABLED = True
 COMPRESS_OFFLINE = False
 
-# Serve static files via WhiteNoise in production (with hashing + gzip/brotli).
+# Serve static files via WhiteNoise in production (with gzip/brotli).
 STORAGES = {
     "default": {
         "BACKEND": "django.core.files.storage.FileSystemStorage",
     },
     "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
     },
 }
 
