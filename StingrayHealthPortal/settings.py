@@ -52,6 +52,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -147,6 +148,16 @@ STATICFILES_FINDERS = [
 COMPRESS_ROOT = BASE_DIR / "static"
 COMPRESS_ENABLED = True
 COMPRESS_OFFLINE = not DEBUG
+
+# Serve static files via WhiteNoise in production (with hashing + gzip/brotli).
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 # Tailwind CSS settings
 TAILWIND_APP_NAME = "theme"
