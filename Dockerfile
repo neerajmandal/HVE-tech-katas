@@ -38,8 +38,10 @@ COPY . .
 # Copy built CSS from frontend stage
 COPY --from=frontend /app/static/output.css ./static/output.css
 
-# Collect static files
-RUN python manage.py collectstatic --noinput
+# Pre-compress assets (django-compressor offline mode) then collect static files
+ENV DEBUG=False
+RUN python manage.py compress --force \
+    && python manage.py collectstatic --noinput
 
 # Make runtime script executable
 RUN chmod +x start.sh

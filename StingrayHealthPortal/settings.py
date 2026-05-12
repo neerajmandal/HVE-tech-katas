@@ -21,10 +21,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-+dl0!_hj6px(7bw%8-angza+nm5)eb!^+j0x__%v2u)roe!4t+"
+SECRET_KEY = os.environ.get(
+    "SECRET_KEY",
+    "django-insecure-+dl0!_hj6px(7bw%8-angza+nm5)eb!^+j0x__%v2u)roe!4t+",
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DEBUG", "True").lower() in ("true", "1", "yes")
 
 ALLOWED_HOSTS = ["hve-tech-katas.onrender.com", "localhost", "127.0.0.1"]
 
@@ -81,11 +84,14 @@ WSGI_APPLICATION = "StingrayHealthPortal.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+import dj_database_url
+
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
+    "default": dj_database_url.config(
+        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
+        conn_max_age=600,
+        ssl_require=False,
+    )
 }
 
 
@@ -140,6 +146,7 @@ STATICFILES_FINDERS = [
 
 COMPRESS_ROOT = BASE_DIR / "static"
 COMPRESS_ENABLED = True
+COMPRESS_OFFLINE = not DEBUG
 
 # Tailwind CSS settings
 TAILWIND_APP_NAME = "theme"
