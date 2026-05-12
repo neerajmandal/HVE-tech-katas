@@ -146,7 +146,10 @@ STATICFILES_FINDERS = [
 ]
 
 COMPRESS_ROOT = BASE_DIR / "static"
-COMPRESS_ENABLED = True
+# Tailwind already produces a single minified output.css, so django-compressor
+# is disabled to avoid request-time CACHE/ files being written outside STATIC_ROOT
+# (which causes 404s for stylesheets in production behind WhiteNoise).
+COMPRESS_ENABLED = False
 COMPRESS_OFFLINE = False
 
 # Serve static files via WhiteNoise in production (with gzip/brotli).
