@@ -45,6 +45,7 @@
   ],
 
   "features": {
+    "ghcr.io/devcontainers-extra/features/worktrunk:1": {},
     "ghcr.io/devcontainers/features/azure-cli:1": {},
     "ghcr.io/devcontainers-extra/features/shfmt:1": {},
     "ghcr.io/devcontainers/features/desktop-lite:1": {

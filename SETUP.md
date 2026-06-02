@@ -9,8 +9,21 @@ The workshop will take about 3 hours to complete. Before starting, please ensure
 - [Visual Studio Code](https://code.visualstudio.com/)
 - [Dev Containers extension](https://code.visualstudio.com/docs/devcontainers/containers)
 
-  > [!TIP]
-  > You may need to restart your terminal in order to make the new software available.
+With the devcontainer installation, the required toolchains are installed automatically in a consistent runtime environment.
+
+Quick installation:
+
+- macOS:
+
+  ```bash
+  brew install git docker-desktop visual-studio-code worktrunk
+  ```
+
+- Windows:
+
+  ```pwsh
+  winget install -e Git.Git Microsoft.VisualStudioCode Docker.DockerDesktop max-sixty.worktrunk
+  ```
 
 ## 2. Clone the Repo
 
@@ -19,7 +32,7 @@ git clone https://github.com/neerajmandal/HVE-tech-katas.git
 cd HVE-tech-katas
 ```
 
-## 3. Open the Devcontainer
+## 3. Open the Dev Container
 
 1. Open the repository in VS Code.
 1. Reopen it in the existing devcontainer when prompted.
@@ -31,9 +44,9 @@ This installs Python and Node dependencies, seeds the database, and provisions C
     npm run dev
     ```
 
-1. Open forwarded port 6080 from VS Code, or browse to <http://localhost:6080> if port forwarding is mapped locally.
-1. When the noVNC viewer prompts for a password, enter `vscode`.
-1. Launch the in-container browser from a separate terminal in the devcontainer:
+2. Open forwarded port 6080 from VS Code, or browse to <http://localhost:6080> if port forwarding is mapped locally.
+3. When the noVNC viewer prompts for a password, enter `vscode`.
+4. Launch the in-container browser from a separate terminal in the devcontainer:
 
     ```bash
     npm run browser:open
@@ -51,32 +64,35 @@ This installs Python and Node dependencies, seeds the database, and provisions C
 
 ## 4. Troubleshooting
 
-- If port 6080 shows a blank page, run `npm run dev`, then `npm run browser open`.
+- If port 6080 shows a blank page, run `npm run setup`, `npm run dev`, then `npm run browser open`.
 - If Chromium opens and immediately exits, rebuild the devcontainer so the one-time browser dependency provisioning runs again.
 - If the desktop is sluggish on macOS or Windows, [increase Docker Desktop CPU and memory allocation](https://docs.docker.com/desktop/settings-and-maintenance/settings/).
 
 ### Local Installation
 
-If you hit issues using the dev container, local installation is available as a fallback.
+If you hit issues using the dev container, installing the toolchains onto your host machine is available as a fallback.
+It is recommended you use the devcontainer and only proceed with local setup if devcontainer is failing on your machine, as you may experience conflicts or configuration issues with other existing software on your host.
 
 #### 1. Install dependencies
 
 - [Python](https://www.python.org/downloads/) 3.11 or later
 - [uv](https://docs.astral.sh/uv/getting-started/installation/)
 - [node.js](https://nodejs.org/en) v20 or later (LTS recommended)
+- [Worktrunk](https://worktrunk.dev/worktrunk/#install)
+- [GitHub CLI](https://cli.github.com/)
 
 Quick installation:
 
-- MacOS:
+- macOS:
 
-  ```sh
-  brew install python node uv
+  ```bash
+  brew install git visual-studio-code docker-desktop worktrunk gh node uv
   ```
 
 - Windows:
 
   ```pwsh
-  winget install -e astral-sh.uv OpenJS.NodeJS.LTS Git.Git GitHub.CLI
+  winget install -e Git.Git Microsoft.VisualStudioCode Docker.DockerDesktop max-sixty.worktrunk GitHub.CLI OpenJS.NodeJS.LTS astral-sh.uv
   ```
 
   > [!TIP]
@@ -87,6 +103,7 @@ Quick installation:
 ```bash
 git clone https://github.com/neerajmandal/HVE-tech-katas.git
 cd HVE-tech-katas
+
 npm run setup
 ```
 
