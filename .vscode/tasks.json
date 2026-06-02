@@ -21,13 +21,6 @@
           "endsPattern": "^Quit the server with CONTROL-C\\."
         }
       }
-    },
-    {
-      "label": "Django: Run Migrations",
-      "type": "shell",
-      "command": "npm",
-      "args": ["run", "migrate"],
-      "problemMatcher": "$python"
     }
   ]
 }
