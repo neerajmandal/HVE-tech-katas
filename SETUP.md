@@ -8,6 +8,8 @@ The workshop will take about 3 hours to complete. Before starting, please ensure
 - [Docker Desktop](https://docs.docker.com/desktop/)
 - [Visual Studio Code](https://code.visualstudio.com/)
 - [Dev Containers extension](https://code.visualstudio.com/docs/devcontainers/containers)
+- [Worktrunk](https://worktrunk.dev/worktrunk/#install) (if you want it available outside the devcontainer)
+
 
 Quick installation:
 
@@ -17,13 +19,13 @@ Quick installation:
 [Docker Desktop](https://docs.docker.com/desktop/setup/install/mac-install/)
 
   ```bash
-  brew install git
+  brew install git docker-desktop visual-studio-code worktrunk
   ```
 
 * Windows:
 
   ```pwsh
-  winget install -e Git.Git Microsoft.VisualStudioCode Docker.DockerDesktop
+  winget install -e Git.Git Microsoft.VisualStudioCode Docker.DockerDesktop max-sixty.worktrunk
   ```
 
   > [!TIP]
@@ -65,6 +67,6 @@ This installs Python and Node dependencies, seeds the database, and provisions C
 
 ## 4. Troubleshooting
 
-- If port 6080 shows a blank page, run `npm run dev`, then `npm run browser open`.
+- If port 6080 shows a blank page, run `npm run setup`, `npm run dev`, then `npm run browser open`.
 - If Chromium opens and immediately exits, rebuild the devcontainer so the one-time browser dependency provisioning runs again.
 - If the desktop is sluggish on macOS or Windows, [increase Docker Desktop CPU and memory allocation](https://docs.docker.com/desktop/settings-and-maintenance/settings/).
