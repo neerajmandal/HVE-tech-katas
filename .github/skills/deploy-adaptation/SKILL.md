@@ -131,4 +131,12 @@ generated files: `apps/core/domain.py`, `apps/core/context_processors.py`,
 Because adaptations are sibling files plus mechanical string swaps, reverting to
 the healthcare baseline is clean.
 
+**Always `npm run build` after the rollback.** `static/output.css` is a gitignored
+build artifact, so `git restore` cannot revert it — it still holds the prior
+vertical's compiled CSS. Tailwind v4 content-scans templates and only emits the
+utilities actually used, so a stale build is missing baseline-only classes (e.g.
+the landing hero gradient and primary CTA button background), leaving the page
+visibly broken even though the restored templates are correct. Rebuilding from the
+healthcare-default `static/input.css` against the restored templates fixes it.
+
 Detailed classification and command planning: `references/DEPLOYMENT_GUIDE.md`.

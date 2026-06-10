@@ -45,8 +45,10 @@ Read before designing the pack:
   and `templates/core/` (`dashboard.html`, `lab_tests.html`, `doctor_visits.html`,
   `invoices_list.html`, `home.html`, `welcome.html`, `about.html`, `pricing.html`,
   `free-tools.html`).
-- `apps/core/models.py` `DoctorVisit.VISIT_TYPE_CHOICES` — the closed enum (first
-  element is the code; second is the display label to re-skin).
+- `apps/core/models.py` `DoctorVisit.VISIT_TYPE_CHOICES` — the closed enum. The
+  first tuple element is the **code** (stable); the second is the model's display
+  label, which stays as-is — vertical visit-type labels are re-skinned through the
+  manifest's `visit_type_labels`, not by editing the model.
 
 Study where healthcare terminology appears as **display copy** versus where it is
 a **stable binding** (field name, context key, URL name, enum code).
@@ -65,8 +67,10 @@ Ask the user for:
    `urgent`, `specialist`, `preventive`) in the new vertical.
 6. Regulatory/compliance frameworks that should follow the industry (see the
    Compliance Quick Sheet) and a short, non-legal compliance note for the footer.
-7. Theme preference: keep the existing Tailwind accent (`teal-*`, lowest risk) or
-   change it (requires editing static class names — see UI Adaptation Plan).
+7. Accent theme: each vertical gets its own brand accent (healthcare teal,
+   finance indigo, manufacturing amber, …), driven from the manifest `theme`
+   block — a per-industry color is now a first-class part of the adaptation, not
+   an optional manual swap. Confirm the accent (offer the preset default).
 
 If the user is unsure, propose defaults from `references/EXAMPLES.md` and confirm.
 
@@ -83,11 +87,18 @@ swapping hardcoded display strings for `{{ domain.* }}` fields.
    (frameworks + note). Every nav `url_name` MUST be one of `patient_dashboard`,
    `lab_tests`, `doctor_visits`, `invoice_list` (the real names in `urls.py`).
 2. `apps/core/context_processors.py` — `def domain(request): return {"domain": DOMAIN}`.
-3. Register it in `StingrayHealthPortal/settings.py` by appending
+3. `apps/core/templatetags/domain_extras.py` (+ `__init__.py`) — a `dict_get`
+   filter so templates can render `visit_type` through the manifest's
+   `visit_type_labels` (see `references/GENERATION_GUIDE.md`).
+4. Register the context processor in `StingrayHealthPortal/settings.py` by appending
    `"apps.core.context_processors.domain"` to
    `TEMPLATES[0]["OPTIONS"]["context_processors"]`.
-4. `apps/core/views.py` — add `def domain_json(request): return JsonResponse(DOMAIN)`.
-5. `apps/core/urls.py` — add `path("portal/domain.json", views.domain_json, name="domain_json")`.
+5. `apps/core/views.py` — add `def domain_json(request): return JsonResponse(DOMAIN)`.
+6. `apps/core/urls.py` — add `path("portal/domain.json", views.domain_json, name="domain_json")`.
+7. `templates/partials/_theme_style.html` — inline `<style>` overriding the accent
+   `@theme` vars from the manifest's `theme` block; include it in the `<head>` of
+   `base.html` and `portal_base.html`, and swap themed templates' `teal-*`/`cyan-*`
+   classes for `accent-*`/`accent2-*` (see UI adaptation plan + GENERATION_GUIDE).
 
 See `references/GENERATION_GUIDE.md` for the manifest shape and field list, and
 `references/EXAMPLES.md` for ready-to-adapt manufacturing and finance presets.
@@ -102,18 +113,43 @@ Apply changes in this order:
   `{% block page_title %}`/`{% block page_subtitle %}` overrides per page,
   Dashboard stat labels + section headings + badge labels, list-page titles and
   empty-state copy, and the public pages' copy.
-- **Re-skin `visit_type` labels** by editing the VALUES (second tuple element) in
-  `DoctorVisit.VISIT_TYPE_CHOICES` and any template chip labels — keep the five
-  codes unchanged. (Changing model choices is display-only and needs no
-  migration since the stored values are the codes.)
+- **Re-skin `visit_type` labels** through the manifest's `visit_type_labels` map,
+  rendered with the generated `domain_extras` `dict_get` filter
+  (`{{ domain.visit_type_labels|dict_get:visit.visit_type }}`) in `dashboard.html`
+  and `doctor_visits.html`. Keep the five codes **and** the model's
+  `VISIT_TYPE_CHOICES` labels untouched — the manifest is the single source of
+  truth, so do not edit the model (no migration, no split source). Leaving
+  `get_visit_type_display` in those templates is drift the `ui_contract` check
+  now fails on.
+- **Re-skin the three visit-detail field labels** in `doctor_visits.html`:
+  bind the "Reason for Visit" / "Diagnosis" / "Treatment Plan" headings to
+  `{{ domain.entities.visit.reason_label|default:"Reason for Visit" }}`,
+  `…diagnosis_label`, `…plan_label`, and define all three keys in every
+  manifest's `entities.visit`. These clinical labels are not covered by the
+  visit-type or vitals work and otherwise leak into the vertical; `ui_contract`
+  fails if a heading is unbound or a manifest omits any of the three keys.
+- **Re-skin the PUBLIC landing + welcome pages** (`home.html`, `welcome.html`):
+  the unauthenticated front door carries the heaviest healthcare copy (hero "Your
+  Health Records", preview cards "Complete Blood Count"/"Dr. Williams -
+  Cardiology"/"Lipid Panel", stats "Patients Served"). Bind it all to a manifest
+  **`home`** block (each value defaulted to its healthcare original) — every
+  manifest must define `home`. `ui_contract` fails if a public template lacks a
+  `domain.home.` bind or the manifest omits the block. See
+  `references/GENERATION_GUIDE.md` for the full key list.
 - **Keep bindings stable**: do not rename model fields, dashboard context keys,
   URL names, or `visit_type` codes. If the vertical truly needs a new field,
   document the reason and update *every* consumer together (model → migration →
   view → template → seed).
-- **Theme**: Tailwind compiles only static class names, so a color swap means
-  find/replacing accent classes (e.g. `teal-600`→`amber-600`) across templates
-  and rebuilding CSS, not a manifest value. Prefer keeping the accent unless the
-  user insists.
+- **Theme (per-industry accent)**: the accent is a Tailwind v4 `@theme` color
+  scale (`--color-accent-*` / `--color-accent2-*`) registered in
+  `static/input.css`; an adaptation overrides those vars at runtime from the
+  manifest's `theme` block via `templates/partials/_theme_style.html` (included in
+  both root layouts), and the themed templates use `accent-*`/`accent2-*` instead
+  of `teal-*`/`cyan-*`. Keep semantic status colors (red/amber/green/purple/slate)
+  as-is. **Tailwind v4 ignores `theme.extend.colors` in `tailwind.config.js`** —
+  the `@theme` declaration in `input.css` is what generates the utilities. See
+  `references/GENERATION_GUIDE.md` ("Per-industry accent theming"); the
+  `theme_contract` check enforces it.
 
 ## Compliance quick sheet
 
@@ -155,8 +191,9 @@ the new vertical instead of leaving healthcare rows behind.
 
 Record:
 
-- The files created/modified (manifest, context processor, settings line,
-  `domain_json` view + URL, wired templates, and the generated `seed_<slug>.py`).
+- The files created/modified (manifest, context processor, `domain_extras`
+  filter, settings line, `domain_json` view + URL, the `_theme_style` partial +
+  its two includes, wired/themed templates, and the generated `seed_<slug>.py`).
 - The seeded demo usernames so the smoke-test can log in.
 - That `deploy-adaptation` must run the seed command, build Tailwind, and
   smoke-test — this skill does not mutate state.

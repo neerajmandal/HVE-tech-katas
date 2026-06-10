@@ -131,7 +131,7 @@ class Command(BaseCommand):
         for i in range(1, 9):
             u = User.objects.create_user(
                 username=f"operator{i}", email=f"operator{i}@stingray-ops.example",
-                password="password123", first_name="Op", last_name=f"{i}",
+                password="password123", first_name="Op", last_name=f"{i}",  # pragma: allowlist secret
             )
             PatientProfile.objects.create(
                 user=u, date_of_birth=date(1985, 1, 1), phone_number="555-0100",
@@ -182,8 +182,11 @@ Rules the `seed_contract` validator enforces:
   (`patient_id`, `user_id`, `invoice_id`, `created_by_id`) and `defaults=` are
   allowed.
 - `visit_type` must be one of the five codes above.
-- Create users with `User.objects.create_user(..., password="password123")` so
-  demo logins work.
+- Create users with `User.objects.create_user(..., password="password123")` so <!-- pragma: allowlist secret -->
+  demo logins work. The repo runs a `detect-secrets` pre-commit hook (`prek`) that
+  flags the `password="..."` keyword form, so append `  # pragma: allowlist secret`
+  to that line in the generated `seed_<slug>.py` (and to any doc example) or the
+  commit/CI will fail.
 
 ## Keep bindings stable
 

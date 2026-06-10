@@ -129,6 +129,7 @@ def lab_tests(request):
 
     categories = (
         LabTest.objects.filter(patient=user)
+        .order_by()
         .values_list("test_category", flat=True)
         .distinct()
     )

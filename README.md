@@ -47,6 +47,83 @@ Because each has an advantage (ease of use vs agent use), we've provided both.
 - ✅ Authentication system using django-allauth
 - ✅ Responsive UI built with Tailwind CSS
 
+## Industry Adapter Skills
+
+This repo ships an **agent skill pack** at [`.github/skills/`](.github/skills/) that
+adapts the same application to other industries (manufacturing, financial services,
+legal, education, …) by **generating** the vertical instead of hand-editing it. The
+committed baseline always stays healthcare; verticals are produced on demand.
+
+The idea: keep the **structure** stable (model fields, portal URL names, dashboard
+context keys, the `visit_type` enum) and swap the **skin** and **data**. A single
+domain manifest drives all vertical display copy — `apps/core/domain.py` defines it,
+a context processor injects `{{ domain }}` into every template, and `GET
+/portal/domain.json` mirrors it.
+
+| Skill | Purpose |
+| --- | --- |
+| [`adapt-for-industry`](.github/skills/adapt-for-industry/SKILL.md) | Generate the domain manifest (brand, role, entity terms, nav, compliance) and wire templates to it |
+| [`customize-use-case`](.github/skills/customize-use-case/SKILL.md) | Generate vertical calculators + an entity-mapped synthetic `seed_<slug>` management command |
+| [`validate-adaptation`](.github/skills/validate-adaptation/SKILL.md) | Read-only, architecture-aware validator; `ui_contract` catches label↔binding drift (safe on the baseline) |
+| [`deploy-adaptation`](.github/skills/deploy-adaptation/SKILL.md) | Classify → validate → migrate (only if needed) → reseed → build → smoke/Playwright (owns all mutating steps) |
+
+The agent runs the skills as a pipeline — generate the skin and data, gate on the
+contract, then mutate state only once everything validates:
+
+```mermaid
+flowchart LR
+    A["adapt-for-industry<br/>manifest + wire templates"] --> B["customize-use-case<br/>calculators + seed command"]
+    B --> C{"validate-adaptation<br/>ui_contract · seed_contract<br/>domain_manifest"}
+    C -- "0 failed" --> D["deploy-adaptation<br/>reseed → build → smoke"]
+    C -- "failures" --> A
+    D --> E([Adapted vertical])
+```
+
+To adapt the portal, just ask an agent — it runs the whole pipeline
+(adapt → customize → validate → deploy) for you. For example, from the repo root in
+[GitHub Copilot CLI](https://github.com/github/copilot-cli):
+
+```console
+$ copilot
+
+▌ Apply the industry adapter to this repo for the manufacturing industry.
+
+  I'll use the adapter skills in .github/skills and run them in order.
+
+  • adapt-for-industry
+    Generated apps/core/domain.py (brand, role, entity terms, compliance), wired
+    the context processor and the base/portal/dashboard templates to {{ domain }},
+    and served it at GET /portal/domain.json.
+
+  • customize-use-case
+    Generated apps/core/management/commands/seed_manufacturing.py — operators,
+    inspection readings, work orders, and invoices mapped onto the existing models.
+
+  • validate-adaptation
+    $ python .github/skills/validate-adaptation/validate.py
+    Summary: 0 failed  (ui_contract, seed_contract, domain_manifest, … pass)
+
+  • deploy-adaptation
+    Reseeded the demo DB, built Tailwind/static assets, and ran the smoke test ✓
+
+  Done — adapted to "manufacturing". Model fields, portal URL names, routes, and
+  the visit_type enum are unchanged; the committed healthcare baseline is intact.
+```
+
+The same dashboard, generated for manufacturing — the structure (model fields,
+dashboard context keys, portal URL names, `visit_type` codes) is identical to the
+healthcare baseline; only the display copy and seed data change:
+
+![Manufacturing adaptation — Operations Portal dashboard](docs/screenshots/dashboard-manufacturing.png)
+
+The agent owns every step — you never run the validator or deploy commands by
+hand. `validate-adaptation` is read-only and safe to invoke at any point (the
+agent calls it between generation and deploy), so you can also just ask "validate
+the current adaptation" to re-check without changing anything.
+
+See [`.github/skills/README.md`](.github/skills/README.md) for the entity-mapping
+anchor, the stable-key contract, and ready-to-adapt manufacturing/finance presets.
+
 ## Tech Kata Challenge
 
 This repository is set up for an HVE coding kata (2.5 hours). See [CHALLENGES.md](CHALLENGES.md) for the full challenge description, or [CHALLENGES-v2.md](CHALLENGES-v2.md) for the v2 challenges.

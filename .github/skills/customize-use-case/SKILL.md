@@ -92,12 +92,19 @@ Create `apps/core/management/commands/seed_<slug>.py`, runnable as
 - Subclass `BaseCommand`; in `handle()`, delete existing rows in FK-safe order
   (`InvoiceLineItem`, `Invoice`, `DoctorVisit`, `LabTest`, `PatientProfile`, then
   the demo `User`s) before inserting — idempotent reseed.
-- Create users with `User.objects.create_user(username=..., password="password123", ...)`
-  so logins work (this hashes the password). State the demo usernames in handoff.
-- Populate `LabTest`, `DoctorVisit`, `Invoice` + `InvoiceLineItem` with synthetic
-  vertical data, mapping concepts onto **existing fields only** (e.g. an
-  inspection reading → `result_value`/`reference_range`/`unit`, `is_abnormal` for
-  out-of-spec). Use only the five `visit_type` codes.
+- **Switch the persona, not just the records.** Create NEW industry logins with
+  `User.objects.create_user(username="operator1", password="password123", ...)` <!-- pragma: allowlist secret -->
+  and industry-appropriate `first_name`/`last_name` (e.g. "Marcus Reyes"). Do NOT
+  reuse the healthcare `patient*` users — the sidebar shows `user.get_full_name`,
+  so a reused patient keeps a healthcare identity on screen. State the new demo
+  usernames in handoff (deploy-adaptation logs in as `operator1`, not `patient1`).
+- **Re-skin every surface.** Populate `PatientProfile` (operator site/plant/badge
+  metadata), `LabTest`, `DoctorVisit`, and `Invoice` + `InvoiceLineItem` (industry
+  purchase orders / line items) with synthetic vertical data, mapping concepts onto
+  **existing fields only** (e.g. an inspection reading → `result_value`/
+  `reference_range`/`unit`, `is_abnormal` for out-of-spec). A seed that re-skins
+  only labs and visits leaves the Invoices page and profile reading healthcare.
+  Use only the five `visit_type` codes.
 - Leave fields that don't apply to the vertical empty/None (e.g. manufacturing
   work orders leave `vitals_*` null — the UI hides empty panels).
 - Print inserted counts at the end with `self.stdout.write(...)`.
@@ -105,7 +112,10 @@ Create `apps/core/management/commands/seed_<slug>.py`, runnable as
 > The `seed_contract` validator check parses the seed command and fails if it
 > sets any field name not on a model — keep to the existing fields. FK aliases
 > (`patient_id`, `user_id`, `invoice_id`, `created_by_id`) and `defaults=` are
-> allowed.
+> allowed. It also enforces a **full persona switch**: the seed must call
+> `User.objects.create_user(...)` (new industry logins, not reused `patient*`)
+> and reseed all five demo tables (`PatientProfile`, `LabTest`, `DoctorVisit`,
+> `Invoice`, `InvoiceLineItem`) so no healthcare identity or billing leaks through.
 
 ## Step 5: Handoff
 

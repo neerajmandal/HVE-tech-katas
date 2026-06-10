@@ -48,6 +48,10 @@ See `VALIDATE.md` for the full table. The adaptation-critical checks:
   context processor and its nav targets resolve to real `{% url %}` names.
 - **ui_contract** — every wired template reads `domain.*` and contains no
   leftover hardcoded healthcare strings (catches half-finished re-skins).
+- **theme_contract** — per-industry accent theming is wired: manifest `theme`
+  block, the `@theme` accent scale in `input.css`, the `_theme_style` override
+  partial included in both root layouts, and no hardcoded `teal-*`/`cyan-*` brand
+  classes left in themed templates.
 - **seed_contract** — generated `seed_<slug>` commands set only existing model
   fields and use the five `visit_type` codes.
 - **schema_integrity / api_contract / visit_type_enum / calculators** — the

@@ -78,6 +78,12 @@ npm run dev          # http://localhost:8000
    `calculate_<name>` function value for the same inputs.
 7. No leftover healthcare strings on any re-skinned surface (the `ui_contract`
    check enforces this for the wired templates).
+8. Accent theme: the brand accent (sidebar suffix, active nav, stat icons, View
+   All links, filter chips, avatar background) is the vertical's color, not teal —
+   driven by the manifest `theme` block (the `theme_contract` check enforces the
+   wiring; the screenshot confirms it visually). If everything is still teal,
+   `npm run build` didn't pick up the `@theme` scale or the `_theme_style` partial
+   isn't included in the root layouts.
 
 ## Playwright outline
 
@@ -115,3 +121,10 @@ Close any headed browser when finished so it does not interfere with later runs.
   and the `domain_json` view/URL additions).
 - Database: `git restore db.sqlite3` to return to the committed healthcare demo
   data, or rerun `manage.py seed_dummy_data`.
+- CSS: **rerun `npm run build` after restoring the templates.** `static/output.css`
+  is gitignored, so `git restore` leaves the prior vertical's compiled CSS in place.
+  Tailwind v4 only emits the utilities its content scan finds in the *current*
+  templates, so a stale build drops baseline-only classes (landing hero gradient,
+  primary CTA button background, etc.) and the page renders with the wrong/broken
+  colors even though the templates are correct. Rebuild from the healthcare-default
+  `static/input.css`, then verify the landing page renders the teal hero.
