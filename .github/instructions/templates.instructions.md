@@ -1,5 +1,5 @@
 ---
-applyTo: 'templates/**/*.html'
+applyTo: '**/templates/**/*.html'
 description: 'Django template conventions: domain-manifest binding and accent theming'
 ---
 

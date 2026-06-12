@@ -1,5 +1,5 @@
 ---
-applyTo: 'apps/core/**/*.py'
+applyTo: '**/apps/core/**/*.py'
 description: 'Django backend conventions for the apps.core app (views, models, domain manifest, admin)'
 ---
 

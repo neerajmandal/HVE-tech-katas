@@ -50,9 +50,6 @@ flowchart LR
 The two katas here (healthcare, manufacturing) are illustrative — the adapter is
 designed to extend to any vertical (finance, legal, education, energy, …):
 
-The two katas here (healthcare, manufacturing) are illustrative — the adapter is
-designed to extend to any vertical (finance, legal, education, energy, …):
-
 1. Copy the healthcare baseline app into a new kata folder:
    `cp -r verticals/healthcare verticals/<industry>` (it is self-contained).
 2. From inside `verticals/<industry>/`, ask an agent: *"Apply the industry

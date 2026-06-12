@@ -209,8 +209,12 @@ uv run python manage.py seed_manufacturing # Seed operators + plant operations d
 - **`visit_type` labels** are re-skinned via the manifest `visit_type_labels`
   rendered with the `domain_extras` `dict_get` filter—never via
   `get_visit_type_display` or by editing model `VISIT_TYPE_CHOICES`.
-- **Accent theming** is declared via `@theme` in `static/input.css`; after theme
-  changes run `npm run build` (the generated `static/output.css` is gitignored).
+- **Accent theming** for this vertical lives in the manifest's `theme.accent` /
+  `theme.accent2` block in `apps/core/domain.py` and is applied at runtime by
+  `templates/partials/_theme_style.html` (which overrides the `--color-accent-*`
+  CSS variables) — changing the accent needs no `npm run build`. The `@theme`
+  scale in `static/input.css` only defines the baseline token defaults and the
+  `accent-*` utilities; the generated `static/output.css` is gitignored.
 
 ## General Guidelines
 
