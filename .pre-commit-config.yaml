@@ -31,13 +31,6 @@ repos:
       - id: ruff-format
         types_or: [python, pyi, jupyter]
 
-  - repo: https://github.com/astral-sh/uv-pre-commit
-    # uv version.
-    rev: 0.10.9
-    hooks:
-      # Update the uv lockfile
-      - id: uv-lock
-
   - repo: https://github.com/adrienverge/yamllint.git
     rev: v1.38.0
     hooks:
@@ -45,14 +38,23 @@ repos:
 
   - repo: local
     hooks:
-      # python tests
+      # Keep every kata's uv lockfile in sync (no root pyproject; each
+      # verticals/<kata> is a self-contained Django app with its own deps).
+      - id: uv-lock-katas
+        name: uv lock (per kata)
+        language: system
+        files: ^verticals/[^/]+/(pyproject\.toml|uv\.lock)$
+        pass_filenames: false
+        entry: bash -c 'for d in verticals/*/; do if [ -f "$d/pyproject.toml" ]; then (cd "$d" && uv lock); fi; done'
+
+      # python tests — run each kata's suite from its own app root.
       - id: pytest
-        name: pytest
+        name: pytest (per kata)
         stages: ["pre-push"]
         language: system
         types: [python]
         pass_filenames: false
-        entry: uv run pytest
+        entry: bash -c 'for d in verticals/*/; do if [ -f "$d/manage.py" ]; then (cd "$d" && uv run pytest) || exit 1; fi; done'
 
   - repo: https://github.com/Yelp/detect-secrets
     rev: v1.5.0

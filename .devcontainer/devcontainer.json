@@ -30,17 +30,18 @@
       "source": "${devcontainerId}-playwrightcache",
       "target": "/home/vscode/.cache/ms-playwright"
     },
-    // Put Python environment into volume for better performance
+    // Put Python environment into volume for better performance.
+    // Targets the default (healthcare) kata app root; see post-create.sh.
     {
       "type": "volume",
       "source": "${devcontainerId}-pyenv",
-      "target": "/workspace/.venv"
+      "target": "/workspace/verticals/healthcare/.venv"
     },
     // Put node modules into volume for better performance
     {
       "type": "volume",
       "source": "${devcontainerId}-nodemodules",
-      "target": "/workspace/node_modules"
+      "target": "/workspace/verticals/healthcare/node_modules"
     }
   ],
 
@@ -62,9 +63,9 @@
     "vscode": {
       "settings": {
         "terminal.integrated.defaultProfile.linux": "bash",
-        "defaultInterpreterPath": "/workspace/.venv/bin/python",
-        "python.pythonPath": "/workspace/.venv/bin/python",
-        "python.venvPath": "/workspace/.venv"
+        "defaultInterpreterPath": "/workspace/verticals/healthcare/.venv/bin/python",
+        "python.pythonPath": "/workspace/verticals/healthcare/.venv/bin/python",
+        "python.venvPath": "/workspace/verticals/healthcare/.venv"
       }
     },
     "extensions": [

@@ -12,9 +12,12 @@ that depends on a generated adaptation (a domain manifest, a generated seed
 command, or vertical calculators) reports ``skip`` when that adaptation is absent,
 and only enforces the stable contract once it is present.
 
-Usage (from the repo root)::
+Usage::
 
+    # Auto-detects the app: an adapted verticals/<kata> if present, else the
+    # repo-root single-app layout. Override with --app-root or $STINGRAY_APP_ROOT.
     python .github/skills/validate-adaptation/validate.py
+    python .github/skills/validate-adaptation/validate.py --app-root verticals/manufacturing
     python .github/skills/validate-adaptation/validate.py --check ui_contract
     python .github/skills/validate-adaptation/validate.py --self-test
 
@@ -26,6 +29,7 @@ from __future__ import annotations
 import argparse
 import ast
 import json
+import os
 import re
 import sys
 from collections.abc import Callable, Iterable
@@ -33,6 +37,9 @@ from dataclasses import dataclass
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
+# The Django app under validation. Defaults to REPO_ROOT (legacy single-app
+# layout) and is re-pointed by main() to a verticals/<kata> app when present.
+APP_ROOT = REPO_ROOT
 SKILL_NAME = "validate-adaptation"
 
 # ---------------------------------------------------------------------------
@@ -248,7 +255,7 @@ class Result:
 
 
 def _path(rel: str) -> Path:
-    return REPO_ROOT / rel
+    return APP_ROOT / rel
 
 
 def _exists(rel: str) -> bool:
@@ -370,7 +377,7 @@ def check_backend_compile() -> Result:
         try:
             ast.parse(path.read_text(encoding="utf-8"))
         except SyntaxError as exc:
-            failures.append(f"{path.relative_to(REPO_ROOT)}:{exc.lineno} {exc.msg}")
+            failures.append(f"{path.relative_to(APP_ROOT)}:{exc.lineno} {exc.msg}")
     if failures:
         return _fail(
             "backend_compile",
@@ -840,6 +847,39 @@ def emit(results: Iterable[Result]) -> int:
     return 1 if failed else 0
 
 
+def _resolve_app_root(explicit: str | None) -> Path:
+    """Locate the Django app to validate.
+
+    Resolution order: explicit --app-root -> $STINGRAY_APP_ROOT -> the current
+    directory -> REPO_ROOT (legacy single-app layout) -> an auto-detected
+    verticals/<kata> app (preferring one that carries a domain manifest so the
+    adaptation-dependent checks actually run instead of skipping).
+    """
+
+    def _is_app(base: Path) -> bool:
+        return (base / "apps" / "core" / "models.py").exists()
+
+    candidates: list[Path] = []
+    if explicit:
+        candidates.append(Path(explicit))
+    if os.environ.get("STINGRAY_APP_ROOT"):
+        candidates.append(Path(os.environ["STINGRAY_APP_ROOT"]))
+    candidates.append(Path.cwd())
+    candidates.append(REPO_ROOT)
+    for candidate in candidates:
+        if _is_app(candidate):
+            return candidate.resolve()
+    verticals = REPO_ROOT / "verticals"
+    if verticals.is_dir():
+        apps = [d for d in sorted(verticals.iterdir()) if _is_app(d)]
+        adapted = [d for d in apps if (d / "apps" / "core" / "domain.py").exists()]
+        if adapted:
+            return adapted[0].resolve()
+        if apps:
+            return apps[0].resolve()
+    return REPO_ROOT
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(
         description=f"Validate {SKILL_NAME} artifacts for the Stingray Django app."
@@ -850,6 +890,13 @@ def main() -> int:
         help="Run validator helper self-tests without reading app files.",
     )
     parser.add_argument(
+        "--app-root",
+        help=(
+            "Path to the Django app to validate (defaults to $STINGRAY_APP_ROOT, "
+            "the current directory, or an auto-detected verticals/<kata> app)."
+        ),
+    )
+    parser.add_argument(
         "--check",
         action="append",
         choices=sorted(CHECKS),
@@ -858,6 +905,9 @@ def main() -> int:
     args = parser.parse_args()
     if args.self_test:
         return emit(helper_self_tests())
+    global APP_ROOT
+    APP_ROOT = _resolve_app_root(args.app_root)
+    print(f"Validating app root: {APP_ROOT}", file=sys.stderr)
     selected = args.check or list(CHECKS)
     return emit(CHECKS[name]() for name in selected)
 

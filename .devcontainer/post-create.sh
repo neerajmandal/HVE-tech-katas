@@ -2,7 +2,13 @@
 set -euE
 
 SCRIPT_PATH="$(dirname "$(readlink -f "$0")")"
-source "${SCRIPT_PATH}/../scripts/common.sh"
+
+# The repo hosts two self-contained kata apps under verticals/. The devcontainer
+# provisions the healthcare baseline by default; switch DEFAULT_KATA to work the
+# manufacturing kata (or any future vertical) instead.
+DEFAULT_KATA="${STINGRAY_DEFAULT_KATA:-verticals/healthcare}"
+KATA_ROOT="${SCRIPT_PATH}/../${DEFAULT_KATA}"
+source "${KATA_ROOT}/scripts/common.sh"
 
 # Volume ownership is not set automatically due to a bug:
 # https://github.com/microsoft/vscode-remote-release/issues/9931
@@ -27,8 +33,8 @@ function fix_volume_ownerships() {
   fix_volume_ownership "/home/$USER/.config"
   fix_volume_ownership "/home/$USER/.cache"
   fix_volume_ownership "/home/$USER/.cache/ms-playwright"
-  fix_volume_ownership "/workspace/.venv"
-  fix_volume_ownership "/workspace/node_modules"
+  fix_volume_ownership "/workspace/${DEFAULT_KATA}/.venv"
+  fix_volume_ownership "/workspace/${DEFAULT_KATA}/node_modules"
 }
 
 ###
