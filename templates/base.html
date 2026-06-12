@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stingray Health Portal</title>
+    <title>{{ domain.brand.name }} {{ domain.brand.suffix }}</title>
 
     {% load compress %}
     {% load static %}
@@ -15,6 +15,7 @@
     {% compress css %}
     <link rel="stylesheet" href="{% static 'output.css' %}">
     {% endcompress %}
+    {% include 'partials/_theme_style.html' %}
 
     {% block extra_head %}{% endblock extra_head %}
 
@@ -25,8 +26,8 @@
     <nav class="bg-white border-b border-gray-200 px-2 sm:px-4 py-2.5">
         <div class="container flex flex-wrap items-center justify-between mx-auto">
           <a href="{% url 'home' %}" class="flex items-center">
-              <img src="{% static 'images/stingrays-logo.png' %}" class="h-10 w-auto mr-3" style="max-height:40px;" alt="Stingray Health Portal Logo" />
-              <span class="self-center text-2xl font-bold whitespace-nowrap text-gray-800">Stingray <span class="text-teal-600">Health Portal</span></span>
+              <img src="{% static 'images/stingrays-logo.png' %}" class="h-10 w-auto mr-3" style="max-height:40px;" alt="{{ domain.brand.name }} {{ domain.brand.suffix }} Logo" />
+              <span class="self-center text-2xl font-bold whitespace-nowrap text-gray-800">{{ domain.brand.name }} <span class="text-accent-600">{{ domain.brand.suffix }}</span></span>
           </a>
           <button data-collapse-toggle="mobile-menu" type="button" class="inline-flex items-center p-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200" aria-controls="mobile-menu" aria-expanded="false">
             <span class="sr-only">Open main menu</span>
@@ -36,27 +37,27 @@
           <div class="hidden w-full md:block md:w-auto" id="mobile-menu">
             <ul class="flex flex-col mt-4 md:flex-row md:items-center md:space-x-8 md:mt-0 md:text-base md:font-medium">
               <li>
-                <a href="{% url 'home' %}" class="block py-2 pl-3 pr-4 text-teal-700 font-semibold md:p-0" aria-current="page">Home</a>
+                <a href="{% url 'home' %}" class="block py-2 pl-3 pr-4 text-accent-700 font-semibold md:p-0" aria-current="page">Home</a>
               </li>
               <li>
-                <a href="{% url 'about' %}" class="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:text-teal-600 md:border-0 md:p-0">About</a>
+                <a href="{% url 'about' %}" class="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:text-accent-600 md:border-0 md:p-0">About</a>
               </li>
               {% if user.is_authenticated %}
               <li>
-                <a href="{% url 'patient_dashboard' %}" class="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:text-teal-600 md:border-0 md:p-0">My Portal</a>
+                <a href="{% url 'patient_dashboard' %}" class="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:text-accent-600 md:border-0 md:p-0">My Portal</a>
               </li>
               <li>
                 <span class="block py-2 pl-3 pr-4 text-gray-500 md:p-0">Welcome, {{ user.first_name }}!</span>
               </li>
               <li>
-                <a href="{% url 'account_logout' %}" class="block py-2 pl-3 pr-4 text-gray-700 hover:text-teal-600 md:p-0">Logout</a>
+                <a href="{% url 'account_logout' %}" class="block py-2 pl-3 pr-4 text-gray-700 hover:text-accent-600 md:p-0">Logout</a>
               </li>
               {% else %}
               <li>
-                <a href="{% url 'account_login' %}" class="block py-2 pl-3 pr-4 text-gray-700 hover:text-teal-600 md:p-0">Login</a>
+                <a href="{% url 'account_login' %}" class="block py-2 pl-3 pr-4 text-gray-700 hover:text-accent-600 md:p-0">Login</a>
               </li>
               <li>
-                <a href="{% url 'account_signup' %}" class="block py-2 pl-3 pr-4 text-white bg-teal-600 rounded-lg hover:bg-teal-700 md:px-4 md:py-2">Sign Up</a>
+                <a href="{% url 'account_signup' %}" class="block py-2 pl-3 pr-4 text-white bg-accent-600 rounded-lg hover:bg-accent-700 md:px-4 md:py-2">Sign Up</a>
               </li>
               {% endif %}
             </ul>

@@ -1,7 +1,14 @@
 import json
 
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from django.shortcuts import render
+
+from .domain import DOMAIN
+
+
+def domain_json(request):
+    return JsonResponse(DOMAIN)
 
 
 def home(request):
@@ -35,7 +42,40 @@ def calculate_compound_interest(
     Calculate compound interest with monthly contributions
     Returns: dict with final value, total contributions, interest earned, growth multiple, and yearly data
     """
-    pass
+    monthly_rate = (annual_return / 100) / 12
+    balance = initial_investment
+    total_contributions = initial_investment
+    yearly_data = []
+
+    for year in range(1, int(years) + 1):
+        for _ in range(12):
+            balance += monthly_contribution
+            total_contributions += monthly_contribution
+            balance += balance * monthly_rate
+
+        yearly_data.append(
+            {
+                "year": year,
+                "balance": round(balance, 2),
+                "contributions": round(total_contributions, 2),
+                "interest": round(balance - total_contributions, 2),
+            }
+        )
+
+    final_value = round(balance, 2)
+    total_contributions = round(total_contributions, 2)
+    interest_earned = round(final_value - total_contributions, 2)
+    growth_multiple = (
+        round(final_value / total_contributions, 2) if total_contributions else 0
+    )
+
+    return {
+        "final_value": final_value,
+        "total_contributions": total_contributions,
+        "interest_earned": interest_earned,
+        "growth_multiple": growth_multiple,
+        "yearly_data": yearly_data,
+    }
 
 
 def investment_calculator(request):

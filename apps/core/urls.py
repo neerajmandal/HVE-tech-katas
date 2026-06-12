@@ -17,4 +17,5 @@ urlpatterns = [
     path("portal/lab-tests/", views.lab_tests, name="lab_tests"),
     path("portal/visits/", views.doctor_visits, name="doctor_visits"),
     path("invoices/", views.invoice_list, name="invoice_list"),
+    path("portal/domain.json", views.domain_json, name="domain_json"),
 ]

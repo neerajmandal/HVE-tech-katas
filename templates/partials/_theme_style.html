@@ -1,0 +1,16 @@
+{% if domain.theme %}<style>
+  :root {
+    --color-accent-50: {{ domain.theme.accent.50 }};
+    --color-accent-100: {{ domain.theme.accent.100 }};
+    --color-accent-300: {{ domain.theme.accent.300 }};
+    --color-accent-400: {{ domain.theme.accent.400 }};
+    --color-accent-500: {{ domain.theme.accent.500 }};
+    --color-accent-600: {{ domain.theme.accent.600 }};
+    --color-accent-700: {{ domain.theme.accent.700 }};
+    --color-accent-900: {{ domain.theme.accent.900 }};
+    --color-accent2-400: {{ domain.theme.accent2.400 }};
+    --color-accent2-500: {{ domain.theme.accent2.500 }};
+    --color-accent2-600: {{ domain.theme.accent2.600 }};
+    --color-accent2-700: {{ domain.theme.accent2.700 }};
+  }
+</style>{% endif %}

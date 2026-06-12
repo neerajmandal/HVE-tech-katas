@@ -1,74 +1,48 @@
-# Stingray Health Portal - Secure Patient Messaging
+# Stingray Tech Katas — Industry Katas + Industry Adapter
 
-A patient portal system built with Django and Tailwind CSS for the HVE Tech Kata training program. This kata focuses on building a secure messaging feature for patient-doctor communication.
+A Django 5.2 + Tailwind CSS portal used for the HVE Tech Kata training program,
+organized around **three pillars**:
 
-## The Problem
+1. **[Healthcare Kata](verticals/healthcare/)** — the baseline patient portal
+   (served live on `main`).
+2. **[Manufacturing Kata](verticals/manufacturing/)** — the same app re-skinned
+   for plant operations, **generated** by the adapter (served live on this
+   branch, `feature/industry-adapter-skills`).
+3. **[Industry Adapter](industry-adapter/)** — an agent skill pack that turns the
+   baseline into any vertical, and is designed to extend to N more industries.
 
-Currently, patients at our clinic have no direct way to communicate with their assigned doctor through the patient portal. When patients have non-urgent questions about their health, medications, or upcoming appointments, they must:
+```text
+.
+├── README.md                  ← you are here (three-pillar overview)
+├── industry-adapter/          ← pillar 3: the engine (entry point → .github/skills)
+├── verticals/                 ← pillar 1 & 2: the two industry katas (deltas)
+│   ├── healthcare/            ← baseline: kata brief + reference manifest
+│   └── manufacturing/         ← generated: manifest + seed + screenshot
+├── .github/skills/            ← the runnable adapter skills
+├── apps/, templates/, static/ ← the shared Django application
+└── StingrayHealthPortal/      ← Django project settings
+```
 
-- Call the clinic and wait on hold
-- Leave a voicemail and wait for a callback
-- Schedule an unnecessary in-person visit
-- Send emails that may go to a shared inbox and get lost
+## The two katas
 
-**Your Mission**: Build a secure messaging feature within the patient portal that enables patients to message their doctors, doctors to respond, and admins to manage assignments.
+| Kata | Industry | Role | Records | Events | Billing | Lives on |
+| --- | --- | --- | --- | --- | --- | --- |
+| [Healthcare](verticals/healthcare/) | Patient portal | Patient | Lab Tests | Doctor Visits | Invoices | `main` (baseline) |
+| [Manufacturing](verticals/manufacturing/) | Plant operations | Operator | Inspections | Work Orders | Purchase Orders | this branch (generated) |
 
-## Quick Start
+Both katas run the **same** Django app. A vertical is a small delta — a
+~140-line domain manifest + a synthetic seed command + an accent palette — not a
+copy of the application. That is the whole point of the adapter.
 
-Use of the VS Code devcontainer is recommended as the standard development environment.
-It keeps Django, Playwright, and the visible browser session inside one Linux container and avoids host-specific setup drift.
+![Manufacturing adaptation — Operations Portal dashboard](docs/screenshots/dashboard-manufacturing.png)
 
-For detailed installation instructions, see [SETUP.md](SETUP.md).
+## How the adapter works
 
-## Access the Application
-
-- **App URL**: <http://localhost:8000>
-- **Admin Panel**: <http://localhost:8000/admin>
-- **Debugging View**: <http://localhost:6080>
-
-### What's The Difference?
-
-The App URL works in the browser in your host machine just like any other website.
-However, the agent can't reach that browser because it's running in your container.
-The [Debugging View](http://localhost:6080) has special support so the agent can use it, but it's a little ugly.
-
-Because each has an advantage (ease of use vs agent use), we've provided both.
-
-## Test Credentials
-
-- **Username**: `patient1` through `patient5`
-- **Password**: `password123`
-
-## What's Included
-
-- ✅ Patient portal with appointments and lab results
-- ✅ Patients assigned to a primary doctor
-- ✅ Admin manages patient accounts
-- ✅ Authentication system using django-allauth
-- ✅ Responsive UI built with Tailwind CSS
-
-## Industry Adapter Skills
-
-This repo ships an **agent skill pack** at [`.github/skills/`](.github/skills/) that
-adapts the same application to other industries (manufacturing, financial services,
-legal, education, …) by **generating** the vertical instead of hand-editing it. The
-committed baseline always stays healthcare; verticals are produced on demand.
-
-The idea: keep the **structure** stable (model fields, portal URL names, dashboard
-context keys, the `visit_type` enum) and swap the **skin** and **data**. A single
-domain manifest drives all vertical display copy — `apps/core/domain.py` defines it,
-a context processor injects `{{ domain }}` into every template, and `GET
-/portal/domain.json` mirrors it.
-
-| Skill | Purpose |
-| --- | --- |
-| [`adapt-for-industry`](.github/skills/adapt-for-industry/SKILL.md) | Generate the domain manifest (brand, role, entity terms, nav, compliance) and wire templates to it |
-| [`customize-use-case`](.github/skills/customize-use-case/SKILL.md) | Generate vertical calculators + an entity-mapped synthetic `seed_<slug>` management command |
-| [`validate-adaptation`](.github/skills/validate-adaptation/SKILL.md) | Read-only, architecture-aware validator; `ui_contract` catches label↔binding drift (safe on the baseline) |
-| [`deploy-adaptation`](.github/skills/deploy-adaptation/SKILL.md) | Classify → validate → migrate (only if needed) → reseed → build → smoke/Playwright (owns all mutating steps) |
-
-The agent runs the skills as a pipeline — generate the skin and data, gate on the
-contract, then mutate state only once everything validates:
+Keep the **structure** stable (model fields, portal URL names, dashboard context
+keys, the `visit_type` enum); swap the **skin** and the **data**. A single
+`apps/core/domain.py` manifest drives all display copy, a context processor
+injects `{{ domain }}` into every template, and `GET /portal/domain.json` mirrors
+it. The agent runs four skills as a gated pipeline:
 
 ```mermaid
 flowchart LR
@@ -79,89 +53,44 @@ flowchart LR
     D --> E([Adapted vertical])
 ```
 
-To adapt the portal, just ask an agent — it runs the whole pipeline
-(adapt → customize → validate → deploy) for you. For example, from the repo root in
-[GitHub Copilot CLI](https://github.com/github/copilot-cli):
+To adapt the portal to a **new** industry, from the repo root just ask an agent:
 
 ```console
 $ copilot
 
-▌ Apply the industry adapter to this repo for the manufacturing industry.
-
-  I'll use the adapter skills in .github/skills and run them in order.
-
-  • adapt-for-industry
-    Generated apps/core/domain.py (brand, role, entity terms, compliance), wired
-    the context processor and the base/portal/dashboard templates to {{ domain }},
-    and served it at GET /portal/domain.json.
-
-  • customize-use-case
-    Generated apps/core/management/commands/seed_manufacturing.py — operators,
-    inspection readings, work orders, and invoices mapped onto the existing models.
-
-  • validate-adaptation
-    $ python .github/skills/validate-adaptation/validate.py
-    Summary: 0 failed  (ui_contract, seed_contract, domain_manifest, … pass)
-
-  • deploy-adaptation
-    Reseeded the demo DB, built Tailwind/static assets, and ran the smoke test ✓
-
-  Done — adapted to "manufacturing". Model fields, portal URL names, routes, and
-  the visit_type enum are unchanged; the committed healthcare baseline is intact.
+▌ Apply the industry adapter to this repo for the <industry> industry.
 ```
 
-The same dashboard, generated for manufacturing — the structure (model fields,
-dashboard context keys, portal URL names, `visit_type` codes) is identical to the
-healthcare baseline; only the display copy and seed data change:
+Full details, the contract table, guardrails, and the extend-to-N guide are in
+**[industry-adapter/README.md](industry-adapter/README.md)** and
+**[.github/skills/README.md](.github/skills/README.md)**.
 
-![Manufacturing adaptation — Operations Portal dashboard](docs/screenshots/dashboard-manufacturing.png)
+## Quick start (run the live app)
 
-The agent owns every step — you never run the validator or deploy commands by
-hand. `validate-adaptation` is read-only and safe to invoke at any point (the
-agent calls it between generation and deploy), so you can also just ask "validate
-the current adaptation" to re-check without changing anything.
+```bash
+npm run setup     # one-time: data, deps, Tailwind build, migrate, seed
+npm run dev       # http://localhost:8000
+```
 
-See [`.github/skills/README.md`](.github/skills/README.md) for the entity-mapping
-anchor, the stable-key contract, and ready-to-adapt manufacturing/finance presets.
+- **App URL**: <http://localhost:8000>
+- **Admin Panel**: <http://localhost:8000/admin>
+- **Debugging View** (agent-accessible browser): <http://localhost:6080>
+- **Test credentials**: `patient1`–`patient20` / `password123`
 
-## Tech Kata Challenge
+See [SETUP.md](SETUP.md) for detailed installation and the
+[Healthcare Kata README](verticals/healthcare/README.md) for the messaging
+challenge brief.
 
-This repository is set up for an HVE coding kata (2.5 hours). See [CHALLENGES.md](CHALLENGES.md) for the full challenge description, or [CHALLENGES-v2.md](CHALLENGES-v2.md) for the v2 challenges.
+## Tech kata challenge
 
-## Technology Stack
+This repository is set up for a 2.5-hour HVE coding kata. See
+[CHALLENGES.md](CHALLENGES.md) for the full challenge description, or
+[CHALLENGES-v2.md](CHALLENGES-v2.md) for the v2 challenges.
+
+## Technology stack
 
 - **Backend**: Django 5.2, Python 3.11
-- **Frontend**: Tailwind CSS, Flowbite components
+- **Frontend**: Tailwind CSS 4.1, Flowbite components
 - **Database**: SQLite (development)
 - **Authentication**: django-allauth
 - **Standards**: FHIR (Fast Healthcare Interoperability Resources)
-
-## Project Structure
-
-```text
-├── apps/
-│   ├── core/              # Main portal application
-│   └── pro/               # Professional/Doctor features
-├── StingrayHealthPortal/  # Django project
-├── templates/             # Django templates
-│   ├── base.html          # Base HTML page template
-│   ├── account/           # Authentication templates
-│   ├── core/              # Core app templates
-│   └── pro/               # Pro app templates
-├── static/                # Static assets (CSS, images)
-├── data/                  # Sample FHIR datasets
-├── docs/                  # Documentation
-│   ├── ADRs/              # Architecture Decision Records
-│   └── BRDs/              # Business Requirements Documents
-├── scripts/               # Development and setup scripts
-└── manage.py              # Django management script
-```
-
-## Need Help?
-
-Check the [CHALLENGES-v2.md](CHALLENGES-v2.md) files for:
-
-- Detailed schedule with breaks
-- Ticket descriptions for each HVE technique
-- FHIR integration guidance
-- Sample data for testing
