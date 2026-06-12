@@ -9,6 +9,8 @@ A patient portal built with Django 5.2 and Tailwind CSS for the HVE Tech Kata
 training program. This kata focuses on building a **secure messaging** feature
 for patient–doctor communication.
 
+![Healthcare patient portal dashboard](dashboard-healthcare.png)
+
 ## The Problem
 
 Patients at our clinic have no direct way to communicate with their assigned

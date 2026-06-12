@@ -20,7 +20,7 @@ organized around **three pillars**:
     ├── healthcare/            ← full Django app — baseline
     │   ├── apps/ templates/ static/ StingrayHealthPortal/ data/
     │   ├── docs/ (BRDs · ADRs) · SETUP.md · CHALLENGES.md · AGENTS.md
-    │   └── manage.py · pyproject.toml · package.json · README.md
+    │   └── manage.py · README.md · dashboard-healthcare.png
     └── manufacturing/         ← full Django app — generated adaptation
         ├── apps/ … (incl. apps/core/domain.py manifest + seed_manufacturing)
         └── manage.py · README.md · SETUP.md · AGENTS.md · dashboard-manufacturing.png
@@ -39,7 +39,14 @@ healthcare baseline by the adapter: the structure (model fields, portal URL
 names, dashboard context keys, the `visit_type` enum) is identical; only the
 display copy, the `apps/core/domain.py` manifest, and the seed data differ.
 
-![Manufacturing adaptation — Operations Portal dashboard](verticals/manufacturing/dashboard-manufacturing.png)
+The same dashboard, two skins — baseline on the left, generated adaptation on the right:
+
+<table>
+<tr>
+<td width="50%" align="center"><strong>Healthcare (baseline)</strong><br/><em>Patient portal</em><br/><br/><img src="verticals/healthcare/dashboard-healthcare.png" alt="Healthcare patient portal dashboard"/></td>
+<td width="50%" align="center"><strong>Manufacturing (generated)</strong><br/><em>Operations portal</em><br/><br/><img src="verticals/manufacturing/dashboard-manufacturing.png" alt="Manufacturing operations portal dashboard"/></td>
+</tr>
+</table>
 
 ## How the adapter works
 
