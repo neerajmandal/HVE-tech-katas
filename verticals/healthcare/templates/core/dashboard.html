@@ -1,0 +1,153 @@
+{% extends "portal_base.html" %}
+
+{% block page_title %}Dashboard{% endblock %}
+{% block page_subtitle %}Your health overview at a glance{% endblock %}
+
+{% block content %}
+<!-- Summary Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+    <!-- Total Lab Tests -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 hover:shadow-md transition-shadow">
+        <div class="flex items-center justify-between mb-3">
+            <div class="w-10 h-10 bg-teal-100 rounded-lg flex items-center justify-center">
+                <svg class="w-5 h-5 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
+                </svg>
+            </div>
+        </div>
+        <p class="text-2xl font-bold text-gray-800">{{ total_labs }}</p>
+        <p class="text-sm text-gray-500">Total Lab Tests</p>
+    </div>
+
+    <!-- Pending Results -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 hover:shadow-md transition-shadow">
+        <div class="flex items-center justify-between mb-3">
+            <div class="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center">
+                <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+            </div>
+        </div>
+        <p class="text-2xl font-bold text-gray-800">{{ pending_labs }}</p>
+        <p class="text-sm text-gray-500">Pending Results</p>
+    </div>
+
+    <!-- Abnormal Results -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 hover:shadow-md transition-shadow">
+        <div class="flex items-center justify-between mb-3">
+            <div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
+                <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                </svg>
+            </div>
+        </div>
+        <p class="text-2xl font-bold text-gray-800">{{ abnormal_labs }}</p>
+        <p class="text-sm text-gray-500">Abnormal Results</p>
+    </div>
+
+    <!-- Doctor Visits -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 hover:shadow-md transition-shadow">
+        <div class="flex items-center justify-between mb-3">
+            <div class="w-10 h-10 bg-sky-100 rounded-lg flex items-center justify-center">
+                <svg class="w-5 h-5 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                </svg>
+            </div>
+        </div>
+        <p class="text-2xl font-bold text-gray-800">{{ total_visits }}</p>
+        <p class="text-sm text-gray-500">Doctor Visits</p>
+    </div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Recent Lab Tests -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100">
+        <div class="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
+            <h3 class="text-base font-semibold text-gray-800">Recent Lab Tests</h3>
+            <a href="{% url 'lab_tests' %}" class="text-sm text-teal-600 hover:text-teal-700 font-medium">View All</a>
+        </div>
+        <div class="divide-y divide-gray-50">
+            {% for test in recent_labs %}
+            <div class="px-5 py-3.5 flex items-center justify-between hover:bg-gray-50 transition-colors">
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 rounded-lg flex items-center justify-center
+                        {% if test.status == 'completed' %}bg-green-100{% elif test.status == 'pending' %}bg-amber-100{% else %}bg-sky-100{% endif %}">
+                        {% if test.status == 'completed' %}
+                            <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        {% elif test.status == 'pending' %}
+                            <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        {% else %}
+                            <svg class="w-4 h-4 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-gray-800">{{ test.test_name }}</p>
+                        <p class="text-xs text-gray-500">{{ test.test_category }} &middot; {{ test.order_date|date:"M d, Y" }}</p>
+                    </div>
+                </div>
+                <div class="text-right">
+                    {% if test.is_abnormal %}
+                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-700">Abnormal</span>
+                    {% elif test.status == 'pending' %}
+                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-700">Pending</span>
+                    {% else %}
+                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700">Normal</span>
+                    {% endif %}
+                </div>
+            </div>
+            {% empty %}
+            <div class="px-5 py-8 text-center text-gray-400 text-sm">No lab tests on record</div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Recent Doctor Visits -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100">
+        <div class="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
+            <h3 class="text-base font-semibold text-gray-800">Recent Doctor Visits</h3>
+            <a href="{% url 'doctor_visits' %}" class="text-sm text-teal-600 hover:text-teal-700 font-medium">View All</a>
+        </div>
+        <div class="divide-y divide-gray-50">
+            {% for visit in recent_visits %}
+            <div class="px-5 py-3.5 hover:bg-gray-50 transition-colors">
+                <div class="flex items-center justify-between mb-1">
+                    <p class="text-sm font-medium text-gray-800">{{ visit.doctor_name }}</p>
+                    <span class="text-xs text-gray-500">{{ visit.visit_date|date:"M d, Y" }}</span>
+                </div>
+                <p class="text-xs text-gray-500">{{ visit.specialty }} &middot; {{ visit.get_visit_type_display }}</p>
+                <p class="text-xs text-gray-600 mt-1">{{ visit.reason }}</p>
+            </div>
+            {% empty %}
+            <div class="px-5 py-8 text-center text-gray-400 text-sm">No doctor visits on record</div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- Upcoming Follow-ups -->
+{% if upcoming_followups %}
+<div class="mt-6 bg-white rounded-xl shadow-sm border border-gray-100">
+    <div class="px-5 py-4 border-b border-gray-100">
+        <h3 class="text-base font-semibold text-gray-800">Upcoming Follow-up Appointments</h3>
+    </div>
+    <div class="divide-y divide-gray-50">
+        {% for visit in upcoming_followups %}
+        <div class="px-5 py-3.5 flex items-center justify-between hover:bg-gray-50 transition-colors">
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 bg-teal-100 rounded-lg flex items-center justify-center">
+                    <svg class="w-4 h-4 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <p class="text-sm font-medium text-gray-800">{{ visit.doctor_name }} - {{ visit.specialty }}</p>
+                    <p class="text-xs text-gray-500">Follow-up for: {{ visit.reason }}</p>
+                </div>
+            </div>
+            <span class="text-sm font-semibold text-teal-600">{{ visit.follow_up_date|date:"M d, Y" }}</span>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+{% endblock %}

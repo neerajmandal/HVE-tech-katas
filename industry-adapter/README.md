@@ -50,15 +50,18 @@ flowchart LR
 The two katas here (healthcare, manufacturing) are illustrative — the adapter is
 designed to extend to any vertical (finance, legal, education, energy, …):
 
-1. From the repo root, ask an agent: *"Apply the industry adapter to this repo
-   for the **&lt;industry&gt;** industry."*
-2. The agent runs the pipeline above and produces a new `domain.py` + `seed_<slug>`
-   that map onto the same six models, dashboard context keys, URL names, and
-   `visit_type` codes.
-3. To preserve it as a showcase kata, drop its `domain.py`, `seed_<slug>.py`, and
-   a screenshot into a new `verticals/<industry>/` folder following the pattern
-   in [`../verticals/manufacturing/`](../verticals/manufacturing/), and add a row
-   to the repository README's kata table.
+The two katas here (healthcare, manufacturing) are illustrative — the adapter is
+designed to extend to any vertical (finance, legal, education, energy, …):
+
+1. Copy the healthcare baseline app into a new kata folder:
+   `cp -r verticals/healthcare verticals/<industry>` (it is self-contained).
+2. From inside `verticals/<industry>/`, ask an agent: *"Apply the industry
+   adapter to this app for the **&lt;industry&gt;** industry."* The agent runs the
+   pipeline above and produces `apps/core/domain.py` + `seed_<slug>` that map onto
+   the same six models, dashboard context keys, URL names, and `visit_type` codes.
+3. Drop a dashboard screenshot in the kata folder and add a row to the repository
+   README's kata table, following the pattern in
+   [`../verticals/manufacturing/`](../verticals/manufacturing/).
 
 ## Guardrails the skills enforce
 

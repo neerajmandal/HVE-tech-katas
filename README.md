@@ -3,36 +3,40 @@
 A Django 5.2 + Tailwind CSS portal used for the HVE Tech Kata training program,
 organized around **three pillars**:
 
-1. **[Healthcare Kata](verticals/healthcare/)** — the baseline patient portal
-   (served live on `main`).
-2. **[Manufacturing Kata](verticals/manufacturing/)** — the same app re-skinned
-   for plant operations, **generated** by the adapter (served live on this
-   branch, `feature/industry-adapter-skills`).
+1. **[Healthcare Kata](verticals/healthcare/)** — the baseline patient portal; a
+   self-contained Django app.
+2. **[Manufacturing Kata](verticals/manufacturing/)** — the same portal re-skinned
+   for plant operations, **generated** from the healthcare baseline by the
+   adapter; also a self-contained Django app.
 3. **[Industry Adapter](industry-adapter/)** — an agent skill pack that turns the
    baseline into any vertical, and is designed to extend to N more industries.
 
 ```text
 .
-├── README.md                  ← you are here (three-pillar overview)
+├── README.md                  ← three-pillar overview (you are here)
 ├── industry-adapter/          ← pillar 3: the engine (entry point → .github/skills)
-├── verticals/                 ← pillar 1 & 2: the two industry katas (deltas)
-│   ├── healthcare/            ← baseline: kata brief + reference manifest
-│   └── manufacturing/         ← generated: manifest + seed + screenshot
 ├── .github/skills/            ← the runnable adapter skills
-├── apps/, templates/, static/ ← the shared Django application
-└── StingrayHealthPortal/      ← Django project settings
+└── verticals/                 ← pillars 1 & 2: two self-contained kata apps
+    ├── healthcare/            ← full Django app — baseline
+    │   ├── apps/ templates/ static/ StingrayHealthPortal/ data/
+    │   └── manage.py · pyproject.toml · package.json · README.md
+    └── manufacturing/         ← full Django app — generated adaptation
+        ├── apps/ … (incl. apps/core/domain.py manifest + seed_manufacturing)
+        └── manage.py · README.md · dashboard-manufacturing.png
 ```
 
 ## The two katas
 
-| Kata | Industry | Role | Records | Events | Billing | Lives on |
+| Kata | Industry | Role | Records | Events | Billing | Location |
 | --- | --- | --- | --- | --- | --- | --- |
-| [Healthcare](verticals/healthcare/) | Patient portal | Patient | Lab Tests | Doctor Visits | Invoices | `main` (baseline) |
-| [Manufacturing](verticals/manufacturing/) | Plant operations | Operator | Inspections | Work Orders | Purchase Orders | this branch (generated) |
+| [Healthcare](verticals/healthcare/) | Patient portal | Patient | Lab Tests | Doctor Visits | Invoices | `verticals/healthcare/` |
+| [Manufacturing](verticals/manufacturing/) | Plant operations | Operator | Inspections | Work Orders | Purchase Orders | `verticals/manufacturing/` |
 
-Both katas run the **same** Django app. A vertical is a small delta — a
-~140-line domain manifest + a synthetic seed command + an accent palette — not a
-copy of the application. That is the whole point of the adapter.
+Each kata is a **self-contained Django app** under `verticals/` — duplicated on
+purpose so it runs independently. Manufacturing was *generated* from the
+healthcare baseline by the adapter: the structure (model fields, portal URL
+names, dashboard context keys, the `visit_type` enum) is identical; only the
+display copy, the `apps/core/domain.py` manifest, and the seed data differ.
 
 ![Manufacturing adaptation — Operations Portal dashboard](docs/screenshots/dashboard-manufacturing.png)
 
@@ -65,9 +69,12 @@ Full details, the contract table, guardrails, and the extend-to-N guide are in
 **[industry-adapter/README.md](industry-adapter/README.md)** and
 **[.github/skills/README.md](.github/skills/README.md)**.
 
-## Quick start (run the live app)
+## Quick start (run a kata)
+
+Each kata is self-contained — pick one and run it from its own folder:
 
 ```bash
+cd verticals/healthcare      # or: cd verticals/manufacturing
 npm run setup     # one-time: data, deps, Tailwind build, migrate, seed
 npm run dev       # http://localhost:8000
 ```

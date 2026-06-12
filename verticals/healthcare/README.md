@@ -1,9 +1,9 @@
 # Healthcare Kata — Stingray Health Portal
 
-> One of two industry katas in this repository. This is the **baseline** the
-> Industry Adapter starts from. See the [repository README](../../README.md) for
-> the full three-pillar overview, and [`../manufacturing/`](../manufacturing/)
-> for the adapted vertical.
+> One of two industry katas in this repository — a **self-contained Django app**
+> and the **baseline** the Industry Adapter starts from. See the
+> [repository README](../../README.md) for the full three-pillar overview, and
+> [`../manufacturing/`](../manufacturing/) for the adapted vertical.
 
 A patient portal built with Django 5.2 and Tailwind CSS for the HVE Tech Kata
 training program. This kata focuses on building a **secure messaging** feature
@@ -27,14 +27,14 @@ to manage assignments.
 - ✅ Admin manages patient accounts
 - ✅ Authentication via django-allauth
 - ✅ Responsive UI built with Tailwind CSS
-- ✅ Sample FHIR datasets under [`data/`](../../data/)
+- ✅ Sample FHIR datasets under [`data/`](data/)
 
 ## Run the baseline
 
-The healthcare baseline is what the repository ships and what the `main` branch
-serves live. From the repo root:
+This kata is a self-contained Django app. Run it from **this folder**:
 
 ```bash
+cd verticals/healthcare
 npm run setup     # one-time: data, deps, Tailwind build, migrate, seed
 npm run dev       # http://localhost:8000
 ```
@@ -47,12 +47,12 @@ npm run dev       # http://localhost:8000
 For detailed setup see [SETUP.md](../../SETUP.md). For the 2.5-hour kata schedule
 and tickets see [CHALLENGES.md](../../CHALLENGES.md) / [CHALLENGES-v2.md](../../CHALLENGES-v2.md).
 
-## Reference manifest
+## No domain manifest (baseline)
 
-[`domain.py`](domain.py) in this folder is a **reference** copy of the healthcare
-manifest, kept so the two katas can be compared field-for-field with
-[`../manufacturing/domain.py`](../manufacturing/domain.py). The baseline renders
-the copy these values describe. It maps onto the same six models, dashboard
+The healthcare baseline ships **without** a domain manifest — its display copy is
+the templates' default. The adapter *generates* a manifest when re-skinning to
+another vertical; see [`../manufacturing/apps/core/domain.py`](../manufacturing/apps/core/domain.py)
+for what that looks like. The baseline maps onto the same six models, dashboard
 context keys, portal URL names, and `visit_type` enum codes that every vertical
 preserves.
 
