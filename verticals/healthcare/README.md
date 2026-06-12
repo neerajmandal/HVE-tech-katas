@@ -44,8 +44,8 @@ npm run dev       # http://localhost:8000
 - **Debugging View** (agent-accessible browser): <http://localhost:6080>
 - **Test credentials**: `patient1`–`patient20` / `password123`
 
-For detailed setup see [SETUP.md](../../SETUP.md). For the 2.5-hour kata schedule
-and tickets see [CHALLENGES.md](../../CHALLENGES.md) / [CHALLENGES-v2.md](../../CHALLENGES-v2.md).
+For detailed setup see [SETUP.md](SETUP.md). For the 2.5-hour kata schedule
+and tickets see [CHALLENGES.md](CHALLENGES.md) / [CHALLENGES-v2.md](CHALLENGES-v2.md).
 
 ## No domain manifest (baseline)
 

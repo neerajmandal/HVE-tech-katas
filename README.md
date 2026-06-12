@@ -19,10 +19,11 @@ organized around **three pillars**:
 └── verticals/                 ← pillars 1 & 2: two self-contained kata apps
     ├── healthcare/            ← full Django app — baseline
     │   ├── apps/ templates/ static/ StingrayHealthPortal/ data/
+    │   ├── docs/ (BRDs · ADRs) · SETUP.md · CHALLENGES.md · AGENTS.md
     │   └── manage.py · pyproject.toml · package.json · README.md
     └── manufacturing/         ← full Django app — generated adaptation
         ├── apps/ … (incl. apps/core/domain.py manifest + seed_manufacturing)
-        └── manage.py · README.md · dashboard-manufacturing.png
+        └── manage.py · README.md · SETUP.md · AGENTS.md · dashboard-manufacturing.png
 ```
 
 ## The two katas
@@ -38,7 +39,7 @@ healthcare baseline by the adapter: the structure (model fields, portal URL
 names, dashboard context keys, the `visit_type` enum) is identical; only the
 display copy, the `apps/core/domain.py` manifest, and the seed data differ.
 
-![Manufacturing adaptation — Operations Portal dashboard](docs/screenshots/dashboard-manufacturing.png)
+![Manufacturing adaptation — Operations Portal dashboard](verticals/manufacturing/dashboard-manufacturing.png)
 
 ## How the adapter works
 
@@ -82,17 +83,20 @@ npm run dev       # http://localhost:8000
 - **App URL**: <http://localhost:8000>
 - **Admin Panel**: <http://localhost:8000/admin>
 - **Debugging View** (agent-accessible browser): <http://localhost:6080>
-- **Test credentials**: `patient1`–`patient20` / `password123`
+- **Test credentials**: healthcare `patient1`–`patient20`, manufacturing `operator1`… (all `password123`)
 
-See [SETUP.md](SETUP.md) for detailed installation and the
+See each kata's `SETUP.md` for detailed installation
+([healthcare](verticals/healthcare/SETUP.md) ·
+[manufacturing](verticals/manufacturing/SETUP.md)) and the
 [Healthcare Kata README](verticals/healthcare/README.md) for the messaging
 challenge brief.
 
 ## Tech kata challenge
 
-This repository is set up for a 2.5-hour HVE coding kata. See
-[CHALLENGES.md](CHALLENGES.md) for the full challenge description, or
-[CHALLENGES-v2.md](CHALLENGES-v2.md) for the v2 challenges.
+The healthcare kata is set up for a 2.5-hour HVE coding kata. See
+[CHALLENGES.md](verticals/healthcare/CHALLENGES.md) for the full challenge
+description, or [CHALLENGES-v2.md](verticals/healthcare/CHALLENGES-v2.md) for the
+v2 challenges.
 
 ## Technology stack
 

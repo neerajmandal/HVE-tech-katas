@@ -124,7 +124,7 @@ async function main() {
   run("uv run python manage.py migrate");
 
   printStep("Populating sample data...");
-  run("uv run python manage.py seed_dummy_data");
+  run("uv run python manage.py seed_manufacturing");
 }
 
 main().catch((error) => {
