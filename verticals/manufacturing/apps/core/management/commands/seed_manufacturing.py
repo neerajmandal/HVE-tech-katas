@@ -395,7 +395,9 @@ class Command(BaseCommand):
                 )
             )
 
-        self.stdout.write(self.style.SUCCESS("\nSuccessfully seeded manufacturing data!"))
+        self.stdout.write(
+            self.style.SUCCESS("\nSuccessfully seeded manufacturing data!")
+        )
         self.stdout.write(self.style.SUCCESS("Login credentials:"))
         self.stdout.write("  Username: operator1 through operator12")
         self.stdout.write("  Password: password123")
