@@ -2,7 +2,8 @@
 set -euE
 
 SCRIPT_PATH="$(dirname "$(readlink -f "$0")")"
-source "${SCRIPT_PATH}/../scripts/common.sh"
+DEFAULT_KATA="${STINGRAY_DEFAULT_KATA:-verticals/healthcare}"
+source "${SCRIPT_PATH}/../${DEFAULT_KATA}/scripts/common.sh"
 
 ###
 ### main execution path

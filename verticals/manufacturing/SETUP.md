@@ -1,6 +1,12 @@
-# Setup
+# Setup — Manufacturing Kata
 
-The workshop will take about 3 hours to complete. Before starting, please ensure you are able to clone the repo and setup the Django application.
+This is one of two self-contained kata apps in the repository. It runs
+independently from this folder (`verticals/manufacturing/`). Before starting,
+ensure you can clone the repo and set up the Django application.
+
+> This kata was **generated** from the [healthcare baseline](../healthcare/) by
+> the [Industry Adapter](../../industry-adapter/). It is structurally identical
+> to healthcare; only the display copy and seed data differ.
 
 ## 1. Install Prerequisites
 
@@ -29,15 +35,20 @@ Quick installation:
 
 ```bash
 git clone https://github.com/neerajmandal/HVE-tech-katas.git
-cd HVE-tech-katas
+cd HVE-tech-katas/verticals/manufacturing
 ```
 
 ## 3. Open the Dev Container
 
 1. Open the repository in VS Code.
 1. Reopen it in the existing devcontainer when prompted.
-1. Wait (~2-5 min️) for the one-time post-create provisioning to finish.
+1. Wait (~2-5 min) for the one-time post-create provisioning to finish.
 This installs Python and Node dependencies, seeds the database, and provisions Chromium for Playwright inside the container.
+
+   > The devcontainer provisions the **healthcare** kata by default. To work this
+   > kata instead, set `STINGRAY_DEFAULT_KATA=verticals/manufacturing` before the
+   > container builds, or just run the commands below from this folder.
+
 1. Start the app in the container:
 
     ```bash
@@ -52,33 +63,29 @@ This installs Python and Node dependencies, seeds the database, and provisions C
     npm run browser:open
     ```
 
-## 3. Verify it runs
+## 4. Verify it runs
 
-- Start the server by either:
-  - In the devcontainer terminal, run `npm run dev`
-  - In VS Code, `Ctrl+Shift+P` → Run Task → **Django: Run Server**
-- Open <http://localhost:8000> and log in with `patient1` / `password123`.
-- You should see the patient portal dashboard.
+- Start the server with `npm run dev` (from `verticals/manufacturing/`).
+- Open <http://localhost:8000> and log in with `operator1` / `password123`.
+- You should see the Operations Portal dashboard.
 - Open port 6080 and confirm the Fluxbox desktop loads.
 - Run `npm run browser:open` and confirm Chromium appears in the noVNC session.
 
-## 4. Troubleshooting
+## 5. Troubleshooting
 
-- If port 6080 shows a blank page, run `npm run setup`, `npm run dev`, then `npm run browser open`.
+- If port 6080 shows a blank page, run `npm run setup`, `npm run dev`, then `npm run browser:open`.
 - If Chromium opens and immediately exits, rebuild the devcontainer so the one-time browser dependency provisioning runs again.
 - If the desktop is sluggish on macOS or Windows, [increase Docker Desktop CPU and memory allocation](https://docs.docker.com/desktop/settings-and-maintenance/settings/).
 
 ### Local Installation
 
 If you hit issues using the dev container, installing the toolchains onto your host machine is available as a fallback.
-It is recommended you use the devcontainer and only proceed with local setup if devcontainer is failing on your machine, as you may experience conflicts or configuration issues with other existing software on your host.
 
 #### 1. Install dependencies
 
 - [Python](https://www.python.org/downloads/) 3.11 or later
 - [uv](https://docs.astral.sh/uv/getting-started/installation/)
 - [node.js](https://nodejs.org/en) v20 or later (LTS recommended)
-- [Worktrunk](https://worktrunk.dev/worktrunk/#install)
 - [GitHub CLI](https://cli.github.com/)
 
 Quick installation:
@@ -95,36 +102,20 @@ Quick installation:
   winget install -e Git.Git Microsoft.VisualStudioCode Docker.DockerDesktop max-sixty.worktrunk GitHub.CLI OpenJS.NodeJS.LTS astral-sh.uv
   ```
 
-  > [!TIP]
-  > You may need to restart your terminal in order to make the new software available.
-
 #### 2. Clone the repo and set up
 
 ```bash
 git clone https://github.com/neerajmandal/HVE-tech-katas.git
-cd HVE-tech-katas
+cd HVE-tech-katas/verticals/manufacturing
 
 npm run setup
 ```
 
-> [!WARNING]
-> If you already had NodeJS installed, please verify it is >= 20.
->
-> If you already tried to run setup with an older version of node and ran into an error, clear your workspace:
->
-> 1. Update your NodeJS installation (see above)
-> 2. Delete `node_modules`
-> 3. Re-run `npm run setup`
+`npm run setup` runs the `seed_manufacturing` command, which creates demo
+operators (`operator1`, `operator2`, …) with password `password123`.
 
-#### 3. Configure VS Code
+#### 3. Verify it runs
 
-1. Open the repository folder in VS Code and when prompted, install suggested extensions.
-2. Sign-in to GitHub Copilot if you have not already
-
-#### 4. Verify it runs
-
-- Start the server by either:
-  - In the terminal, run `npm run dev`
-  - In VS Code, `Ctrl+Shift+P` → Run Task → **Django: Run Server**
-- Open <http://localhost:8000> and log in with `patient1` / `password123`
-- You should see the patient portal dashboard!
+- Start the server with `npm run dev`.
+- Open <http://localhost:8000> and log in with `operator1` / `password123`.
+- You should see the Operations Portal dashboard!

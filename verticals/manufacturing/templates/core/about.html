@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <!-- Header Section -->
+    <div class="text-center mb-12">
+        <h1 class="text-4xl font-bold text-gray-900 mb-4">About Stingrays Finance</h1>
+        <p class="text-xl text-gray-600">A learning project by Studio 4 Crew - The Stingrays</p>
+    </div>
+
+    <!-- Mission Section -->
+    <div class="bg-white rounded-lg shadow-md p-8 mb-8">
+        <h2 class="text-2xl font-bold text-gray-900 mb-4">Our Story</h2>
+        <p class="text-gray-700 leading-relaxed mb-4">
+            This app was created by Studio 4 Crew, the Stingrays, as a learning project to explore how to use AI tools 
+            effectively for Hyper Velocity Engineering (HVE) work. Our goal is to help you understand the edge cases, common pitfalls, 
+            and best practices when working with AI-powered development tools.
+        </p>
+        <p class="text-gray-700 leading-relaxed">
+            Through building this finance application, we're gaining hands-on experience with modern development workflows, 
+            learning to leverage AI assistance for faster development, and discovering how to validate and debug AI-generated 
+            code effectively.
+        </p>
+    </div>
+
+    <!-- Learning Goals Section -->
+    <div class="bg-white rounded-lg shadow-md p-8 mb-8">
+        <h2 class="text-2xl font-bold text-gray-900 mb-6">Our Learning Goals</h2>
+        <div class="grid md:grid-cols-2 gap-6">
+            <div class="border-l-4 border-blue-500 pl-4">
+                <h3 class="text-xl font-semibold text-gray-900 mb-2">Master AI Tools</h3>
+                <p class="text-gray-700">
+                    Learn how to effectively use AI coding assistants to accelerate development while maintaining 
+                    code quality and understanding what the tools generate.
+                </p>
+            </div>
+            <div class="border-l-4 border-blue-500 pl-4">
+                <h3 class="text-xl font-semibold text-gray-900 mb-2">Understand Edge Cases</h3>
+                <p class="text-gray-700">
+                    Identify and handle the edge cases and unexpected scenarios that AI tools might miss or 
+                    handle incorrectly in real-world applications.
+                </p>
+            </div>
+            <div class="border-l-4 border-blue-500 pl-4">
+                <h3 class="text-xl font-semibold text-gray-900 mb-2">Recognize Common Pitfalls</h3>
+                <p class="text-gray-700">
+                    Discover the typical mistakes and anti-patterns that can occur when relying on AI-generated 
+                    code, and learn how to avoid or fix them.
+                </p>
+            </div>
+            <div class="border-l-4 border-blue-500 pl-4">
+                <h3 class="text-xl font-semibold text-gray-900 mb-2">Build Real Applications</h3>
+                <p class="text-gray-700">
+                    Apply our learnings to create functional, user-friendly applications that solve real problems, 
+                    like financial planning and investment calculations.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- What We're Building Section -->
+    <div class="bg-white rounded-lg shadow-md p-8 mb-8">
+        <h2 class="text-2xl font-bold text-gray-900 mb-6">What We're Building</h2>
+        <p class="text-gray-700 leading-relaxed mb-4">
+            Stingrays Finance serves as our learning platform where we're implementing:
+        </p>
+        <div class="space-y-4">
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <svg class="h-6 w-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                    </svg>
+                </div>
+                <div class="ml-3">
+                    <h3 class="text-lg font-semibold text-gray-900">Financial Calculators</h3>
+                    <p class="text-gray-700">Investment calculators, compound interest tools, and other financial planning features.</p>
+                </div>
+            </div>
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <svg class="h-6 w-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                    </svg>
+                </div>
+                <div class="ml-3">
+                    <h3 class="text-lg font-semibold text-gray-900">Data Visualization</h3>
+                    <p class="text-gray-700">Interactive charts and graphs to help visualize financial growth over time.</p>
+                </div>
+            </div>
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <svg class="h-6 w-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+                    </svg>
+                </div>
+                <div class="ml-3">
+                    <h3 class="text-lg font-semibold text-gray-900">Modern Web Stack</h3>
+                    <p class="text-gray-700">Django backend, Tailwind CSS styling, and responsive design principles.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Call to Action -->
+    <div class="bg-blue-600 rounded-lg shadow-md p-8 text-center text-white">
+        <h2 class="text-2xl font-bold mb-4">Join Us on Our Learning Journey</h2>
+        <p class="text-lg mb-6">Explore the financial tools we've built while learning to work with AI development tools.</p>
+        <div class="space-x-4">
+            <a href="{% url 'free_tools' %}" class="inline-block bg-white text-blue-600 font-semibold px-6 py-3 rounded-lg hover:bg-gray-100 transition">
+                Try Our Tools
+            </a>
+            <a href="{% url 'home' %}" class="inline-block bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg hover:bg-blue-800 transition border-2 border-white">
+                Back to Home
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock content %}

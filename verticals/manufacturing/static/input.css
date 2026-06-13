@@ -1,0 +1,28 @@
+@import "tailwindcss";
+@import "flowbite/src/themes/default";
+@plugin "flowbite/plugin";
+@source "../../node_modules/flowbite";
+@source "../../node_modules/flowbite-datepicker";
+
+/*
+ * Industry-adapter accent palette (Tailwind v4). Registering these as @theme
+ * color tokens generates the `accent-*` / `accent2-*` utilities AND emits them
+ * as `var(--color-accent-*)` references, so an adaptation can re-skin every
+ * accent surface at runtime by overriding the same variables via an inline
+ * <style> from the domain manifest (templates/partials/_theme_style.html).
+ * Defaults below are the healthcare baseline (teal / cyan).
+ */
+@theme {
+  --color-accent-50: #f0fdfa;
+  --color-accent-100: #ccfbf1;
+  --color-accent-300: #5eead4;
+  --color-accent-400: #2dd4bf;
+  --color-accent-500: #14b8a6;
+  --color-accent-600: #0d9488;
+  --color-accent-700: #0f766e;
+  --color-accent-900: #134e4a;
+  --color-accent2-400: #22d3ee;
+  --color-accent2-500: #06b6d4;
+  --color-accent2-600: #0891b2;
+  --color-accent2-700: #0e7490;
+}

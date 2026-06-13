@@ -60,8 +60,8 @@ lerna-debug.log*
 .pnpm-debug.log*
 
 # Static files (generated)
-static/CACHE/
-static/output.css
+**/static/CACHE/
+**/static/output.css
 staticfiles/
 collected-static/
 
