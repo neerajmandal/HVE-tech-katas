@@ -39,6 +39,12 @@ healthcare baseline by the adapter: the structure (model fields, portal URL
 names, dashboard context keys, the `visit_type` enum) is identical; only the
 display copy, the `apps/core/domain.py` manifest, and the seed data differ.
 
+The two katas play different roles. **Healthcare is the training kata** — it
+carries the coding-challenge briefs (`CHALLENGES.md`, `CHALLENGES-v2.md`) and
+design docs (`docs/` — BRDs · ADRs). **Manufacturing is a generated showcase**
+that demonstrates the adapter's output end-to-end and intentionally omits the
+challenge material; it is not a second exercise.
+
 The same dashboard, two skins — baseline on the left, generated adaptation on the right:
 
 <table>
@@ -111,4 +117,6 @@ v2 challenges.
 - **Frontend**: Tailwind CSS 4.1, Flowbite components
 - **Database**: SQLite (development)
 - **Authentication**: django-allauth
-- **Standards**: FHIR (Fast Healthcare Interoperability Resources)
+- **Standards**: FHIR (Fast Healthcare Interoperability Resources) — healthcare
+  baseline only; each generated vertical carries its own compliance context via
+  the domain manifest
