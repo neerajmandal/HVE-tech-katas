@@ -6,8 +6,8 @@ This document provides guidance for agents working on the Stingray Health Portal
 
 **Tech Stack:**
 
-- Backend: Django 5.2 + Python 3.11+
-- Frontend: Tailwind CSS 4.1 + Flowbite components
+- Backend: Django 6.x + Python 3.12
+- Frontend: Tailwind CSS 4.3 + Flowbite components
 - Database: SQLite (development)
 - Package Managers: uv (Python), npm (Node.js)
 

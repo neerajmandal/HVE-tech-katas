@@ -75,7 +75,7 @@ It is recommended you use the devcontainer and only proceed with local setup if 
 
 #### 1. Install dependencies
 
-- [Python](https://www.python.org/downloads/) 3.11 or later
+- [Python](https://www.python.org/downloads/) 3.12.x
 - [uv](https://docs.astral.sh/uv/getting-started/installation/)
 - [node.js](https://nodejs.org/en) v20 or later (LTS recommended)
 - [Worktrunk](https://worktrunk.dev/worktrunk/#install)

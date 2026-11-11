@@ -3,9 +3,9 @@ name = "stingray-health-portal"
 version = "0.1.0"
 description = "Stingray Health Portal - Django Application"
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.12,<3.13"
 dependencies = [
-    "django>=5.2.6",
+    "django>=6.1,<7",
     "psycopg2-binary>=2.9.10",
     "dj-database-url>=3.0.1",
     "django-environ>=0.12.0",
@@ -28,6 +28,7 @@ dev = [
 
 [tool.ruff]
 line-length = 88
+extend-exclude = ["*.md"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP"]

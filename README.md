@@ -53,7 +53,7 @@ This repository is set up for an HVE coding kata (2.5 hours). See [CHALLENGES.md
 
 ## Technology Stack
 
-- **Backend**: Django 5.2, Python 3.11
+- **Backend**: Django 6.x, Python 3.12
 - **Frontend**: Tailwind CSS, Flowbite components
 - **Database**: SQLite (development)
 - **Authentication**: django-allauth
